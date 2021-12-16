@@ -1,0 +1,6 @@
+black-hole-station:
+  version: 0.1.0-alpha
+
+spring:
+  profiles:
+    active: dev

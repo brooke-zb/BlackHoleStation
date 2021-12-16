@@ -1,0 +1,15 @@
+server:
+  port: 8190
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/black_hole_station?useUnicode=true&characterEncoding=utf8&useSSL=false
+    hikari:
+      username: example
+      password: example
+      minimum-idle: 3
+      maximum-pool-size: 10
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
