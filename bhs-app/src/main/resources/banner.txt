@@ -1,7 +1,7 @@
-${AnsiColor.BLUE}    ____  __           __      __  __      __        _____ __        __  _
-   / __ )/ /___ ______/ /__   / / / /___  / /__     / ___// /_____ _/ /_(_)___  ____
-  / __  / / __ `/ ___/ //_/  / /_/ /${AnsiColor.BLACK}\|/${AnsiColor.BLUE} \/ / _ \    \__ \/ __/ __ `/ __/ / __ \/ __ \
- / /_/ / / /_/ / /__/ ,<    / __  /${AnsiColor.BLACK}--O--${AnsiColor.BLUE}/ /  __/   ___/ / /_/ /_/ / /_/ / /_/ / / / /
-/_____/_/\__,_/\___/_/|_|  /_/ /_/\_${AnsiColor.BLACK}/|\${AnsiColor.BLUE}/_/\___/   /____/\__/\__,_/\__/_/\____/_/ /_/${AnsiColor.BRIGHT_WHITE}
+${AnsiColor.BLUE}    ____  __           __  ${AnsiColor.BRIGHT_CYAN}    __  __      __    ${AnsiColor.BRIGHT_GREEN}    _____ __        __  _
+${AnsiColor.BLUE}   / __ )/ /___ ______/ /__${AnsiColor.BRIGHT_CYAN}   / / / /___  / /__  ${AnsiColor.BRIGHT_GREEN}   / ___// /_____ _/ /_(_)___  ____
+${AnsiColor.BLUE}  / __  / / __ `/ ___/ //_/${AnsiColor.BRIGHT_CYAN}  / /_/ /\|/ \/ / _ \ ${AnsiColor.BRIGHT_GREEN}   \__ \/ __/ __ `/ __/ / __ \/ __ \
+${AnsiColor.BLUE} / /_/ / / /_/ / /__/ ,<   ${AnsiColor.BRIGHT_CYAN} / __  /--O--/ /  __/ ${AnsiColor.BRIGHT_GREEN}  ___/ / /_/ /_/ / /_/ / /_/ / / / /
+${AnsiColor.BLUE}/_____/_/\__,_/\___/_/|_|  ${AnsiColor.BRIGHT_CYAN}/_/ /_/\_/|\/_/\___/  ${AnsiColor.BRIGHT_GREEN} /____/\__/\__,_/\__/_/\____/_/ /_/${AnsiColor.BRIGHT_WHITE}
  :: Spring Boot        ::   ${AnsiColor.GREEN}${spring-boot.version}${AnsiColor.BRIGHT_WHITE}
- :: Black Hole Station ::   ${AnsiColor.BRIGHT_RED}${black-hole-station.version}${AnsiColor.BRIGHT_WHITE}
+ :: Black Hole Station ::   ${AnsiColor.GREEN}${black-hole-station.version}${AnsiColor.BRIGHT_WHITE}
