@@ -1,11 +1,13 @@
 package top.brookezb.bhs.aspect;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import top.brookezb.bhs.annotation.PermitAll;
 import top.brookezb.bhs.annotation.RequireAuth;
 import top.brookezb.bhs.annotation.RequirePermission;
 import top.brookezb.bhs.entity.User;
@@ -19,9 +21,9 @@ import java.lang.reflect.Method;
 /**
  * 鉴权切面类，对 {@code RequireAuth} 和 {@code RequirePermission} 注解进行处理
  *
+ * @author brooke_zb
  * @see RequireAuth
  * @see RequirePermission
- * @author brooke_zb
  */
 @Aspect
 @Component
@@ -29,7 +31,15 @@ public class AuthenticationAspect {
     /**
      * 权限鉴定切点
      */
-    @Pointcut("@within(top.brookezb.bhs.annotation.RequirePermission) || @within(top.brookezb.bhs.annotation.RequireAuth) || @within(top.brookezb.bhs.annotation.PermitAll)")
+    @Pointcut("""
+            @annotation(top.brookezb.bhs.annotation.RequirePermission) ||
+            @annotation(top.brookezb.bhs.annotation.RequireAuth) ||
+            @annotation(top.brookezb.bhs.annotation.PermitAll) ||
+            @within(top.brookezb.bhs.annotation.RequirePermission) ||
+            @within(top.brookezb.bhs.annotation.RequireAuth) ||
+            @within(top.brookezb.bhs.annotation.PermitAll)
+            """
+    )
     public void auth() {
     }
 
@@ -49,7 +59,7 @@ public class AuthenticationAspect {
             return joinPoint.proceed();
         }
         // 处理放行
-        if (permitAll(method.getAnnotation(RequireAuth.class))) {
+        if (permitAll(method.getAnnotation(PermitAll.class))) {
             return joinPoint.proceed();
         }
 
@@ -68,6 +78,7 @@ public class AuthenticationAspect {
 
     /**
      * 权限鉴定
+     *
      * @param anno 注解
      * @return true: 通过鉴定； false: 没有该注解
      */
@@ -93,8 +104,7 @@ public class AuthenticationAspect {
                 }
             }
             throw new ForbiddenException("您没有权限进行此操作");
-        }
-        else {
+        } else {
             for (String requirePermission : requirePermissions) {
                 if (!cur_user.getRole().getPermissions().contains(requirePermission)) {
                     throw new ForbiddenException("您没有权限进行此操作");
@@ -105,6 +115,10 @@ public class AuthenticationAspect {
     }
 
     public boolean requireAuth(RequireAuth anno) {
+        if (anno == null) {
+            return false;
+        }
+
         // 获取session中的权限信息
         HttpSession session = ServletUtils.getSession();
         User cur_user = (User) session.getAttribute("loginUser");
@@ -114,7 +128,7 @@ public class AuthenticationAspect {
         return true;
     }
 
-    public boolean permitAll(RequireAuth anno) {
+    public boolean permitAll(PermitAll anno) {
         return anno != null;
     }
 }
