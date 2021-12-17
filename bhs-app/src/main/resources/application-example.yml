@@ -13,3 +13,12 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
+
+aliyun:
+  oss:
+    access-key: LTAI1A2B3C4D5E6F
+    access-secret: 1A2B3C4D5E6F7G8H9I0J
+    end-point: https://oss-cn-example.aliyuncs.com
+    bucket-name: example
+    url-prefix: https://pic.example.com/
+    namespace: black_hole_station/

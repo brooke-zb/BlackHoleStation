@@ -18,6 +18,21 @@
     </properties>
 
     <dependencies>
+
+        <!-- BHS Common -->
+        <dependency>
+            <groupId>top.brookezb</groupId>
+            <artifactId>bhs-common</artifactId>
+            <version>0.1.0-SNAPSPOT</version>
+        </dependency>
+
+        <!-- BHS System -->
+        <dependency>
+            <groupId>top.brookezb</groupId>
+            <artifactId>bhs-system</artifactId>
+            <version>0.1.0-SNAPSPOT</version>
+        </dependency>
+
         <!-- SpringBoot WebFlux -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

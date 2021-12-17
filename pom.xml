@@ -12,6 +12,7 @@
     <modules>
         <module>bhs-common</module>
         <module>bhs-app</module>
+        <module>bhs-system</module>
     </modules>
 
     <properties>
@@ -23,6 +24,10 @@
         <mysql.cj.version>8.0.25</mysql.cj.version>
         <pagehelper.version>1.4.1</pagehelper.version>
         <mybatis.version>2.2.0</mybatis.version>
+        <aliyun.oss.version>3.13.2</aliyun.oss.version>
+        <servlet.version>4.0.1</servlet.version>
+        <snowflake.version>1.0.6</snowflake.version>
+        <jackson.version>2.13.0</jackson.version>
 
     </properties>
 
@@ -57,6 +62,34 @@
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
                 <version>${pagehelper.version}</version>
+            </dependency>
+
+            <!-- Aliyun OSS -->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun.oss.version}</version>
+            </dependency>
+
+            <!-- Servlet API -->
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${servlet.version}</version>
+            </dependency>
+
+            <!-- SnowFlake Id Generator -->
+            <dependency>
+                <groupId>com.github.yitter</groupId>
+                <artifactId>yitter-idgenerator</artifactId>
+                <version>${snowflake.version}</version>
+            </dependency>
+
+            <!-- Jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
 
         </dependencies>
