@@ -26,6 +26,13 @@ public class R<T> implements Serializable {
     private String msg;
 
     /**
+     * 操作成功，返回消息
+     */
+    public static <T> R<T> success() {
+        return success(null, "请求成功");
+    }
+
+    /**
      * 操作成功，返回数据
      * @param data 数据
      */

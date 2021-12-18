@@ -20,11 +20,10 @@ import javax.servlet.http.HttpServletRequest;
 public class ControllerLogAspect {
     @Pointcut("execution(public * top.brookezb.bhs.controller.*.*(..))")
     public void controller() {
-
     }
 
     /**
-     *
+     * 记录请求日志
      *
      * @param joinPoint 切点
      */
@@ -40,6 +39,11 @@ public class ControllerLogAspect {
         log.info("{} Request: {url: {}, ip: {}, method: {}, args: {}}", request.getMethod(), request.getRequestURI(), ip, method, joinPoint.getArgs());
     }
 
+    /**
+     * 记录异常日志
+     *
+     * @param ex 异常
+     */
     @AfterThrowing(value = "controller()", throwing = "ex")
     public void warn(Throwable ex) {
         log.warn("Request Fail: {}", ex.getMessage());

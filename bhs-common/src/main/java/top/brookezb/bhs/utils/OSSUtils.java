@@ -34,6 +34,7 @@ public class OSSUtils {
                 properties.getAccessKey(),
                 properties.getAccessSecret()
         );
+        log.info("OSS客户端初始化成功, bucket: {}", bucketName);
     }
 
     /**

@@ -22,3 +22,6 @@ aliyun:
     bucket-name: example
     url-prefix: https://pic.example.com/
     namespace: black_hole_station/
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
