@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(ForbiddenException.class)
-    public R<String> handleShiroException(Exception ex) {
+    public R<String> ForbiddenException(Exception ex) {
         return R.fail(ex.getMessage());
     }
 }
