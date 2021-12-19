@@ -1,6 +1,5 @@
 package top.brookezb.bhs.aspect;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Component;
 import top.brookezb.bhs.annotation.PermitAll;
 import top.brookezb.bhs.annotation.RequireAuth;
 import top.brookezb.bhs.annotation.RequirePermission;
-import top.brookezb.bhs.entity.User;
+import top.brookezb.bhs.model.User;
 import top.brookezb.bhs.exception.AuthenticationException;
 import top.brookezb.bhs.exception.ForbiddenException;
 import top.brookezb.bhs.utils.ServletUtils;

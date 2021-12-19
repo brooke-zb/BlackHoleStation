@@ -1,7 +1,7 @@
 package top.brookezb.bhs.service;
 
 import org.apache.ibatis.annotations.CacheNamespace;
-import top.brookezb.bhs.entity.TestEntity;
+import top.brookezb.bhs.model.TestEntity;
 
 import java.util.List;
 

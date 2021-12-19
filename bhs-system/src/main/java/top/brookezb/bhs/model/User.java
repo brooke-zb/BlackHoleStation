@@ -1,4 +1,4 @@
-package top.brookezb.bhs.entity;
+package top.brookezb.bhs.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

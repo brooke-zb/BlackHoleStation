@@ -2,7 +2,7 @@ package top.brookezb.bhs.service.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import top.brookezb.bhs.entity.TestEntity;
+import top.brookezb.bhs.model.TestEntity;
 import top.brookezb.bhs.mapper.TestMapper;
 import top.brookezb.bhs.service.TestService;
 

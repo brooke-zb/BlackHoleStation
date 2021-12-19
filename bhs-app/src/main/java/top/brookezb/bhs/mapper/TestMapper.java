@@ -1,7 +1,7 @@
 package top.brookezb.bhs.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import top.brookezb.bhs.entity.TestEntity;
+import top.brookezb.bhs.model.TestEntity;
 
 import java.util.List;
 

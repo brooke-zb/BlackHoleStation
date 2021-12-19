@@ -28,6 +28,7 @@
         <servlet.version>4.0.1</servlet.version>
         <snowflake.version>1.0.6</snowflake.version>
         <jackson.version>2.13.0</jackson.version>
+        <caffeine.version>3.0.5</caffeine.version>
 
     </properties>
 
@@ -90,6 +91,13 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+
+            <!-- Caffeine Cache -->
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>${caffeine.version}</version>
             </dependency>
 
         </dependencies>
