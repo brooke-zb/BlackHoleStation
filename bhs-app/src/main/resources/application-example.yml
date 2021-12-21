@@ -15,8 +15,13 @@ spring:
     port: 6379
 
   cache:
-    ehcache:
-      config: classpath:ehcache.xml
+    type: caffeine
+    caffeine:
+      spec: maximumSize=10000
+    cache-names:
+      - user
+      - article
+      - test
 
 aliyun:
   oss:
@@ -29,3 +34,9 @@ aliyun:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
+
+csrf:
+  path:
+    include:
+      - /article/**
+      - /admin/**
