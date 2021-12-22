@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.brookezb.bhs.mapper.UserMapper">
+    <resultMap id="userMap" type="top.brookezb.bhs.model.User">
+        <id property="uid" column="uid"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+        <result property="mail" column="mail"/>
+        <result property="link" column="link"/>
+        <association property="role" column="rid"
+                     select="top.brookezb.bhs.mapper.RoleMapper.selectById"/>
+    </resultMap>
+
+    <insert id="insert">
+        insert into bhs_user(uid, rid, name, password, mail, link)
+        values (#{uid}, #{role.rid}, #{name}, #{password}, #{mail}, #{link})
+    </insert>
+
+    <update id="update">
+        update bhs_user
+        set rid = #{role.rid}, name = #{name}, mail = #{mail}, link = #{link}
+        where uid = #{uid}
+    </update>
+
+    <delete id="delete">
+        delete from bhs_user
+        where uid = #{uid}
+    </delete>
+
+    <select id="selectById" resultType="top.brookezb.bhs.model.User">
+        select uid, name, password, mail, link, rid
+        from bhs_user
+        where uid = #{uid}
+    </select>
+
+    <select id="selectAll" resultType="top.brookezb.bhs.model.User">
+        select uid, name, password, mail, link, rid
+        from bhs_user
+    </select>
+
+    <select id="selectByUsername" resultType="top.brookezb.bhs.model.User">
+        select uid, name, password, mail, link, rid
+        from bhs_user
+        where name = #{name}
+    </select>
+</mapper>
