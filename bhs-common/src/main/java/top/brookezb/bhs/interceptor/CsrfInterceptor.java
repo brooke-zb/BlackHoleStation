@@ -17,7 +17,7 @@ import java.util.UUID;
  * @author brooke_zb
  */
 @Slf4j
-public class CSRFInterceptor implements HandlerInterceptor {
+public class CsrfInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
         // 获取前端提交的token
@@ -43,7 +43,7 @@ public class CSRFInterceptor implements HandlerInterceptor {
     }
 
     /**
-     * 生成新的CSRF token
+     * 设置新的CSRF token
      * @param request 请求
      * @param response 响应
      */
@@ -56,6 +56,7 @@ public class CSRFInterceptor implements HandlerInterceptor {
 
         // 将token放入cookie中
         Cookie token_cookie = new Cookie("X-CSRF-TOKEN", token);
+        token_cookie.setPath("/");
         response.addCookie(token_cookie);
     }
 
