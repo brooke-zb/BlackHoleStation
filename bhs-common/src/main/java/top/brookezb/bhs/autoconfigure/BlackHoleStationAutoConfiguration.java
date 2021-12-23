@@ -8,7 +8,7 @@ import top.brookezb.bhs.config.WebMvcConfig;
 import top.brookezb.bhs.handler.GlobalExceptionHandler;
 import top.brookezb.bhs.proerties.CsrfPathProperties;
 import top.brookezb.bhs.proerties.OssProperties;
-import top.brookezb.bhs.utils.OSSUtils;
+import top.brookezb.bhs.utils.OssUtils;
 import top.brookezb.bhs.utils.RedisUtils;
 
 /**
@@ -16,7 +16,7 @@ import top.brookezb.bhs.utils.RedisUtils;
  */
 @Configuration
 @Import({
-        OSSUtils.class,
+        OssUtils.class,
         RedisUtils.class,
         AuthenticationAspect.class,
         WebMvcConfig.class,

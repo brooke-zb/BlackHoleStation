@@ -15,14 +15,14 @@ import java.io.InputStream;
  */
 @Slf4j
 @Service
-public class OSSUtils {
+public class OssUtils {
     private final OSS ossClient;
 
     private final String bucketName;
     private final String namespace;
     private final String urlPrefix;
 
-    public OSSUtils(OssProperties properties) {
+    public OssUtils(OssProperties properties) {
         this.bucketName = properties.getBucketName();
         this.namespace = properties.getNamespace();
         this.urlPrefix = properties.getUrlPrefix();
