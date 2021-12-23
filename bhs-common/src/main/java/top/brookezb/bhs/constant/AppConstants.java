@@ -11,4 +11,6 @@ public class AppConstants {
 
     public static final String CSRF_HEADER = "X-CSRF-TOKEN";
     public static final String AUTH_TOKEN_HEADER = "Authorization";
+
+    public static final String SESSION_USER_KEY = "uid";
 }

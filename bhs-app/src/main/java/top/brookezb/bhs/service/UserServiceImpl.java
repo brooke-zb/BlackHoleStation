@@ -1,6 +1,9 @@
 package top.brookezb.bhs.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import top.brookezb.bhs.constant.AppConstants;
@@ -16,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author brooke_zb
  */
+@CacheConfig(cacheNames = "user")
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -45,6 +49,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Cacheable(key = "'user:' + #uid")
     @Override
     public User selectById(Long uid) {
         return userMapper.selectById(uid);

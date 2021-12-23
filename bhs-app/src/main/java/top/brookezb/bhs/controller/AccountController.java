@@ -34,7 +34,7 @@ public class AccountController {
     public R<?> login(@RequestBody LoginBody loginBody, HttpSession session, HttpServletResponse response) {
         // 获取用户
         User user = userService.checkUser(loginBody.getUsername(), loginBody.getPassword());
-        session.setAttribute("user", user);
+        session.setAttribute(AppConstants.SESSION_USER_KEY, user.getUid());
 
         // 设置免登录token
         if (loginBody.isRememberMe()) {
@@ -64,7 +64,7 @@ public class AccountController {
      */
     @DeleteMapping("/token")
     public R<?> logout(HttpSession session, HttpServletResponse response, @CookieValue(value = AppConstants.AUTH_TOKEN_HEADER, required = false) String authToken) {
-        session.removeAttribute("user");
+        session.removeAttribute(AppConstants.SESSION_USER_KEY);
 
         // 删除免登录token
         Cookie removeAuthToken = new Cookie(AppConstants.AUTH_TOKEN_HEADER, "");

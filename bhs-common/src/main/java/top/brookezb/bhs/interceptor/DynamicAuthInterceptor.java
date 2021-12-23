@@ -26,7 +26,7 @@ public class DynamicAuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
         HttpSession session = request.getSession();
-        if (session.getAttribute("user") == null && request.getCookies() != null) {
+        if (session.getAttribute(AppConstants.SESSION_USER_KEY) == null && request.getCookies() != null) {
             for (var cookie : request.getCookies()) {
                 if (cookie.getName().equals(AppConstants.AUTH_TOKEN_HEADER)) {
                     login(request, response, cookie.getValue());
@@ -55,7 +55,7 @@ public class DynamicAuthInterceptor implements HandlerInterceptor {
                 response.addCookie(removeToken);
                 return;
             }
-            request.getSession().setAttribute("user", userService.selectById(userId));
+            request.getSession().setAttribute(AppConstants.SESSION_USER_KEY, userId);
 
             // 生成新的token
             String newToken = userService.generateAuthToken(userId, expire);

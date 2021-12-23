@@ -1,5 +1,6 @@
 package top.brookezb.bhs.aspect;
 
+import lombok.AllArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -9,9 +10,11 @@ import org.springframework.stereotype.Component;
 import top.brookezb.bhs.annotation.PermitAll;
 import top.brookezb.bhs.annotation.RequireAuth;
 import top.brookezb.bhs.annotation.RequirePermission;
+import top.brookezb.bhs.constant.AppConstants;
 import top.brookezb.bhs.model.User;
 import top.brookezb.bhs.exception.AuthenticationException;
 import top.brookezb.bhs.exception.ForbiddenException;
+import top.brookezb.bhs.service.UserService;
 import top.brookezb.bhs.utils.ServletUtils;
 
 import javax.servlet.http.HttpSession;
@@ -27,7 +30,9 @@ import java.lang.reflect.Method;
  */
 @Aspect
 @Component
+@AllArgsConstructor
 public class AuthenticationAspect {
+    private UserService userService;
 
     @Around("""
             @annotation(top.brookezb.bhs.annotation.RequirePermission) ||
@@ -83,11 +88,15 @@ public class AuthenticationAspect {
         String[] requirePermissions = anno.values();
         RequirePermission.Relation relation = anno.relation();
 
-        // 获取session中的权限信息
+        // 获取session中的用户信息
         HttpSession session = ServletUtils.getSession();
-        User currentUser = (User) session.getAttribute("user");
-        if (currentUser == null) {
+        Long uid = (Long) session.getAttribute(AppConstants.SESSION_USER_KEY);
+        if (uid == null) {
             throw new AuthenticationException("请登录后再操作");
+        }
+        User currentUser = userService.selectById(uid);
+        if (currentUser == null || !currentUser.isEnabled()) {
+            throw new AuthenticationException("未找到用户或用户已被禁用");
         }
 
         // 判断权限
@@ -115,8 +124,8 @@ public class AuthenticationAspect {
 
         // 获取session中的权限信息
         HttpSession session = ServletUtils.getSession();
-        User currentUser = (User) session.getAttribute("loginUser");
-        if (currentUser == null) {
+        Long uid = (Long) session.getAttribute(AppConstants.SESSION_USER_KEY);
+        if (uid == null) {
             throw new AuthenticationException("请登录后再操作");
         }
         return true;
