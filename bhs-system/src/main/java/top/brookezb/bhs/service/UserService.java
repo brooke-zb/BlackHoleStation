@@ -3,6 +3,8 @@ package top.brookezb.bhs.service;
 import org.springframework.lang.NonNull;
 import top.brookezb.bhs.model.User;
 
+import java.util.List;
+
 /**
  * 用户服务
  *
@@ -24,6 +26,12 @@ public interface UserService {
      * @return 用户信息
      */
     User selectById(Long uid);
+
+    /**
+     * 获取用户列表
+     * @return 用户列表
+     */
+    List<User> selectAll();
 
     /**
      * 生成免登录token

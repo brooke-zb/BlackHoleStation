@@ -8,6 +8,8 @@ import top.brookezb.bhs.entity.R;
 import top.brookezb.bhs.exception.AuthenticationException;
 import top.brookezb.bhs.exception.ForbiddenException;
 
+import javax.validation.ConstraintViolationException;
+
 /**
  * 全局异常处理器
  *
@@ -33,5 +35,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ForbiddenException.class)
     public R<String> ForbiddenException(Exception ex) {
         return R.fail(ex.getMessage());
+    }
+
+    /**
+     * 返回400
+     * 处理参数校验异常
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public R<String> ConstraintViolationException(Exception ex) {
+        return R.fail(ex.getMessage().substring(ex.getMessage().indexOf(": ") + 2));
     }
 }

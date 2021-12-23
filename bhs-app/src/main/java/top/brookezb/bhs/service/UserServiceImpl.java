@@ -12,6 +12,7 @@ import top.brookezb.bhs.model.User;
 import top.brookezb.bhs.utils.CryptUtils;
 import top.brookezb.bhs.utils.RedisUtils;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -52,6 +53,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User selectById(Long uid) {
         return userMapper.selectById(uid);
+    }
+
+    @Override
+    public List<User> selectAll() {
+        return userMapper.selectAll();
     }
 
     @Override
