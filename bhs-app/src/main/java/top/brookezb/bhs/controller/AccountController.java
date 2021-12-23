@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import top.brookezb.bhs.constant.AppConstants;
 import top.brookezb.bhs.entity.LoginBody;
 import top.brookezb.bhs.entity.R;
+import top.brookezb.bhs.exception.AuthenticationException;
 import top.brookezb.bhs.model.User;
 import top.brookezb.bhs.service.UserService;
 
@@ -14,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.util.UUID;
 
 /**
- * 登录、注册、退出登录接口
+ * 登录、退出登录接口
  *
  * @author brooke_zb
  */
@@ -77,5 +78,22 @@ public class AccountController {
         }
 
         return R.success(null, "成功退出登录");
+    }
+
+    /**
+     * 获取账号的用户信息
+     * @param uid 用户id
+     * @return 用户信息
+     */
+    @GetMapping("/user")
+    public R<?> getUserInfo(@SessionAttribute(value = AppConstants.SESSION_USER_KEY, required = false) Long uid) {
+        if (uid == null) {
+            throw new AuthenticationException("请登录后访问");
+        }
+        User user = userService.selectById(uid);
+        if (user == null || !user.isEnabled()) {
+            throw new AuthenticationException("没有找到该账号或账号已被禁用");
+        }
+        return R.success(user);
     }
 }

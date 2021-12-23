@@ -3,11 +3,10 @@ package top.brookezb.bhs.utils;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import top.brookezb.bhs.entity.R;
-import top.brookezb.bhs.proerties.OSSProperties;
+import top.brookezb.bhs.proerties.OssProperties;
 
 import java.io.InputStream;
 
@@ -16,7 +15,6 @@ import java.io.InputStream;
  */
 @Slf4j
 @Service
-@EnableConfigurationProperties(OSSProperties.class)
 public class OSSUtils {
     private final OSS ossClient;
 
@@ -24,7 +22,7 @@ public class OSSUtils {
     private final String namespace;
     private final String urlPrefix;
 
-    public OSSUtils(OSSProperties properties) {
+    public OSSUtils(OssProperties properties) {
         this.bucketName = properties.getBucketName();
         this.namespace = properties.getNamespace();
         this.urlPrefix = properties.getUrlPrefix();

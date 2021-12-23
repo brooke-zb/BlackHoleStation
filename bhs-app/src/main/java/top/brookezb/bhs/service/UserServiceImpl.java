@@ -3,7 +3,6 @@ package top.brookezb.bhs.service;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import top.brookezb.bhs.constant.AppConstants;

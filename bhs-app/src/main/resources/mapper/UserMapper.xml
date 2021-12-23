@@ -30,18 +30,18 @@
         where uid = #{uid}
     </delete>
 
-    <select id="selectById" resultType="top.brookezb.bhs.model.User">
+    <select id="selectById" resultMap="userMap">
         select uid, name, password, mail, link, rid, enabled
         from bhs_user
         where uid = #{uid}
     </select>
 
-    <select id="selectAll" resultType="top.brookezb.bhs.model.User">
+    <select id="selectAll" resultMap="userMap">
         select uid, name, password, mail, link, rid, enabled
         from bhs_user
     </select>
 
-    <select id="selectByUsername" resultType="top.brookezb.bhs.model.User">
+    <select id="selectByUsername" resultMap="userMap">
         select uid, name, password, mail, link, rid, enabled
         from bhs_user
         where name = #{name}

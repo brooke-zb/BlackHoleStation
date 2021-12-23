@@ -3,32 +3,32 @@
     {
       "name": "aliyun.oss.access-key",
       "type": "java.lang.String",
-      "sourceType": "top.brookezb.bhs.proerties.OSSProperties"
+      "sourceType": "top.brookezb.bhs.proerties.OssProperties"
     },
     {
       "name": "aliyun.oss.access-secret",
       "type": "java.lang.String",
-      "sourceType": "top.brookezb.bhs.proerties.OSSProperties"
+      "sourceType": "top.brookezb.bhs.proerties.OssProperties"
     },
     {
       "name": "aliyun.oss.end-point",
       "type": "java.lang.String",
-      "sourceType": "top.brookezb.bhs.proerties.OSSProperties"
+      "sourceType": "top.brookezb.bhs.proerties.OssProperties"
     },
     {
       "name": "aliyun.oss.bucket-name",
       "type": "java.lang.String",
-      "sourceType": "top.brookezb.bhs.proerties.OSSProperties"
+      "sourceType": "top.brookezb.bhs.proerties.OssProperties"
     },
     {
       "name": "aliyun.oss.url-prefix",
       "type": "java.lang.String",
-      "sourceType": "top.brookezb.bhs.proerties.OSSProperties"
+      "sourceType": "top.brookezb.bhs.proerties.OssProperties"
     },
     {
       "name": "aliyun.oss.namespace",
       "type": "java.lang.String",
-      "sourceType": "top.brookezb.bhs.proerties.OSSProperties"
+      "sourceType": "top.brookezb.bhs.proerties.OssProperties"
     }
   ]
 }

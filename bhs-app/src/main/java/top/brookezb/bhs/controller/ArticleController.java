@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author brooke_zb
  */
 @RestController
-@RequestMapping("/article")
+@RequestMapping("/articles")
 public class ArticleController {
 
     @GetMapping("/test")

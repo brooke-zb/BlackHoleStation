@@ -1,11 +1,9 @@
 package top.brookezb.bhs.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.HandlerInterceptor;
 import top.brookezb.bhs.constant.AppConstants;
-import top.brookezb.bhs.exception.AuthenticationException;
 import top.brookezb.bhs.exception.ForbiddenException;
 
 import javax.servlet.http.Cookie;

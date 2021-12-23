@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Import;
 import top.brookezb.bhs.aspect.AuthenticationAspect;
 import top.brookezb.bhs.config.WebMvcConfig;
 import top.brookezb.bhs.handler.GlobalExceptionHandler;
+import top.brookezb.bhs.proerties.CsrfPathProperties;
+import top.brookezb.bhs.proerties.OssProperties;
 import top.brookezb.bhs.utils.OSSUtils;
 import top.brookezb.bhs.utils.RedisUtils;
 
@@ -20,6 +22,6 @@ import top.brookezb.bhs.utils.RedisUtils;
         WebMvcConfig.class,
         GlobalExceptionHandler.class
 })
-@EnableConfigurationProperties
+@EnableConfigurationProperties({CsrfPathProperties.class, OssProperties.class})
 public class BlackHoleStationAutoConfiguration {
 }

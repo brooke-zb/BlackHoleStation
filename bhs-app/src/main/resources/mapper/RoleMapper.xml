@@ -35,7 +35,7 @@
         where rid = #{rid}
     </delete>
 
-    <select id="selectById" resultType="top.brookezb.bhs.model.Role">
+    <select id="selectById" resultMap="roleMap">
         select rid, name
         from bhs_role
         where rid = #{rid}
