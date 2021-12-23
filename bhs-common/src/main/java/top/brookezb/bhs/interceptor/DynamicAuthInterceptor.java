@@ -40,6 +40,8 @@ public class DynamicAuthInterceptor implements HandlerInterceptor {
     private void login(HttpServletRequest request, HttpServletResponse response, String token) {
         String uid = redisUtils.getStringValue(AppConstants.REDIS_USER_TOKEN + token);
         if (uid != null) {
+            // 获取过期时间
+            Long expire = redisUtils.getExpire(AppConstants.REDIS_USER_TOKEN + token);
             redisUtils.delete(AppConstants.REDIS_USER_TOKEN + token);
             Long userId = Long.valueOf(uid);
 
@@ -56,9 +58,9 @@ public class DynamicAuthInterceptor implements HandlerInterceptor {
             request.getSession().setAttribute("user", userService.selectById(userId));
 
             // 生成新的token
-            String newToken = userService.generateAuthToken(userId);
+            String newToken = userService.generateAuthToken(userId, expire);
             Cookie cookie = new Cookie(AppConstants.AUTH_TOKEN_HEADER, newToken);
-            cookie.setMaxAge(60 * 60 * 24 * 7);
+            cookie.setMaxAge(expire.intValue());
             cookie.setPath("/");
             cookie.setHttpOnly(true);
             response.addCookie(cookie);

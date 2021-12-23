@@ -38,7 +38,7 @@ public class AccountController {
 
         // 设置免登录token
         if (loginBody.isRememberMe()) {
-            String token = userService.generateAuthToken(user.getUid());
+            String token = userService.generateAuthToken(user.getUid(), 60 * 60 * 24 * 7L);
             Cookie auth_token = new Cookie(AppConstants.AUTH_TOKEN_HEADER, token);
             auth_token.setMaxAge(60 * 60 * 24 * 7);
             auth_token.setPath("/");

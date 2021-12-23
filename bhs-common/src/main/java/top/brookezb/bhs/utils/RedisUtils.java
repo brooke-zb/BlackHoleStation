@@ -64,4 +64,8 @@ public class RedisUtils {
     public Boolean delete(String key) {
         return redisTemplate.delete(key);
     }
+
+    public Long getExpire(String key) {
+        return stringRedisTemplate.getExpire(key);
+    }
 }
