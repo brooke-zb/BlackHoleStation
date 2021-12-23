@@ -23,14 +23,13 @@ import java.lang.reflect.Method;
  * @author brooke_zb
  * @see RequireAuth
  * @see RequirePermission
+ * @see PermitAll
  */
 @Aspect
 @Component
 public class AuthenticationAspect {
-    /**
-     * 权限鉴定切点
-     */
-    @Pointcut("""
+
+    @Around("""
             @annotation(top.brookezb.bhs.annotation.RequirePermission) ||
             @annotation(top.brookezb.bhs.annotation.RequireAuth) ||
             @annotation(top.brookezb.bhs.annotation.PermitAll) ||
@@ -39,10 +38,6 @@ public class AuthenticationAspect {
             @within(top.brookezb.bhs.annotation.PermitAll)
             """
     )
-    public void auth() {
-    }
-
-    @Around("auth()")
     public Object aroundRequirePermission(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
@@ -90,22 +85,22 @@ public class AuthenticationAspect {
 
         // 获取session中的权限信息
         HttpSession session = ServletUtils.getSession();
-        User cur_user = (User) session.getAttribute("loginUser");
-        if (cur_user == null) {
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser == null) {
             throw new AuthenticationException("请登录后再操作");
         }
 
         // 判断权限
         if (relation == RequirePermission.Relation.OR) {
             for (String requirePermission : requirePermissions) {
-                if (cur_user.getRole().getPermissions().contains(requirePermission)) {
+                if (currentUser.getRole().getPermissions().contains(requirePermission)) {
                     return true;
                 }
             }
             throw new ForbiddenException("您没有权限进行此操作");
         } else {
             for (String requirePermission : requirePermissions) {
-                if (!cur_user.getRole().getPermissions().contains(requirePermission)) {
+                if (!currentUser.getRole().getPermissions().contains(requirePermission)) {
                     throw new ForbiddenException("您没有权限进行此操作");
                 }
             }
@@ -120,8 +115,8 @@ public class AuthenticationAspect {
 
         // 获取session中的权限信息
         HttpSession session = ServletUtils.getSession();
-        User cur_user = (User) session.getAttribute("loginUser");
-        if (cur_user == null) {
+        User currentUser = (User) session.getAttribute("loginUser");
+        if (currentUser == null) {
             throw new AuthenticationException("请登录后再操作");
         }
         return true;

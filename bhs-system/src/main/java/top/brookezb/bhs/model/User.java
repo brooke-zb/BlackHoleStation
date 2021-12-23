@@ -38,4 +38,9 @@ public class User {
      * 主页链接
      */
     private String link;
+
+    /**
+     * 是否启用
+     */
+    private boolean enabled;
 }

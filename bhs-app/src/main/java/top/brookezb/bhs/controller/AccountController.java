@@ -2,6 +2,7 @@ package top.brookezb.bhs.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import top.brookezb.bhs.constant.AppConstants;
 import top.brookezb.bhs.entity.LoginBody;
 import top.brookezb.bhs.entity.R;
 import top.brookezb.bhs.model.User;
@@ -38,7 +39,7 @@ public class AccountController {
         // 设置免登录token
         if (loginBody.isRememberMe()) {
             String token = userService.generateAuthToken(user.getUid());
-            Cookie auth_token = new Cookie("Authorization", token);
+            Cookie auth_token = new Cookie(AppConstants.AUTH_TOKEN_HEADER, token);
             auth_token.setMaxAge(60 * 60 * 24 * 7);
             auth_token.setPath("/");
             auth_token.setHttpOnly(true);
@@ -47,9 +48,9 @@ public class AccountController {
 
         // 设置CSRF token
         String token = UUID.randomUUID().toString();
-        session.setAttribute("X-CSRF-TOKEN", token);
+        session.setAttribute(AppConstants.CSRF_HEADER, token);
 
-        Cookie token_cookie = new Cookie("X-CSRF-TOKEN", token);
+        Cookie token_cookie = new Cookie(AppConstants.CSRF_HEADER, token);
         token_cookie.setPath("/");
         response.addCookie(token_cookie);
 
@@ -62,8 +63,19 @@ public class AccountController {
      * @return 登出结果
      */
     @DeleteMapping("/token")
-    public R<?> logout(HttpSession session) {
+    public R<?> logout(HttpSession session, HttpServletResponse response, @CookieValue(value = AppConstants.AUTH_TOKEN_HEADER, required = false) String authToken) {
         session.removeAttribute("user");
+
+        // 删除免登录token
+        Cookie removeAuthToken = new Cookie(AppConstants.AUTH_TOKEN_HEADER, "");
+        removeAuthToken.setMaxAge(0);
+        removeAuthToken.setPath("/");
+        response.addCookie(removeAuthToken);
+
+        if (authToken != null) {
+            userService.removeAuthToken(authToken);
+        }
+
         return R.success(null, "成功退出登录");
     }
 }

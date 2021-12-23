@@ -15,4 +15,6 @@ public interface UserService {
     User selectById(Long uid);
 
     String generateAuthToken(Long uid);
+
+    boolean removeAuthToken(String token);
 }

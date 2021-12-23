@@ -30,7 +30,7 @@ public class ControllerLogAspect {
     @Before("controller()")
     public void log(JoinPoint joinPoint) {
         HttpServletRequest request = ServletUtils.getRequest();
-        String method = joinPoint.getSignature().getDeclaringType().getName() + "." + joinPoint.getSignature().getName();
+        String method = joinPoint.getSignature().getDeclaringType().getName() + "#" + joinPoint.getSignature().getName();
         String ip = request.getHeader("x-real-ip");
         if (ip == null) {
             ip = request.getRemoteAddr();

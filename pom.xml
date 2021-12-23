@@ -29,6 +29,7 @@
         <snowflake.version>1.0.6</snowflake.version>
         <jackson.version>2.13.0</jackson.version>
         <caffeine.version>3.0.5</caffeine.version>
+        <spring.security.version>5.6.0</spring.security.version>
 
     </properties>
 
@@ -99,6 +100,14 @@
                 <artifactId>caffeine</artifactId>
                 <version>${caffeine.version}</version>
             </dependency>
+
+            <!-- Spring Security Crypto -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-crypto</artifactId>
+                <version>${spring.security.version}</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>

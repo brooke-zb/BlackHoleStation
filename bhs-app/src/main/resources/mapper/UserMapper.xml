@@ -9,6 +9,7 @@
         <result property="password" column="password"/>
         <result property="mail" column="mail"/>
         <result property="link" column="link"/>
+        <result property="enabled" column="enabled"/>
         <association property="role" column="rid"
                      select="top.brookezb.bhs.mapper.RoleMapper.selectById"/>
     </resultMap>
@@ -30,18 +31,18 @@
     </delete>
 
     <select id="selectById" resultType="top.brookezb.bhs.model.User">
-        select uid, name, password, mail, link, rid
+        select uid, name, password, mail, link, rid, enabled
         from bhs_user
         where uid = #{uid}
     </select>
 
     <select id="selectAll" resultType="top.brookezb.bhs.model.User">
-        select uid, name, password, mail, link, rid
+        select uid, name, password, mail, link, rid, enabled
         from bhs_user
     </select>
 
     <select id="selectByUsername" resultType="top.brookezb.bhs.model.User">
-        select uid, name, password, mail, link, rid
+        select uid, name, password, mail, link, rid, enabled
         from bhs_user
         where name = #{name}
     </select>
