@@ -88,12 +88,14 @@ public class AuthenticationAspect {
         String[] requirePermissions = anno.values();
         RequirePermission.Relation relation = anno.relation();
 
-        // 获取session中的用户信息
+        // 获取session中的用户id
         HttpSession session = ServletUtils.getSession();
         Long uid = (Long) session.getAttribute(AppConstants.SESSION_USER_KEY);
         if (uid == null) {
             throw new AuthenticationException("请登录后再操作");
         }
+
+        // 获取用户信息
         User currentUser = userService.selectById(uid);
         if (currentUser == null || !currentUser.isEnabled()) {
             throw new AuthenticationException("未找到用户或用户已被禁用");

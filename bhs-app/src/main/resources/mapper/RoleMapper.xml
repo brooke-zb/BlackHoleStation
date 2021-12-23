@@ -21,17 +21,21 @@
     </insert>
 
     <delete id="delete">
-        delete from bhs_role
+        delete
+        from bhs_role
         where rid = #{rid}
     </delete>
 
     <delete id="deletePermission">
-        delete from bhs_permission
-        where rid = #{rid} and permission = #{permission}
+        delete
+        from bhs_permission
+        where rid = #{rid}
+          and permission = #{permission}
     </delete>
 
     <delete id="clearPermission">
-        delete from bhs_permission
+        delete
+        from bhs_permission
         where rid = #{rid}
     </delete>
 

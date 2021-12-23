@@ -39,4 +39,6 @@ public interface UserService {
      * @return 是否移除成功
      */
     boolean removeAuthToken(String token);
+
+    boolean update(User user);
 }

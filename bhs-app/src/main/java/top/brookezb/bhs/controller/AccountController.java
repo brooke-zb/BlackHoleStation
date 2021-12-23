@@ -2,6 +2,7 @@ package top.brookezb.bhs.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import top.brookezb.bhs.annotation.RequireAuth;
 import top.brookezb.bhs.constant.AppConstants;
 import top.brookezb.bhs.entity.LoginBody;
 import top.brookezb.bhs.entity.R;
@@ -63,6 +64,7 @@ public class AccountController {
      *
      * @return 登出结果
      */
+    @RequireAuth
     @DeleteMapping("/token")
     public R<?> logout(HttpSession session, HttpServletResponse response, @CookieValue(value = AppConstants.AUTH_TOKEN_HEADER, required = false) String authToken) {
         session.removeAttribute(AppConstants.SESSION_USER_KEY);
@@ -82,18 +84,34 @@ public class AccountController {
 
     /**
      * 获取账号的用户信息
+     *
      * @param uid 用户id
      * @return 用户信息
      */
-    @GetMapping("/user")
+    @RequireAuth
+    @GetMapping("")
     public R<?> getUserInfo(@SessionAttribute(value = AppConstants.SESSION_USER_KEY, required = false) Long uid) {
-        if (uid == null) {
-            throw new AuthenticationException("请登录后访问");
-        }
         User user = userService.selectById(uid);
         if (user == null || !user.isEnabled()) {
             throw new AuthenticationException("没有找到该账号或账号已被禁用");
         }
         return R.success(user);
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param uid  用户id
+     * @param user 用户信息
+     * @return 更新结果
+     */
+    @RequireAuth
+    @PutMapping("")
+    public R<?> updateUserInfo(@SessionAttribute(value = AppConstants.SESSION_USER_KEY, required = false) Long uid, @RequestBody User user) {
+        user.setUid(uid);
+        if (userService.update(user)) {
+            return R.success(null, "信息更新成功");
+        }
+        return R.fail("信息没有变化");
     }
 }

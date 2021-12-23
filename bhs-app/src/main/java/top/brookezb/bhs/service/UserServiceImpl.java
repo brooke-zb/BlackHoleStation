@@ -66,4 +66,9 @@ public class UserServiceImpl implements UserService {
     public boolean removeAuthToken(String token) {
         return redisUtils.delete(AppConstants.REDIS_USER_TOKEN + token);
     }
+
+    @Override
+    public boolean update(User user) {
+        return userMapper.update(user) > 0;
+    }
 }
