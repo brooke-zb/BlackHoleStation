@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -76,6 +77,7 @@ public class UserServiceImpl implements UserService {
         return redisUtils.delete(AppConstants.REDIS_USER_TOKEN + token);
     }
 
+    @CacheEvict(key = "'user:' + #user.uid")
     @Override
     public boolean update(User user) {
         return userMapper.update(user) > 0;

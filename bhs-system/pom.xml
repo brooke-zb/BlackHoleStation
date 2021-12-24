@@ -32,6 +32,7 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- PageHelper -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>

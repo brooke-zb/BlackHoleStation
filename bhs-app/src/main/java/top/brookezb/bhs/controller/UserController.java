@@ -1,18 +1,13 @@
 package top.brookezb.bhs.controller;
 
-import com.github.pagehelper.PageHelper;
 import lombok.AllArgsConstructor;
-import org.hibernate.validator.constraints.Range;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.brookezb.bhs.entity.R;
-import top.brookezb.bhs.model.Article;
 import top.brookezb.bhs.service.UserService;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 
 /**
  * @author brooke_zb
@@ -26,16 +21,24 @@ public class UserController {
 
     /**
      * 分页查询用户列表
+     *
      * @param page 当前页
      * @param size 每页大小
+     * @param username 用户名
+     * @param enabled 是否启用
      * @return 查询结果
      */
     @GetMapping("")
     public R<?> getUserList(
             @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") Integer page,
-            @RequestParam(defaultValue = "10") @Range(min = 10, max = 50, message = "分页大小只能在10至50之间") Integer size,
+            @RequestParam(defaultValue = "10") @Pattern(regexp = "^[12345]0$", message = "分页大小只能为10的倍数，最大不超过50") String size,
             @RequestParam(required = false) String username,
             @RequestParam(required = false) Boolean enabled) {
-        return R.success(userService.selectAll(page, size, username, enabled));
+        return R.success(userService.selectAll(page, Integer.parseInt(size), username, enabled));
+    }
+
+    @GetMapping("/{id:\\d+}")
+    public R<?> getUser(@PathVariable Long id) {
+        return R.success(userService.selectById(id));
     }
 }
