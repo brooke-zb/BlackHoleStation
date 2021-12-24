@@ -26,6 +26,11 @@ public class Article {
     private Category category;
 
     /**
+     * 文章类型（草稿，文章）
+     */
+    private Type type;
+
+    /**
      * 标题
      */
     private String title;
@@ -71,4 +76,27 @@ public class Article {
      * 文章状态
      */
     private Boolean enabled;
+
+    /**
+     * 浏览量
+     */
+    private Integer views;
+
+    /**
+     * 文章类型
+     */
+    public enum Type {
+        DRAFT("draft"),
+        ARTICLE("article");
+
+        private String value;
+
+        Type(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
 }

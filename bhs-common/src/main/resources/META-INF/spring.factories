@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  top.brookezb.bhs.autoconfigure.BlackHoleStationAutoConfiguration
+  top.brookezb.bhs.config.BlackHoleStationAutoConfiguration

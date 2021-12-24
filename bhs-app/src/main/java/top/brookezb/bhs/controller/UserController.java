@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.brookezb.bhs.entity.R;
+import top.brookezb.bhs.model.Article;
 import top.brookezb.bhs.service.UserService;
 
 import javax.validation.constraints.Min;
@@ -32,10 +33,9 @@ public class UserController {
     @GetMapping("")
     public R<?> getUserList(
             @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") Integer page,
-            @RequestParam(defaultValue = "10") @Range(min = 10, max = 50, message = "分页大小只能在10至50之间") Integer size) {
-        return R.success(
-                PageHelper.startPage(page, size)
-                        .doSelectPageInfo(() -> userService.selectAll())
-        );
+            @RequestParam(defaultValue = "10") @Range(min = 10, max = 50, message = "分页大小只能在10至50之间") Integer size,
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) Boolean enabled) {
+        return R.success(userService.selectAll(page, size, username, enabled));
     }
 }

@@ -1,10 +1,9 @@
-package top.brookezb.bhs.autoconfigure;
+package top.brookezb.bhs.config;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import top.brookezb.bhs.aspect.AuthenticationAspect;
-import top.brookezb.bhs.config.WebMvcConfig;
 import top.brookezb.bhs.handler.GlobalExceptionHandler;
 import top.brookezb.bhs.proerties.CsrfPathProperties;
 import top.brookezb.bhs.proerties.OssProperties;

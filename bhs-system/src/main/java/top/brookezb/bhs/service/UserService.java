@@ -1,5 +1,6 @@
 package top.brookezb.bhs.service;
 
+import com.github.pagehelper.PageInfo;
 import org.springframework.lang.NonNull;
 import top.brookezb.bhs.model.User;
 
@@ -31,7 +32,7 @@ public interface UserService {
      * 获取用户列表
      * @return 用户列表
      */
-    List<User> selectAll();
+    PageInfo<List<User>> selectAll(int page, int size, String username, Boolean enabled);
 
     /**
      * 生成免登录token

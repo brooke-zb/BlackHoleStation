@@ -1,5 +1,7 @@
 package top.brookezb.bhs.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -56,8 +58,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> selectAll() {
-        return userMapper.selectAll();
+    public PageInfo<List<User>> selectAll(int page, int size, String username, Boolean enabled) {
+        return PageHelper.startPage(page, size)
+                .doSelectPageInfo(() -> userMapper.selectAll(username, enabled));
     }
 
     @Override

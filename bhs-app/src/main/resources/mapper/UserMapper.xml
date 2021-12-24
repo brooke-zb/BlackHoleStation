@@ -21,12 +21,16 @@
 
     <update id="update">
         update bhs_user
-        set rid = #{role.rid}, name = #{name}, mail = #{mail}, link = #{link}
+        set rid  = #{role.rid},
+            name = #{name},
+            mail = #{mail},
+            link = #{link}
         where uid = #{uid}
     </update>
 
     <delete id="delete">
-        delete from bhs_user
+        delete
+        from bhs_user
         where uid = #{uid}
     </delete>
 
@@ -39,6 +43,14 @@
     <select id="selectAll" resultMap="userMap">
         select uid, name, password, mail, link, rid, enabled
         from bhs_user
+        <where>
+            <if test="username != null">
+                and name like concat('%', #{username}, '%')
+            </if>
+            <if test="enabled != null">
+                and enabled = #{enabled}
+            </if>
+        </where>
     </select>
 
     <select id="selectByUsername" resultMap="userMap">

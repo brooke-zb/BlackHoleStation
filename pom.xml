@@ -23,7 +23,8 @@
         <spring-boot.version>2.6.1</spring-boot.version>
         <spring.version>5.6.0</spring.version>
         <mysql.cj.version>8.0.25</mysql.cj.version>
-        <pagehelper.version>1.4.1</pagehelper.version>
+        <pagehelper.version>5.3.0</pagehelper.version>
+        <spring.pagehelper.version>1.4.1</spring.pagehelper.version>
         <mybatis.version>2.2.0</mybatis.version>
         <aliyun.oss.version>3.13.2</aliyun.oss.version>
         <servlet.version>4.0.1</servlet.version>
@@ -64,6 +65,12 @@
             <dependency>
                 <groupId>com.github.pagehelper</groupId>
                 <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${spring.pagehelper.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper</artifactId>
                 <version>${pagehelper.version}</version>
             </dependency>
 
