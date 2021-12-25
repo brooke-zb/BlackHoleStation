@@ -13,4 +13,6 @@ public class AppConstants {
     public static final String AUTH_TOKEN_HEADER = "Authorization";
 
     public static final String SESSION_USER_KEY = "uid";
+
+    public static final String PAGE_RANGE = "^[12345]0$";
 }

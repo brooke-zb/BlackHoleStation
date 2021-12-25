@@ -3,6 +3,7 @@ package top.brookezb.bhs.controller;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import top.brookezb.bhs.constant.AppConstants;
 import top.brookezb.bhs.entity.R;
 import top.brookezb.bhs.service.UserService;
 
@@ -31,7 +32,7 @@ public class UserController {
     @GetMapping("")
     public R<?> getUserList(
             @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") Integer page,
-            @RequestParam(defaultValue = "10") @Pattern(regexp = "^[12345]0$", message = "分页大小只能为10的倍数，最大不超过50") String size,
+            @RequestParam(defaultValue = "10") @Pattern(regexp = AppConstants.PAGE_RANGE, message = "分页大小只能为10的倍数，最大不超过50") String size,
             @RequestParam(required = false) String username,
             @RequestParam(required = false) Boolean enabled) {
         return R.success(userService.selectAll(page, Integer.parseInt(size), username, enabled));
