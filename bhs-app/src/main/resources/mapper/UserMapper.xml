@@ -35,13 +35,13 @@
     </delete>
 
     <select id="selectById" resultMap="userMap">
-        select uid, name, password, mail, link, rid, enabled
+        select *
         from bhs_user
         where uid = #{uid}
     </select>
 
     <select id="selectAll" resultMap="userMap">
-        select uid, name, password, mail, link, rid, enabled
+        select *
         from bhs_user
         <where>
             <if test="username != null">
@@ -54,7 +54,7 @@
     </select>
 
     <select id="selectByUsername" resultMap="userMap">
-        select uid, name, password, mail, link, rid, enabled
+        select *
         from bhs_user
         where name = #{name}
     </select>

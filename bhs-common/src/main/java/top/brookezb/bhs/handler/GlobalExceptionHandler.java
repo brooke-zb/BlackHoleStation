@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import top.brookezb.bhs.entity.R;
 import top.brookezb.bhs.exception.AuthenticationException;
 import top.brookezb.bhs.exception.ForbiddenException;
+import top.brookezb.bhs.exception.InvalidException;
+import top.brookezb.bhs.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
 
@@ -45,5 +47,35 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public R<String> ConstraintViolationException(Exception ex) {
         return R.fail(ex.getMessage().substring(ex.getMessage().indexOf(": ") + 2));
+    }
+
+    /**
+     * 返回400
+     * 处理参数校验异常
+     */
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public R<String> NotFoundException(Exception ex) {
+        return R.fail(ex.getMessage());
+    }
+
+    /**
+     * 返回400
+     * 处理失败异常
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidException.class)
+    public R<String> InvalidException(Exception ex) {
+        return R.fail(ex.getMessage());
+    }
+
+    /**
+     * 返回500
+     * 处理其他异常
+     */
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(RuntimeException.class)
+    public R<String> RuntimeException() {
+        return R.fail("操作出现异常，执行失败");
     }
 }

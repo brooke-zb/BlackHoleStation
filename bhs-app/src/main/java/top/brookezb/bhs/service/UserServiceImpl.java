@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Cacheable(key = "'user:' + #uid")
+    @Cacheable(key = "#uid")
     @Override
     public User selectById(Long uid) {
         return userMapper.selectById(uid);
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         return redisUtils.delete(AppConstants.REDIS_USER_TOKEN + token);
     }
 
-    @CacheEvict(key = "'user:' + #user.uid")
+    @CacheEvict(key = "#user.uid")
     @Override
     public boolean update(User user) {
         return userMapper.update(user) > 0;

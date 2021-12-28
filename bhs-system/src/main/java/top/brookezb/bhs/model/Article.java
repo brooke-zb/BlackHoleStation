@@ -1,9 +1,12 @@
 package top.brookezb.bhs.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 /**
  * 文章表
@@ -29,6 +32,11 @@ public class Article {
      * 文章类型（草稿，文章）
      */
     private Type type;
+
+    /**
+     * 文章标签
+     */
+    private List<String> tags;
 
     /**
      * 标题
@@ -85,18 +93,12 @@ public class Article {
     /**
      * 文章类型
      */
+    @Getter
+    @AllArgsConstructor
     public enum Type {
         DRAFT("draft"),
         ARTICLE("article");
 
         private String value;
-
-        Type(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
     }
 }

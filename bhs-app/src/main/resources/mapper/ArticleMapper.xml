@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.brookezb.bhs.mapper.ArticleMapper">
+    <resultMap id="articleMap" type="top.brookezb.bhs.model.Article">
+        <id property="aid" column="aid"/>
+        <result property="uid" column="uid"/>
+        <result property="type" column="type"/>
+        <result property="title" column="title"/>
+        <result property="description" column="description"/>
+        <result property="picture" column="picture"/>
+        <result property="content" column="content"/>
+        <result property="commentabled" column="commentabled"/>
+        <result property="appreciatabled" column="appreciatabled"/>
+        <result property="created" column="created"/>
+        <result property="modified" column="modified"/>
+        <result property="enabled" column="enabled"/>
+        <result property="views" column="views"/>
+        <association property="category" column="cid" select=""/><!-- TODO 完善分类查询 -->
+        <collection property="tags" column="aid" select="selectTags"/>
+    </resultMap>
+
+    <insert id="insert">
+        insert into bhs_article(aid, uid, cid, type, title, description, picture, content, commentabled, appreciatabled)
+        values (#{aid}, #{uid}, #{category.cid}, #{type}, #{title}, #{description}, #{picture}, #{content}, #{commentabled}, #{appreciatabled})
+    </insert>
+
+    <select id="selectById" resultType="top.brookezb.bhs.model.Article">
+        select *
+        from bhs_article
+        <where>
+            <if test="enabled == true">
+                and enabled = 1
+            </if>
+            <if test="compareTime == true">
+                and created &lt; CURRENT_TIMESTAMP
+            </if>
+            and aid = #{id}
+        </where>
+    </select>
+
+    <select id="selectTags" resultType="java.lang.String">
+        select bt.name
+        from bhs_tag_relation
+                 inner join bhs_tag bt on bhs_tag_relation.tid = bt.tid
+        where aid = #{id}
+    </select>
+
+    <select id="selectAll" resultType="top.brookezb.bhs.model.Article">
+        select *
+        from bhs_article
+        <where>
+            <if test="title != null">
+                and title like concat('%', #{title}, '%')
+            </if>
+            <if test="enabled != null">
+                and enabled = #{enabled}
+            </if>
+            and created &lt; CURRENT_TIMESTAMP
+        </where>
+    </select>
+</mapper>

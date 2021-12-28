@@ -1,6 +1,8 @@
 package top.brookezb.bhs.constant;
 
 /**
+ * 常量储存类
+ *
  * @author brooke_zb
  */
 public class AppConstants {
