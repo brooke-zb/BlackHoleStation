@@ -6,7 +6,6 @@
     <resultMap id="articleMap" type="top.brookezb.bhs.model.Article">
         <id property="aid" column="aid"/>
         <result property="uid" column="uid"/>
-        <result property="type" column="type"/>
         <result property="title" column="title"/>
         <result property="description" column="description"/>
         <result property="picture" column="picture"/>
@@ -15,25 +14,45 @@
         <result property="appreciatabled" column="appreciatabled"/>
         <result property="created" column="created"/>
         <result property="modified" column="modified"/>
-        <result property="enabled" column="enabled"/>
+        <result property="published" column="published"/>
         <result property="views" column="views"/>
         <association property="category" column="cid" select=""/><!-- TODO 完善分类查询 -->
         <collection property="tags" column="aid" select="selectTags"/>
     </resultMap>
 
     <insert id="insert">
-        insert into bhs_article(aid, uid, cid, type, title, description, picture, content, commentabled, appreciatabled)
-        values (#{aid}, #{uid}, #{category.cid}, #{type}, #{title}, #{description}, #{picture}, #{content}, #{commentabled}, #{appreciatabled})
+        insert into bhs_article(aid, uid, cid, title, description, picture, content, commentabled, appreciatabled,
+                                published)
+        values (#{aid}, #{uid}, #{category.cid}, #{title}, #{description}, #{picture}, #{content},
+                #{commentabled}, #{appreciatabled}, #{published})
     </insert>
+
+    <update id="update">
+        update bhs_article
+        set cid            = #{category.cid},
+            title          = #{title},
+            description    = #{description},
+            picture        = #{picture},
+            content        = #{content},
+            commentabled   = #{commentabled},
+            appreciatabled = #{appreciatabled}
+        where aid = #{aid}
+    </update>
+
+    <delete id="delete">
+        delete
+        from bhs_article
+        where aid = #{id}
+    </delete>
 
     <select id="selectById" resultType="top.brookezb.bhs.model.Article">
         select *
         from bhs_article
         <where>
-            <if test="enabled == true">
-                and enabled = 1
+            <if test="published == true">
+                and published = 1
             </if>
-            <if test="compareTime == true">
+            <if test="chooseDelayed == false">
                 and created &lt; CURRENT_TIMESTAMP
             </if>
             and aid = #{id}
@@ -54,8 +73,8 @@
             <if test="title != null">
                 and title like concat('%', #{title}, '%')
             </if>
-            <if test="enabled != null">
-                and enabled = #{enabled}
+            <if test="published != null">
+                and published = #{published}
             </if>
             and created &lt; CURRENT_TIMESTAMP
         </where>

@@ -38,22 +38,25 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public boolean insert(Article article) {
-        if (articleMapper.insert(article) < 0) {
+    public void insert(Article article) {
+        if (articleMapper.insert(article) < 1) {
             throw new InvalidException("文章插入失败");
         }
-        return true;
     }
 
     @CacheEvict(key = "#article.aid")
     @Override
-    public boolean update(Article article) {
-        return false;
+    public void update(Article article) {
+        if (articleMapper.update(article) < 1) {
+            throw new InvalidException("文章更新失败");
+        }
     }
 
     @CacheEvict(key = "#id")
     @Override
-    public boolean delete(Long id) {
-        return false;
+    public void delete(Long id) {
+        if (articleMapper.delete(id) < 1) {
+            throw new InvalidException("文章删除失败");
+        }
     }
 }

@@ -4,16 +4,16 @@ import lombok.AllArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
-import top.brookezb.bhs.annotation.PermitAll;
-import top.brookezb.bhs.annotation.RequireAuth;
-import top.brookezb.bhs.annotation.RequirePermission;
+import top.brookezb.bhs.annotation.*;
 import top.brookezb.bhs.constant.AppConstants;
+import top.brookezb.bhs.constant.PermissionConstants;
+import top.brookezb.bhs.model.Article;
 import top.brookezb.bhs.model.User;
 import top.brookezb.bhs.exception.AuthenticationException;
 import top.brookezb.bhs.exception.ForbiddenException;
+import top.brookezb.bhs.service.ArticleService;
 import top.brookezb.bhs.service.UserService;
 import top.brookezb.bhs.utils.ServletUtils;
 
@@ -21,7 +21,7 @@ import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 
 /**
- * 鉴权切面类，对 {@code RequireAuth} 和 {@code RequirePermission} 注解进行处理
+ * 鉴权切面处理类，对鉴权类注解进行处理
  *
  * @author brooke_zb
  * @see RequireAuth
@@ -33,14 +33,17 @@ import java.lang.reflect.Method;
 @AllArgsConstructor
 public class AuthenticationAspect {
     private UserService userService;
+    private ArticleService articleService;
 
     @Around("""
             @annotation(top.brookezb.bhs.annotation.RequirePermission) ||
             @annotation(top.brookezb.bhs.annotation.RequireAuth) ||
             @annotation(top.brookezb.bhs.annotation.PermitAll) ||
+            @annotation(top.brookezb.bhs.annotation.RequireAuthor) ||
             @within(top.brookezb.bhs.annotation.RequirePermission) ||
             @within(top.brookezb.bhs.annotation.RequireAuth) ||
-            @within(top.brookezb.bhs.annotation.PermitAll)
+            @within(top.brookezb.bhs.annotation.PermitAll) ||
+            @within(top.brookezb.bhs.annotation.RequireAuthor)
             """
     )
     public Object aroundRequirePermission(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -49,8 +52,10 @@ public class AuthenticationAspect {
         Class<?> clazz = method.getDeclaringClass();
 
         // 优先获取方法上的注解信息
+        // 处理作者检查
+        boolean requireSuperuser = requireAuthor(method.getAnnotation(RequireAuthor.class), joinPoint);
         // 处理权限鉴定
-        if (requirePermission(method.getAnnotation(RequirePermission.class))) {
+        if (requirePermission(method.getAnnotation(RequirePermission.class), requireSuperuser)) {
             return joinPoint.proceed();
         }
         // 处理登录鉴定
@@ -63,14 +68,16 @@ public class AuthenticationAspect {
         }
 
         // 方法上获取不到，获取类上的注解信息
+        // 处理作者检查
+        if (!requireSuperuser) {
+            requireSuperuser = requireAuthor(clazz.getAnnotation(RequireAuthor.class), joinPoint);
+        }
         // 处理权限鉴定
-        if (requirePermission(clazz.getAnnotation(RequirePermission.class))) {
+        if (requirePermission(clazz.getAnnotation(RequirePermission.class), requireSuperuser)) {
             return joinPoint.proceed();
         }
         // 处理登录鉴定
-        if (requireAuth(clazz.getAnnotation(RequireAuth.class))) {
-            return joinPoint.proceed();
-        }
+        requireAuth(clazz.getAnnotation(RequireAuth.class));
 
         return joinPoint.proceed();
     }
@@ -81,7 +88,7 @@ public class AuthenticationAspect {
      * @param anno 注解
      * @return true: 通过鉴定； false: 没有该注解
      */
-    public boolean requirePermission(RequirePermission anno) {
+    public boolean requirePermission(RequirePermission anno, boolean requireSuperuser) {
         if (anno == null) {
             return false;
         }
@@ -99,6 +106,9 @@ public class AuthenticationAspect {
         User currentUser = userService.selectById(uid);
         if (currentUser == null || !currentUser.isEnabled()) {
             throw new AuthenticationException("未找到用户或用户已被禁用");
+        }
+        if (requireSuperuser && !currentUser.getRole().getPermissions().contains(PermissionConstants.SUPERUSER)) {
+            throw new ForbiddenException("您没有权限进行此操作");
         }
 
         // 判断权限
@@ -135,5 +145,30 @@ public class AuthenticationAspect {
 
     public boolean permitAll(PermitAll anno) {
         return anno != null;
+    }
+
+    public boolean requireAuthor(RequireAuthor anno, ProceedingJoinPoint joinPoint) {
+        if (anno == null) {
+            return false;
+        }
+
+        // 获取session中的权限信息
+        HttpSession session = ServletUtils.getSession();
+        Long uid = (Long) session.getAttribute(AppConstants.SESSION_USER_KEY);
+        if (uid == null) {
+            throw new AuthenticationException("请登录后再操作");
+        }
+
+        // 获取文章信息
+        for (Object arg : joinPoint.getArgs()) {
+            if (arg instanceof Article article) {
+                // 如果不是文章作者则需要管理员权限
+                if (!articleService.selectById(article.getAid(), false, false).getUid().equals(uid)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

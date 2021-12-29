@@ -45,9 +45,8 @@ public interface UserService {
     /**
      * 移除用户免登录token
      * @param token token
-     * @return 是否移除成功
      */
-    boolean removeAuthToken(String token);
+    void removeAuthToken(String token);
 
     boolean update(User user);
 }

@@ -29,11 +29,6 @@ public class Article {
     private Category category;
 
     /**
-     * 文章类型（草稿，文章）
-     */
-    private Type type;
-
-    /**
      * 文章标签
      */
     private List<String> tags;
@@ -81,24 +76,12 @@ public class Article {
     private LocalDateTime modified;
 
     /**
-     * 文章状态
+     * 草稿状态
      */
-    private Boolean enabled;
+    private Boolean published;
 
     /**
      * 浏览量
      */
     private Integer views;
-
-    /**
-     * 文章类型
-     */
-    @Getter
-    @AllArgsConstructor
-    public enum Type {
-        DRAFT("draft"),
-        ARTICLE("article");
-
-        private String value;
-    }
 }

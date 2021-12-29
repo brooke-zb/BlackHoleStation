@@ -112,6 +112,6 @@ public class AccountController {
         if (userService.update(user)) {
             return R.success(null, "信息更新成功");
         }
-        return R.fail("信息没有变化");
+        return R.success(null, "信息没有变化");
     }
 }

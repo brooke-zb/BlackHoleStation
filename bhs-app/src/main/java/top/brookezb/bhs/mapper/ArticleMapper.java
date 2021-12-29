@@ -11,11 +11,15 @@ import java.util.List;
  */
 @Mapper
 public interface ArticleMapper {
-    Article selectById(@Param("id") Long id, @Param("compareTime") boolean compareTime, @Param("enabled") boolean enabled);
+    Article selectById(@Param("id") Long id, @Param("chooseDelayed") boolean chooseDelayed, @Param("published") boolean published);
 
-    List<Article> selectAll(@Param("title") String title, @Param("enabled") Boolean enabled);
+    List<Article> selectAll(@Param("title") String title, @Param("published") Boolean published);
 
     List<String> selectTags(Long id);
 
     int insert(Article article);
+
+    int update(Article article);
+
+    int delete(Long id);
 }

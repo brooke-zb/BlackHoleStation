@@ -27,4 +27,11 @@ public class ArticleController {
         articleService.insert(article);
         return R.success(null, "文章发布成功");
     }
+
+    @PutMapping("")
+    public R<?> update(@RequestBody Article article, @SessionAttribute(AppConstants.SESSION_USER_KEY) Long uid) {
+        article.setUid(uid);
+        articleService.update(article);
+        return R.success(null, "文章更新成功");
+    }
 }

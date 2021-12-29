@@ -73,8 +73,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean removeAuthToken(String token) {
-        return redisUtils.delete(AppConstants.REDIS_USER_TOKEN + token);
+    public void removeAuthToken(String token) {
+        redisUtils.delete(AppConstants.REDIS_USER_TOKEN + token);
     }
 
     @CacheEvict(key = "#user.uid")

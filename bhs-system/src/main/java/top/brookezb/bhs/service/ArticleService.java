@@ -15,35 +15,39 @@ public interface ArticleService {
      * 根据文章id获取文章
      *
      * @param id 文章id
+     * @param chooseDelayed 是否选择未来发布的文章
+     * @param published 是否只获取已发布的文章
      * @return 文章
      */
-    Article selectById(Long id, boolean compareTime, boolean enabled);
+    Article selectById(Long id, boolean chooseDelayed, boolean published);
 
     /**
      * 获取文章列表
      *
+     * @param page 页码
+     * @param size 每页数量
+     * @param title 搜索标题
+     * @param published 是否只获取已发布的文章
      * @return 文章列表
      */
-    PageInfo<List<Article>> getArticles(int page, int size, String title, boolean enabled);
+    PageInfo<List<Article>> getArticles(int page, int size, String title, boolean published);
 
     /**
      * 新增文章
      *
      * @param article 文章
      */
-    boolean insert(Article article);
+    void insert(Article article);
 
     /**
      * 更新文章
      * @param article 文章
-     * @return 更新结果
      */
-    boolean update(Article article);
+    void update(Article article);
 
     /**
      * 删除文章
      * @param id 文章id
-     * @return 删除结果
      */
-    boolean delete(Long id);
+    void delete(Long id);
 }
