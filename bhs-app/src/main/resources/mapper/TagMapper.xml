@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.brookezb.bhs.mapper.TagMapper">
+    <insert id="insert">
+        insert ignore into bhs_tag(name)
+        values (#{name})
+    </insert>
+
+    <insert id="insertList">
+        insert ignore into bhs_tag(name)
+        values
+        <foreach collection="list" item="tag" separator=",">
+            (#{tag.name})
+        </foreach>
+    </insert>
+
+    <update id="update">
+        update bhs_tag
+        set name = #{name}
+        where tid = #{tid}
+    </update>
+
+    <delete id="delete">
+        delete
+        from bhs_tag
+        where tid = #{tid}
+    </delete>
+
+    <delete id="deleteList">
+        delete
+        from bhs_tag
+        where tid in
+        <foreach collection="list" item="tid" open="(" close=")" separator=",">
+            #{tid}
+        </foreach>
+    </delete>
+
+    <select id="selectById" resultType="top.brookezb.bhs.model.Tag">
+        select *
+        from bhs_tag
+        where tid = #{tid}
+    </select>
+
+    <select id="selectAll" resultType="top.brookezb.bhs.model.Tag">
+        select *
+        from bhs_tag
+    </select>
+</mapper>

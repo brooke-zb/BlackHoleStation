@@ -78,10 +78,19 @@ public class Article {
     /**
      * 草稿状态
      */
-    private Boolean published;
+    private Status status;
+
+    /**
+     * 文章密码
+     */
+    private String password;
 
     /**
      * 浏览量
      */
     private Integer views;
+
+    public enum Status {
+        PUBLISHED, DRAFT, INVISIBLE,
+    }
 }

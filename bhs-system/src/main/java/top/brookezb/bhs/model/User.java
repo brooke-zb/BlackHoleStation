@@ -19,7 +19,7 @@ public class User {
     private Role role;
 
     /**
-     * 角色名
+     * 用户名
      */
     private String name;
 

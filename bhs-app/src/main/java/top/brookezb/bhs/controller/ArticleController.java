@@ -11,7 +11,7 @@ import top.brookezb.bhs.service.ArticleService;
  * @author brooke_zb
  */
 @RestController
-@RequestMapping("/articles")
+@RequestMapping("/article")
 @AllArgsConstructor
 public class ArticleController {
     private ArticleService articleService;

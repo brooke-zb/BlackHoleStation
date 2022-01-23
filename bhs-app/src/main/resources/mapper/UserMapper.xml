@@ -21,8 +21,7 @@
 
     <update id="update">
         update bhs_user
-        set rid  = #{role.rid},
-            name = #{name},
+        set name = #{name},
             mail = #{mail},
             link = #{link}
         where uid = #{uid}

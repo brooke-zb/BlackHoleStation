@@ -15,7 +15,7 @@ import javax.validation.constraints.Pattern;
  */
 @Validated
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 @AllArgsConstructor
 public class UserController {
     private UserService userService;
