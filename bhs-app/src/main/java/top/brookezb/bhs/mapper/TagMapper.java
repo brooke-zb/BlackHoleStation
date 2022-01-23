@@ -14,13 +14,13 @@ public interface TagMapper {
 
     List<Tag> selectAll();
 
-    Integer insert(Tag tag);
+    int insert(Tag tag);
 
-    Integer insertList(List<Tag> tags);
+    int insertList(List<Tag> tags);
 
-    Integer update(Tag tag);
+    int update(Tag tag);
 
-    Integer delete(Long tid);
+    int delete(Long tid);
 
-    Integer deleteList(List<Long> tids);
+    int deleteList(List<Long> tids);
 }

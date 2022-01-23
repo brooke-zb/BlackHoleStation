@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.brookezb.bhs.mapper.CategoryMapper">
+    <insert id="insert">
+        insert ignore into bhs_category(name)
+        values (#{name})
+    </insert>
+
+    <update id="update">
+        update bhs_category
+        set name = #{name}
+        where cid = #{cid}
+    </update>
+
+    <delete id="delete">
+        delete
+        from bhs_category
+        where cid = #{cid}
+    </delete>
+
+    <delete id="deleteList">
+        delete from bhs_category
+        where cid in
+        <foreach collection="list" item="tid" open="(" close=")" separator=",">
+            #{cid}
+        </foreach>
+    </delete>
+
+    <select id="selectById" resultType="top.brookezb.bhs.model.Category">
+        select *
+        from bhs_category
+        where cid = #{cid}
+    </select>
+
+    <select id="selectAll" resultType="top.brookezb.bhs.model.Category">
+        select *
+        from bhs_category
+    </select>
+</mapper>
