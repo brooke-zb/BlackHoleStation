@@ -14,17 +14,27 @@
         <result property="appreciatabled" column="appreciatabled"/>
         <result property="created" column="created"/>
         <result property="modified" column="modified"/>
-        <result property="published" column="published"/>
+        <result property="status" column="status"/>
         <result property="views" column="views"/>
-        <association property="category" column="cid" select=""/><!-- TODO 完善分类查询 -->
-        <collection property="tags" column="aid" select="selectTags"/>
+        <association property="category">
+            <id property="cid" column="cid"/>
+            <result property="name" column="name"/>
+        </association>
     </resultMap>
 
     <insert id="insert">
         insert into bhs_article(aid, uid, cid, title, description, picture, content, commentabled, appreciatabled,
-                                published)
+                                created, status)
         values (#{aid}, #{uid}, #{category.cid}, #{title}, #{description}, #{picture}, #{content},
-                #{commentabled}, #{appreciatabled}, #{published})
+                #{commentabled}, #{appreciatabled}, #{created}, #{status})
+    </insert>
+
+    <insert id="insertTags">
+        insert into bhs_tag_relation(aid, tid)
+        values
+        <foreach collection="tags" item="tag" separator=",">
+            (#{aid}, #{tag.tid})
+        </foreach>
     </insert>
 
     <update id="update">
@@ -35,48 +45,79 @@
             picture        = #{picture},
             content        = #{content},
             commentabled   = #{commentabled},
-            appreciatabled = #{appreciatabled}
+            appreciatabled = #{appreciatabled},
+            status         = #{status}
         where aid = #{aid}
     </update>
 
     <delete id="delete">
         delete
         from bhs_article
-        where aid = #{id}
+        where aid = #{aid}
     </delete>
 
-    <select id="selectById" resultType="top.brookezb.bhs.model.Article">
-        select *
+    <delete id="deleteList">
+        delete
         from bhs_article
-        <where>
-            <if test="published == true">
-                and published = 1
-            </if>
-            <if test="chooseDelayed == false">
-                and created &lt; CURRENT_TIMESTAMP
-            </if>
-            and aid = #{id}
-        </where>
-    </select>
+        where aid in
+        <foreach collection="aids" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+    </delete>
 
-    <select id="selectTags" resultType="java.lang.String">
-        select bt.name
+    <delete id="deleteTagsNotInList">
+        delete
         from bhs_tag_relation
-                 inner join bhs_tag bt on bhs_tag_relation.tid = bt.tid
-        where aid = #{id}
+        where aid = #{aid}
+        and tid in
+        (select tid from bhs_tag where name not in
+        <foreach collection="tags" item="tag" open="(" close=")" separator=",">
+            #{tag}
+        </foreach>)
+    </delete>
+
+    <select id="selectById" resultMap="articleMap">
+        select ba.*, bc.name
+        from bhs_article ba
+                 left join bhs_category bc on ba.cid = bc.cid
+        where aid = #{aid}
     </select>
 
-    <select id="selectAll" resultType="top.brookezb.bhs.model.Article">
-        select *
-        from bhs_article
-        <where>
-            <if test="title != null">
-                and title like concat('%', #{title}, '%')
-            </if>
-            <if test="published != null">
-                and published = #{published}
-            </if>
-            and created &lt; CURRENT_TIMESTAMP
-        </where>
+    <select id="selectAll" resultMap="articleMap">
+        select ba.*, bc.name
+        from bhs_article ba
+                 left join bhs_category bc on ba.cid = bc.cid
+    </select>
+
+    <select id="selectAllByStatus" resultMap="articleMap">
+        select ba.*, bc.name
+        from bhs_article ba
+                 left join bhs_category bc on ba.cid = bc.cid
+        where status = #{status}
+    </select>
+
+    <select id="selectAllByCategoryId" resultMap="articleMap">
+        select ba.*, bc.name
+        from bhs_article ba
+                 left join bhs_category bc on ba.cid = bc.cid
+        where ba.cid = #{cid}
+    </select>
+
+    <select id="selectAllByUserId" resultMap="articleMap">
+        select ba.*, bc.name
+        from bhs_article ba
+                 left join bhs_category bc on ba.cid = bc.cid
+        where uid = #{uid}
+    </select>
+
+    <select id="selectAllByTagName" resultMap="articleMap">
+        select ba.*, bc.name
+        from bhs_article ba
+                 left join bhs_category bc on ba.cid = bc.cid
+        where aid in
+              (select aid
+               from bhs_tag_relation
+                        inner join bhs_tag bt on bhs_tag_relation.tid = bt.tid
+               where name = #{name})
     </select>
 </mapper>

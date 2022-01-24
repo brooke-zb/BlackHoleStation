@@ -3,6 +3,7 @@ package top.brookezb.bhs.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import top.brookezb.bhs.model.Article;
+import top.brookezb.bhs.model.Tag;
 
 import java.util.List;
 
@@ -11,15 +12,27 @@ import java.util.List;
  */
 @Mapper
 public interface ArticleMapper {
-    Article selectById(@Param("id") Long id, @Param("chooseDelayed") boolean chooseDelayed, @Param("published") boolean published);
+    Article selectById(Long aid);
 
-    List<Article> selectAll(@Param("title") String title, @Param("published") Boolean published);
+    List<Article> selectAll();
 
-    List<String> selectTags(Long id);
+    List<Article> selectAllByStatus(Article.Status status);
+
+    List<Article> selectAllByCategoryId(Long cid);
+
+    List<Article> selectAllByUserId(Long uid);
+
+    List<Article> selectAllByTagName(String name);
 
     int insert(Article article);
 
+    int insertTags(@Param("aid") Long aid, @Param("tags") List<Tag> tags);
+
     int update(Article article);
 
-    int delete(Long id);
+    int delete(Long aid);
+
+    int deleteList(List<Long> aids);
+
+    int deleteTagsNotInList(@Param("aid") Long aid, @Param("tags") List<String> tags);
 }

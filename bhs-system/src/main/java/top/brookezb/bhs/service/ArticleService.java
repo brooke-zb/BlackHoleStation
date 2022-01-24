@@ -15,11 +15,9 @@ public interface ArticleService {
      * 根据文章id获取文章
      *
      * @param id 文章id
-     * @param chooseDelayed 是否选择未来发布的文章
-     * @param published 是否只获取已发布的文章
      * @return 文章
      */
-    Article selectById(Long id, boolean chooseDelayed, boolean published);
+    Article selectById(Long id);
 
     /**
      * 获取文章列表

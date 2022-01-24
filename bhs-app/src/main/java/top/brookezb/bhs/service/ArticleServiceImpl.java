@@ -24,8 +24,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Cacheable(key = "#id")
     @Override
-    public Article selectById(Long id, boolean compareTime, boolean enabled) {
-        Article article = articleMapper.selectById(id, compareTime, enabled);
+    public Article selectById(Long id) {
+        Article article = articleMapper.selectById(id);
         if (article == null) {
             throw new NotFoundException("文章不存在");
         }

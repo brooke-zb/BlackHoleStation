@@ -31,7 +31,7 @@ public class Article {
     /**
      * 文章标签
      */
-    private List<String> tags;
+    private List<Tag> tags;
 
     /**
      * 标题
