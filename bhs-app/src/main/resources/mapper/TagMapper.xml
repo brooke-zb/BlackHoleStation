@@ -56,4 +56,11 @@
             #{name}
         </foreach>
     </select>
+
+    <select id="selectAllByAid" resultType="top.brookezb.bhs.model.Tag">
+        select bt.*
+        from bhs_tag bt
+        inner join bhs_tag_relation btr on bt.tid = btr.tid
+        where btr.aid = #{aid}
+    </select>
 </mapper>
