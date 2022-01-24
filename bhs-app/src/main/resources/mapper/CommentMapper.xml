@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.brookezb.bhs.mapper.CommentMapper">
+    <insert id="insert">
+        insert into bhs_comment(coid, aid, nickname, email, site, ip, content, parent, reply)
+        values (#{coid}, #{aid}, #{nickname}, #{email}, #{site}, #{ip}, #{content}, #{parent}, #{reply})
+    </insert>
+
+    <update id="update">
+        update bhs_comment
+        set nickname = #{nickname},
+            email    = #{email},
+            site     = #{site},
+            content  = #{content}
+        where coid = #{coid}
+    </update>
+
+    <delete id="delete">
+        delete
+        from bhs_comment
+        where coid = #{coid}
+    </delete>
+
+    <delete id="deleteList">
+        delete
+        from bhs_comment
+        where coid in
+        <foreach collection="list" item="coid" separator="," open="(" close=")">
+            #{coid}
+        </foreach>
+    </delete>
+
+    <select id="selectById" resultType="top.brookezb.bhs.model.Comment">
+        select *
+        from bhs_comment
+        where coid = #{coid}
+    </select>
+
+    <select id="selectAll" resultType="top.brookezb.bhs.model.Comment">
+        select *
+        from bhs_comment
+    </select>
+
+    <select id="selectByArticleId" resultType="top.brookezb.bhs.model.Comment">
+        select *
+        from bhs_comment
+        where aid = #{aid}
+    </select>
+
+    <select id="selectByNickname" resultType="top.brookezb.bhs.model.Comment">
+        select *
+        from bhs_comment
+        where nickname = #{name}
+    </select>
+
+    <select id="selectByIp" resultType="top.brookezb.bhs.model.Comment">
+        select *
+        from bhs_comment
+        where ip = #{ip}
+    </select>
+</mapper>

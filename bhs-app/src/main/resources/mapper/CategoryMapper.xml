@@ -21,7 +21,8 @@
     </delete>
 
     <delete id="deleteList">
-        delete from bhs_category
+        delete
+        from bhs_category
         where cid in
         <foreach collection="list" item="tid" open="(" close=")" separator=",">
             #{cid}
@@ -37,5 +38,11 @@
     <select id="selectAll" resultType="top.brookezb.bhs.model.Category">
         select *
         from bhs_category
+    </select>
+
+    <select id="selectByName" resultType="top.brookezb.bhs.model.Category">
+        select *
+        from bhs_category
+        where name = #{name}
     </select>
 </mapper>

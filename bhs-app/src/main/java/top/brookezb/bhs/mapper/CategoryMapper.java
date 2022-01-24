@@ -12,6 +12,8 @@ import java.util.List;
 public interface CategoryMapper {
     Category selectById(Long cid);
 
+    Category selectByName(String name);
+
     List<Category> selectAll();
 
     int insert(Category category);
