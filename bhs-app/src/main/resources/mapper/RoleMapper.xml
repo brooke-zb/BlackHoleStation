@@ -6,8 +6,7 @@
     <resultMap id="roleMap" type="top.brookezb.bhs.model.Role">
         <id property="rid" column="rid"/>
         <result property="name" column="name"/>
-        <collection property="permissions" column="rid"
-                    select="selectPermissions"/>
+        <collection property="permissions" column="permission"/>
     </resultMap>
 
     <insert id="insert">
@@ -15,10 +14,18 @@
         values (#{name})
     </insert>
 
-    <insert id="insertPermission">
-        insert into bhs_permission(rid, permission)
-        values (#{rid}, #{permission})
+    <insert id="insertPermissionList">
+        insert ignore into bhs_role_permission(rid, permission) values
+        <foreach collection="permissions" item="permission" separator=",">
+            (#{rid}, #{permission})
+        </foreach>
     </insert>
+
+    <update id="update">
+        update bhs_role
+        set name = #{name}
+        where rid = #{rid}
+    </update>
 
     <delete id="delete">
         delete
@@ -26,28 +33,35 @@
         where rid = #{rid}
     </delete>
 
-    <delete id="deletePermission">
+    <delete id="deleteList">
         delete
-        from bhs_permission
-        where rid = #{rid}
-          and permission = #{permission}
+        from bhs_role
+        where rid in
+        <foreach collection="rids" item="rid" open="(" close=")" separator=",">
+            #{rid}
+        </foreach>
     </delete>
 
-    <delete id="clearPermission">
+    <delete id="deletePermissionNotInList">
         delete
-        from bhs_permission
+        from bhs_role_permission
         where rid = #{rid}
+          and permission not in
+        <foreach collection="permissions" item="permission" open="(" close=")" separator=",">
+            #{permission}
+        </foreach>
     </delete>
 
     <select id="selectById" resultMap="roleMap">
-        select rid, name
-        from bhs_role
-        where rid = #{rid}
+        select br.rid, br.name, brp.permission
+        from bhs_role br
+                 inner join bhs_role_permission brp on br.rid = brp.rid
+        where br.rid = #{rid}
     </select>
 
-    <select id="selectPermissions" resultType="string">
-        select permission
-        from bhs_permission
-        where rid = #{rid}
+    <select id="selectAll" resultMap="roleMap">
+        select br.rid, br.name, brp.permission
+        from bhs_role br
+                 inner join bhs_role_permission brp on br.rid = brp.rid
     </select>
 </mapper>
