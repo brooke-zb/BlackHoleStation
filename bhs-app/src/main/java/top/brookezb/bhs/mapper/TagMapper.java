@@ -14,6 +14,8 @@ public interface TagMapper {
 
     List<Tag> selectAll();
 
+    List<Tag> selectAllByNameList(List<String> names);
+
     int insert(Tag tag);
 
     int insertList(List<Tag> tags);

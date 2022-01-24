@@ -47,4 +47,13 @@
         select *
         from bhs_tag
     </select>
+    
+    <select id="selectAllByNameList" resultType="top.brookezb.bhs.model.Tag">
+        select *
+        from bhs_tag
+        where name in
+        <foreach collection="names" item="name" open="(" close=")" separator=",">
+            #{name}
+        </foreach>
+    </select>
 </mapper>
