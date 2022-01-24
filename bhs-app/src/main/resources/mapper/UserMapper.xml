@@ -27,11 +27,36 @@
         where uid = #{uid}
     </update>
 
+    <update id="updateStatus">
+        update bhs_user
+        set enabled = #{enabled}
+        where uid = #{uid}
+    </update>
+
+    <update id="updateStatusList">
+        update bhs_user
+        set enabled = #{enabled}
+        where uid in
+        <foreach collection="uids" item="uid" open="(" close=")" separator=",">
+            #{uid}
+        </foreach>
+    </update>
+
     <delete id="delete">
         delete
         from bhs_user
         where uid = #{uid}
     </delete>
+
+    <delete id="deleteList">
+        delete
+        from bhs_user
+        where uid in
+        <foreach collection="uids" item="uid" open="(" close=")" separator=",">
+            #{uid}
+        </foreach>
+    </delete>
+
 
     <select id="selectById" resultMap="userMap">
         select *

@@ -21,5 +21,11 @@ public interface UserMapper {
 
     int update(User user);
 
+    int updateStatus(@Param("uid") Long uid, @Param("enabled") Boolean enabled);
+
+    int updateStatusList(@Param("uids") List<Long> uids, @Param("enabled") Boolean enabled);
+
     int delete(Long uid);
+
+    int deleteList(List<Long> uids);
 }
