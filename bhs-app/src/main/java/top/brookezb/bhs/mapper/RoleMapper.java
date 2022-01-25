@@ -14,9 +14,13 @@ import java.util.Set;
 public interface RoleMapper {
     Role selectById(Long rid);
 
+    Role selectByName(String name);
+
     List<Role> selectAll();
 
     int insert(Role role);
+
+    int insertPermissionList(@Param("rid") Long rid, @Param("permissions") Set<String> permissions);
 
     int update(Role role);
 
@@ -24,7 +28,9 @@ public interface RoleMapper {
 
     int deleteList(List<Long> rids);
 
-    int deletePermissionNotInList(@Param("rid") Long rid, @Param("permissions") List<String> permissions);
+    int deletePermissionsById(Long rid);
 
-    int insertPermissionList(@Param("rid") Long rid, @Param("permissions") List<String> permissions);
+    int deletePermissionsByIdList(List<Long> rids);
+
+    int deletePermissionNotInList(@Param("rid") Long rid, @Param("permissions") Set<String> permissions);
 }

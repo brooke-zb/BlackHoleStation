@@ -10,7 +10,7 @@
     </resultMap>
 
     <insert id="insert">
-        insert into bhs_role(name)
+        insert ignore into bhs_role(name)
         values (#{name})
     </insert>
 
@@ -42,11 +42,26 @@
         </foreach>
     </delete>
 
+    <delete id="deletePermissionsById">
+        delete
+        from bhs_role_permission
+        where rid = #{rid}
+    </delete>
+
+    <delete id="deletePermissionsByIdList">
+        delete
+        from bhs_role_permission
+        where rid in
+        <foreach collection="rids" item="rid" open="(" close=")" separator=",">
+            #{rid}
+        </foreach>
+    </delete>
+
     <delete id="deletePermissionNotInList">
         delete
         from bhs_role_permission
         where rid = #{rid}
-          and permission not in
+        and permission not in
         <foreach collection="permissions" item="permission" open="(" close=")" separator=",">
             #{permission}
         </foreach>
@@ -57,6 +72,12 @@
         from bhs_role br
                  inner join bhs_role_permission brp on br.rid = brp.rid
         where br.rid = #{rid}
+    </select>
+
+    <select id="selectByName" resultMap="roleMap">
+        select *
+        from bhs_role
+        where name = #{name}
     </select>
 
     <select id="selectAll" resultMap="roleMap">
