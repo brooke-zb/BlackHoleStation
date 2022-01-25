@@ -20,8 +20,7 @@ spring:
       spec: maximumSize=10000, expireAfterWrite=300s
     cache-names:
       - article
-      - category
-      - role
+      - comment
       - tag
 
 aliyun:

@@ -12,13 +12,7 @@ public interface TagService {
 
     List<Tag> selectAll();
 
-    List<Tag> selectAllByNameList(List<String> names);
-
-    List<Tag> selectAllByAid(Long aid);
-
     boolean insert(Tag tag);
-
-    boolean insertList(List<Tag> tags);
 
     boolean update(Tag tag);
 

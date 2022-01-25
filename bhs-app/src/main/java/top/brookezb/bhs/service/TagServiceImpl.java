@@ -33,26 +33,9 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<Tag> selectAllByNameList(List<String> names) {
-        return tagMapper.selectAllByNameList(names);
-    }
-
-    @Override
-    @Cacheable(key = "'article_' + #aid")
-    public List<Tag> selectAllByAid(Long aid) {
-        return tagMapper.selectAllByAid(aid);
-    }
-
-    @Override
     @CacheEvict(key = "'all'")
     public boolean insert(Tag tag) {
         return tagMapper.insert(tag) > 0;
-    }
-
-    @Override
-    @CacheEvict(key = "'all'")
-    public boolean insertList(List<Tag> tags) {
-        return tagMapper.insertList(tags) > 0;
     }
 
     @Override
