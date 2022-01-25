@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import top.brookezb.bhs.exception.InvalidException;
 import top.brookezb.bhs.exception.NotFoundException;
@@ -44,7 +45,10 @@ public class ArticleServiceImpl implements ArticleService {
         }
     }
 
-    @CacheEvict(key = "#article.aid")
+    @Caching(evict = {
+            @CacheEvict(key = "#article.aid"),
+            @CacheEvict(cacheNames = "tag", key = "'article_' + #article.aid")
+    })
     @Override
     public void update(Article article) {
         if (articleMapper.update(article) < 1) {

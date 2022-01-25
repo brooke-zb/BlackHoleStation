@@ -3,9 +3,6 @@ package top.brookezb.bhs.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import top.brookezb.bhs.constant.AppConstants;
@@ -22,7 +19,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author brooke_zb
  */
-@CacheConfig(cacheNames = "user")
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -52,7 +48,6 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Cacheable(key = "#uid")
     @Override
     public User selectById(Long uid) {
         return userMapper.selectById(uid);
@@ -77,7 +72,6 @@ public class UserServiceImpl implements UserService {
         redisUtils.delete(AppConstants.REDIS_USER_TOKEN + token);
     }
 
-    @CacheEvict(key = "#user.uid")
     @Override
     public boolean update(User user) {
         return userMapper.update(user) > 0;
