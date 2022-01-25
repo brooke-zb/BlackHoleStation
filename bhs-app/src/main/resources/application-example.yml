@@ -21,7 +21,6 @@ spring:
     cache-names:
       - article
       - comment
-      - tag
 
 aliyun:
   oss:
