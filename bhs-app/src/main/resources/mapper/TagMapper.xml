@@ -43,11 +43,17 @@
         where tid = #{tid}
     </select>
 
+    <select id="selectByName" resultType="top.brookezb.bhs.model.Tag">
+        select *
+        from bhs_tag
+        where name = #{name}
+    </select>
+
     <select id="selectAll" resultType="top.brookezb.bhs.model.Tag">
         select *
         from bhs_tag
     </select>
-    
+
     <select id="selectAllByNameList" resultType="top.brookezb.bhs.model.Tag">
         select *
         from bhs_tag
@@ -60,7 +66,7 @@
     <select id="selectAllByAid" resultType="top.brookezb.bhs.model.Tag">
         select bt.*
         from bhs_tag bt
-        inner join bhs_tag_relation btr on bt.tid = btr.tid
+                 inner join bhs_tag_relation btr on bt.tid = btr.tid
         where btr.aid = #{aid}
     </select>
 </mapper>

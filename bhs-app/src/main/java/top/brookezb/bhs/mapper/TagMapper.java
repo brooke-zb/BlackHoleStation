@@ -12,6 +12,8 @@ import java.util.List;
 public interface TagMapper {
     Tag selectById(Long tid);
 
+    Tag selectByName(String name);
+
     List<Tag> selectAll();
 
     List<Tag> selectAllByNameList(List<String> names);

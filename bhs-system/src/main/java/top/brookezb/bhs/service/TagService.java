@@ -12,11 +12,11 @@ public interface TagService {
 
     List<Tag> selectAll();
 
-    boolean insert(Tag tag);
+    void insert(Tag tag);
 
-    boolean update(Tag tag);
+    void update(Tag tag);
 
-    boolean delete(Long tid);
+    void delete(Long tid);
 
-    boolean deleteList(List<Long> tids);
+    void deleteList(List<Long> tids);
 }
