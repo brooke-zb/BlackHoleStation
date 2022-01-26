@@ -25,7 +25,7 @@ public class DynamicAuthInterceptor implements HandlerInterceptor {
     private UserService userService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
         HttpSession session = request.getSession();
         if (session.getAttribute(AppConstants.SESSION_USER_KEY) == null && request.getCookies() != null) {
             for (var cookie : request.getCookies()) {

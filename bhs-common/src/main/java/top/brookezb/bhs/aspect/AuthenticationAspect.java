@@ -114,6 +114,11 @@ public class AuthenticationAspect {
         }
     }
 
+    /**
+     * 登录鉴定
+     * @param anno 注解
+     * @return true: 通过鉴定； false: 没有该注解
+     */
     public boolean requireAuth(RequireAuth anno) {
         if (anno == null) {
             return false;
@@ -128,6 +133,11 @@ public class AuthenticationAspect {
         return true;
     }
 
+    /**
+     * 放行
+     * @param anno 注解
+     * @return true: 放行； false: 没有该注解
+     */
     public boolean permitAll(PermitAll anno) {
         return anno != null;
     }
