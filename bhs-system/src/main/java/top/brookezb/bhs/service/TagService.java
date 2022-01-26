@@ -18,5 +18,5 @@ public interface TagService {
 
     void delete(Long tid);
 
-    void deleteList(List<Long> tids);
+    int deleteList(List<Long> tids);
 }

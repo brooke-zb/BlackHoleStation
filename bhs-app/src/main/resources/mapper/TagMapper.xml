@@ -28,11 +28,26 @@
         where tid = #{tid}
     </delete>
 
+    <delete id="deleteRelationByTid">
+        delete
+        from bhs_tag_relation
+        where tid = #{tid}
+    </delete>
+
     <delete id="deleteList">
         delete
         from bhs_tag
         where tid in
         <foreach collection="list" item="tid" open="(" close=")" separator=",">
+            #{tid}
+        </foreach>
+    </delete>
+
+    <delete id="deleteRelationByTidList">
+        delete
+        from bhs_tag_relation
+        where tid in
+        <foreach collection="tids" item="tid" open="(" close=")" separator=",">
             #{tid}
         </foreach>
     </delete>

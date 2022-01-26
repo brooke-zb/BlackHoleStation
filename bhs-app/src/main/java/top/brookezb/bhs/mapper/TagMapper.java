@@ -28,5 +28,9 @@ public interface TagMapper {
 
     int delete(Long tid);
 
+    int deleteRelationByTid(Long tid);
+
     int deleteList(List<Long> tids);
+
+    int deleteRelationByTidList(List<Long> tids);
 }

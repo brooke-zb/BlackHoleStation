@@ -57,11 +57,17 @@ public class TagServiceImpl implements TagService {
     @Override
     @Transactional
     public void delete(Long tid) {
-        tagMapper.delete(tid);
+        if (tagMapper.selectById(tid) != null) {
+            tagMapper.deleteRelationByTid(tid);
+            tagMapper.delete(tid);
+        }
+        throw new NotFoundException("未找到该标签");
     }
 
     @Override
-    public void deleteList(List<Long> tids) {
-        tagMapper.deleteList(tids);
+    @Transactional
+    public int deleteList(List<Long> tids) {
+        tagMapper.deleteRelationByTidList(tids);
+        return tagMapper.deleteList(tids);
     }
 }
