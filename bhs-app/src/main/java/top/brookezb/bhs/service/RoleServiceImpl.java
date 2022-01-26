@@ -64,14 +64,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional
     public void delete(Long rid) {
-        roleMapper.deletePermissionsById(rid);
-        roleMapper.delete(rid);
-    }
-
-    @Override
-    @Transactional
-    public void deleteList(List<Long> rids) {
-        roleMapper.deletePermissionsByIdList(rids);
-        roleMapper.deleteList(rids);
+        if (roleMapper.selectById(rid) != null) {
+            roleMapper.deletePermissionsById(rid);
+            roleMapper.delete(rid);
+        }
+        throw new NotFoundException("未找到该角色");
     }
 }

@@ -17,6 +17,4 @@ public interface RoleService {
     void update(Role role);
 
     void delete(Long rid);
-
-    void deleteList(List<Long> rids);
 }
