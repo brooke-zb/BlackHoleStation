@@ -120,4 +120,10 @@
                         inner join bhs_tag bt on bhs_tag_relation.tid = bt.tid
                where name = #{name})
     </select>
+
+    <select id="selectCountByCategoryId" resultType="java.lang.Integer">
+        select count(*)
+        from bhs_article
+        where cid = #{cid}
+    </select>
 </mapper>

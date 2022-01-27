@@ -14,13 +14,15 @@ public interface CategoryMapper {
 
     Category selectByName(String name);
 
+    Category selectByParent(Long parent);
+
     List<Category> selectAll();
 
     int insert(Category category);
 
     int update(Category category);
 
-    int delete(Long cid);
+    void removeParentByCid(Long cid);
 
-    int deleteList(List<Long> cids);
+    int delete(Long cid);
 }

@@ -20,6 +20,8 @@ public interface ArticleMapper {
 
     List<Article> selectAllByCategoryId(Long cid);
 
+    Integer selectCountByCategoryId(Long cid);
+
     List<Article> selectAllByUserId(Long uid);
 
     List<Article> selectAllByTagName(String name);

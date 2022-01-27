@@ -64,6 +64,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional
     public void delete(Long rid) {
+        // FIXME 删除角色时，需要判断有无用户使用该角色
         if (roleMapper.selectById(rid) != null) {
             roleMapper.deletePermissionsById(rid);
             roleMapper.delete(rid);
