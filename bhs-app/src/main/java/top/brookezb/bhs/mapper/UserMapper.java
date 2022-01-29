@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserMapper {
     User selectById(Long uid);
 
-    User selectByUsername(String username);
+    User selectByName(String name);
 
     List<User> selectAll(@Param("username") String username, @Param("enabled") Boolean enabled);
 
@@ -23,9 +23,5 @@ public interface UserMapper {
 
     int updateStatus(@Param("uid") Long uid, @Param("enabled") Boolean enabled);
 
-    int updateStatusList(@Param("uids") List<Long> uids, @Param("enabled") Boolean enabled);
-
     int delete(Long uid);
-
-    int deleteList(List<Long> uids);
 }

@@ -35,6 +35,11 @@ public class User {
     private String mail;
 
     /**
+     * 头像（邮箱hash）
+     */
+    private String avatar;
+
+    /**
      * 主页链接
      */
     private String link;

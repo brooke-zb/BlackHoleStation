@@ -7,6 +7,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import top.brookezb.bhs.constant.AppConstants;
 import top.brookezb.bhs.exception.AuthenticationException;
+import top.brookezb.bhs.exception.InvalidException;
+import top.brookezb.bhs.exception.NotFoundException;
+import top.brookezb.bhs.mapper.RoleMapper;
 import top.brookezb.bhs.mapper.UserMapper;
 import top.brookezb.bhs.model.User;
 import top.brookezb.bhs.utils.CryptUtils;
@@ -23,13 +26,14 @@ import java.util.concurrent.TimeUnit;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
+    private RoleMapper roleMapper;
     private RedisUtils redisUtils;
 
     @NonNull
     @Override
     public User checkUser(String username, String password) {
         // 获取用户
-        User user = userMapper.selectByUsername(username);
+        User user = userMapper.selectByName(username);
         System.out.println(user);
         if (user == null) {
             throw new AuthenticationException("没有找到该用户");
@@ -50,7 +54,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User selectById(Long uid) {
-        return userMapper.selectById(uid);
+        User user = userMapper.selectById(uid);
+        if (user != null) {
+            return user;
+        }
+        throw new NotFoundException("没有找到该用户");
     }
 
     @Override
@@ -73,7 +81,50 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean update(User user) {
-        return userMapper.update(user) > 0;
+    public void insert(User user) {
+        if (userMapper.selectByName(user.getName()) != null) {
+            throw new InvalidException("该用户名已存在");
+        }
+        if (user.getRole() == null || user.getRole().getRid() == null) {
+            throw new InvalidException("未选择角色");
+        }
+        if (roleMapper.selectById(user.getRole().getRid()) == null) {
+            throw new InvalidException("未找到该角色");
+        }
+
+        if (userMapper.insert(user) > 0) {
+            return;
+        }
+        throw new InvalidException("用户插入失败");
+    }
+
+    @Override
+    public void update(User user) {
+        if (userMapper.selectById(user.getUid()) != null) {
+            if (userMapper.update(user) > 0) {
+                return;
+            }
+            throw new InvalidException("更新用户信息失败");
+        }
+        throw new NotFoundException("没有找到该用户");
+    }
+
+    @Override
+    public void updateStatus(Long uid, Boolean enabled) {
+        if (userMapper.selectById(uid) == null) {
+            throw new NotFoundException("没有找到该用户");
+        }
+        userMapper.updateStatus(uid, enabled);
+    }
+
+    @Override
+    public void delete(Long uid) {
+        if (userMapper.selectById(uid) == null) {
+            throw new NotFoundException("没有找到该用户");
+        }
+        if (userMapper.delete(uid) > 0) {
+            return;
+        }
+        throw new InvalidException("删除用户失败");
     }
 }

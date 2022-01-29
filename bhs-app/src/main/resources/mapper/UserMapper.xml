@@ -10,36 +10,42 @@
         <result property="mail" column="mail"/>
         <result property="link" column="link"/>
         <result property="enabled" column="enabled"/>
-        <association property="role" column="rid"
-                     select="top.brookezb.bhs.mapper.RoleMapper.selectById"/>
+        <association property="role">
+            <id property="rid" column="rid"/>
+            <result property="name" column="rolename"/>
+            <collection property="permissions" column="permission"/>
+        </association>
     </resultMap>
 
     <insert id="insert">
-        insert into bhs_user(uid, rid, name, password, mail, link)
-        values (#{uid}, #{role.rid}, #{name}, #{password}, #{mail}, #{link})
+        insert into bhs_user(rid, name, password, mail, link)
+        values (#{role.rid}, #{name}, #{password}, #{mail}, #{link})
     </insert>
 
     <update id="update">
         update bhs_user
-        set name = #{name},
-            mail = #{mail},
-            link = #{link}
+        set
+        <trim suffixOverrides=",">
+            <if test="user.name != null">
+                name = #{name},
+            </if>
+            <if test="user.mail != null">
+                mail = #{mail},
+            </if>
+            <if test="user.link != null">
+                link = #{link},
+            </if>
+            <if test="user.role != null">
+                rid = #{role.rid}
+            </if>
+        </trim>
         where uid = #{uid}
     </update>
 
     <update id="updateStatus">
-        update bhs_user
+        update ignore bhs_user
         set enabled = #{enabled}
         where uid = #{uid}
-    </update>
-
-    <update id="updateStatusList">
-        update bhs_user
-        set enabled = #{enabled}
-        where uid in
-        <foreach collection="uids" item="uid" open="(" close=")" separator=",">
-            #{uid}
-        </foreach>
     </update>
 
     <delete id="delete">
@@ -48,36 +54,30 @@
         where uid = #{uid}
     </delete>
 
-    <delete id="deleteList">
-        delete
-        from bhs_user
-        where uid in
-        <foreach collection="uids" item="uid" open="(" close=")" separator=",">
-            #{uid}
-        </foreach>
-    </delete>
-
-
     <select id="selectById" resultMap="userMap">
-        select *
-        from bhs_user
+        select bu.*, br.name as rolename, brp.permission
+        from bhs_user bu
+                 inner join bhs_role br on bu.rid = br.rid
+                 inner join bhs_role_permission brp on br.rid = brp.rid
         where uid = #{uid}
     </select>
 
     <select id="selectAll" resultMap="userMap">
-        select *
-        from bhs_user
+        select bu.*, br.name as rolename, brp.permission
+        from bhs_user bu
+                 inner join bhs_role br on bu.rid = br.rid
+                 inner join bhs_role_permission brp on br.rid = brp.rid
         <where>
             <if test="username != null">
-                and name like concat('%', #{username}, '%')
+                and bu.name like concat('%', #{username}, '%')
             </if>
             <if test="enabled != null">
-                and enabled = #{enabled}
+                and bu.enabled = #{enabled}
             </if>
         </where>
     </select>
 
-    <select id="selectByUsername" resultMap="userMap">
+    <select id="selectByName" resultMap="userMap">
         select *
         from bhs_user
         where name = #{name}

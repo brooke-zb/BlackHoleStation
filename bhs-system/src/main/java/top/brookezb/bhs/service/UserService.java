@@ -48,5 +48,11 @@ public interface UserService {
      */
     void removeAuthToken(String token);
 
-    boolean update(User user);
+    void insert(User user);
+
+    void update(User user);
+
+    void updateStatus(Long uid, Boolean enabled);
+
+    void delete(Long uid);
 }
