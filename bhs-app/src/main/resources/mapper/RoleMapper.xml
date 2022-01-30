@@ -33,15 +33,6 @@
         where rid = #{rid}
     </delete>
 
-    <delete id="deleteList">
-        delete
-        from bhs_role
-        where rid in
-        <foreach collection="rids" item="rid" open="(" close=")" separator=",">
-            #{rid}
-        </foreach>
-    </delete>
-
     <delete id="deletePermissionsById">
         delete
         from bhs_role_permission

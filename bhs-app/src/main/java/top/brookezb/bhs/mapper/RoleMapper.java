@@ -26,8 +26,6 @@ public interface RoleMapper {
 
     int delete(Long rid);
 
-    int deleteList(List<Long> rids);
-
     int deletePermissionsById(Long rid);
 
     int deletePermissionsByIdList(List<Long> rids);

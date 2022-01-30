@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import top.brookezb.bhs.exception.InvalidException;
 import top.brookezb.bhs.exception.NotFoundException;
 import top.brookezb.bhs.mapper.RoleMapper;
+import top.brookezb.bhs.mapper.UserMapper;
 import top.brookezb.bhs.model.Role;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RoleServiceImpl implements RoleService {
     private RoleMapper roleMapper;
+    private UserMapper userMapper;
 
     @Override
     public Role selectById(Long rid) {
@@ -64,11 +66,13 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional
     public void delete(Long rid) {
-        // FIXME 删除角色时，需要判断有无用户使用该角色
-        if (roleMapper.selectById(rid) != null) {
-            roleMapper.deletePermissionsById(rid);
-            roleMapper.delete(rid);
+        if (userMapper.selectCountByRoleId(rid) > 0) {
+            throw new InvalidException("该角色下存在用户，无法删除");
         }
-        throw new NotFoundException("未找到该角色");
+        if (roleMapper.selectById(rid) == null) {
+            throw new NotFoundException("未找到该角色");
+        }
+        roleMapper.deletePermissionsById(rid);
+        roleMapper.delete(rid);
     }
 }

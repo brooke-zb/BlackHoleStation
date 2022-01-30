@@ -67,6 +67,9 @@ public class TagServiceImpl implements TagService {
     @Override
     @Transactional
     public int deleteList(List<Long> tids) {
+        if (tids.isEmpty()) {
+            return 0;
+        }
         tagMapper.deleteRelationByTidList(tids);
         return tagMapper.deleteList(tids);
     }
