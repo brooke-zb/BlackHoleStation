@@ -82,4 +82,10 @@
         from bhs_user
         where name = #{name}
     </select>
+
+    <select id="selectCountByRoleId" resultType="java.lang.Integer">
+        select count(*)
+        from bhs_user
+        where rid = #{rid}
+    </select>
 </mapper>
