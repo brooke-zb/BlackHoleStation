@@ -23,6 +23,21 @@ spring:
       - comment
       - user
 
+  mail:
+    host: smtp.example.com
+    port: 465
+    username: example@example.com
+    password: 1234567890
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            enable: true
+
 aliyun:
   oss:
     access-key: LTAI1A2B3C4D5E6F
