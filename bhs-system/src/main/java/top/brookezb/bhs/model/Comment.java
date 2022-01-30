@@ -1,6 +1,8 @@
 package top.brookezb.bhs.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 import lombok.Data;
 
 /**
@@ -59,11 +61,16 @@ public class Comment {
     private Long parent;
 
     /**
+     * 子级评论
+     */
+    private List<Comment> children;
+
+    /**
      * 回复评论id
      */
     private Long reply;
 
-    private enum Status {
+    public enum Status {
         /**
          * 已发布
          */

@@ -41,12 +41,17 @@
     <select id="selectAll" resultType="top.brookezb.bhs.model.Comment">
         select *
         from bhs_comment
+        <where>
+            <if test="status != null">
+                status = #{status}
+            </if>
+        </where>
     </select>
 
-    <select id="selectByArticleId" resultType="top.brookezb.bhs.model.Comment">
+    <select id="selectAllByArticleId" resultType="top.brookezb.bhs.model.Comment">
         select *
         from bhs_comment
-        where aid = #{aid}
+        where aid = #{aid} and status = 'PUBLISHED'
     </select>
 
     <select id="selectByNickname" resultType="top.brookezb.bhs.model.Comment">

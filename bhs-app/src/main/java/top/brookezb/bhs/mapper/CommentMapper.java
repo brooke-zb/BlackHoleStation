@@ -12,9 +12,9 @@ import java.util.List;
 public interface CommentMapper {
     Comment selectById(Long coid);
 
-    List<Comment> selectAll();
+    List<Comment> selectAll(Comment.Status status);
 
-    List<Comment> selectByArticleId(Long aid);
+    List<Comment> selectAllByArticleId(Long aid);
 
     List<Comment> selectByNickname(String name);
 
