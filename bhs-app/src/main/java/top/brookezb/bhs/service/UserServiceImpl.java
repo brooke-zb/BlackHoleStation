@@ -3,6 +3,9 @@ package top.brookezb.bhs.service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import top.brookezb.bhs.constant.AppConstants;
@@ -24,6 +27,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Service
 @AllArgsConstructor
+@CacheConfig(cacheNames = "user")
 public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     private RoleMapper roleMapper;
@@ -53,6 +57,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Cacheable(key = "#uid")
     public User selectById(Long uid) {
         User user = userMapper.selectById(uid);
         if (user != null) {
@@ -99,6 +104,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(key = "#user.uid")
     public void update(User user) {
         if (userMapper.selectById(user.getUid()) != null) {
             if (userMapper.update(user) > 0) {
@@ -110,6 +116,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(key = "#uid")
     public void updateStatus(Long uid, Boolean enabled) {
         if (userMapper.selectById(uid) == null) {
             throw new NotFoundException("没有找到该用户");
@@ -118,6 +125,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @CacheEvict(key = "#uid")
     public void delete(Long uid) {
         if (userMapper.selectById(uid) == null) {
             throw new NotFoundException("没有找到该用户");
