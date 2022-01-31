@@ -31,6 +31,12 @@
         where coid = #{coid}
     </update>
 
+    <update id="updateStatus">
+        update bhs_comment
+        set status = #{status}
+        where coid = #{coid}
+    </update>
+
     <delete id="delete">
         delete
         from bhs_comment

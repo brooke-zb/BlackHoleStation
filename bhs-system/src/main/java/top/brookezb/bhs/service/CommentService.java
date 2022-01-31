@@ -22,6 +22,8 @@ public interface CommentService {
 
     void update(Comment comment);
 
+    void updateStatus(Comment comment);
+
     void delete(Long coid);
 
     int deleteList(List<Long> coids);

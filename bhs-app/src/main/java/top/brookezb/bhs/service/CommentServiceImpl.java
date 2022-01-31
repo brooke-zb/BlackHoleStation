@@ -1,6 +1,9 @@
 package top.brookezb.bhs.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.brookezb.bhs.exception.InvalidException;
@@ -18,6 +21,7 @@ import java.util.List;
  */
 @Service
 @AllArgsConstructor
+@CacheConfig(cacheNames = "comment")
 public class CommentServiceImpl implements CommentService {
     private CommentMapper commentMapper;
     private ArticleMapper articleMapper;
@@ -37,6 +41,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Cacheable(key = "'aid_' + #aid")
     public List<Comment> selectAllByArticleId(Long aid) {
         return commentMapper.selectAllByArticleId(aid);
     }
@@ -53,6 +58,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
+    @CacheEvict(key = "'aid_' + #comment.getAid()", condition = "#withPend == false")
     public void insert(Comment comment, boolean withPend) {
         // 查询文章是否存在
         if (articleMapper.verifyArticle(comment.getAid()) == null) {
@@ -91,6 +97,14 @@ public class CommentServiceImpl implements CommentService {
             throw new NotFoundException("评论不存在");
         }
         commentMapper.update(comment);
+    }
+
+    @Override
+    public void updateStatus(Comment comment) {
+        if (commentMapper.verifyComment(comment.getCoid()) == null) {
+            throw new NotFoundException("评论不存在");
+        }
+        commentMapper.updateStatus(comment.getCoid(), comment.getStatus());
     }
 
     @Override

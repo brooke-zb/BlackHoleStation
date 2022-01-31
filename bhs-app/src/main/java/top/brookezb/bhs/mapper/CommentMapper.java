@@ -1,6 +1,7 @@
 package top.brookezb.bhs.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import top.brookezb.bhs.model.Comment;
 
 import java.util.List;
@@ -29,6 +30,8 @@ public interface CommentMapper {
     int insert(Comment comment);
 
     int update(Comment comment);
+
+    int updateStatus(@Param("coid") Long coid, @Param("status") Comment.Status status);
 
     int delete(Long coid);
 
