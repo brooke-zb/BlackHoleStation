@@ -16,9 +16,15 @@ public interface CommentMapper {
 
     List<Comment> selectAllByArticleId(Long aid);
 
-    List<Comment> selectByNickname(String name);
+    List<Comment> selectAllByNickname(String name);
 
-    List<Comment> selectByIp(String ip);
+    List<Comment> selectAllByIp(String ip);
+
+    List<Comment> selectAllByParent(Long parent);
+
+    String selectTrustEmail(String email);
+
+    Integer verifyComment(Long coid);
 
     int insert(Comment comment);
 
