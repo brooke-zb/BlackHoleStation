@@ -1,6 +1,7 @@
 package top.brookezb.bhs.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import top.brookezb.bhs.model.Tag;
 
 import java.util.List;
@@ -16,13 +17,15 @@ public interface TagMapper {
 
     List<Tag> selectAll();
 
-    List<Tag> selectAllByNameList(List<String> names);
+    List<Tag> selectAllByList(List<Tag> tags);
 
     List<Tag> selectAllByAid(Long aid);
 
     int insert(Tag tag);
 
     int insertList(List<Tag> tags);
+
+    int insertRelationByAid(@Param("aid") Long aid, @Param("tags") List<Tag> tags);
 
     int update(Tag tag);
 

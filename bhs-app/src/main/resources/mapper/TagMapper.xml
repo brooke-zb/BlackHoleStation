@@ -16,6 +16,14 @@
         </foreach>
     </insert>
 
+    <insert id="insertRelationByAid">
+        insert ignore into bhs_tag_relation(aid, tid)
+        values
+        <foreach collection="tags" item="tag" separator=",">
+            (#{aid}, #{tag.tid})
+        </foreach>
+    </insert>
+
     <update id="update">
         update bhs_tag
         set name = #{name}
@@ -69,12 +77,12 @@
         from bhs_tag
     </select>
 
-    <select id="selectAllByNameList" resultType="top.brookezb.bhs.model.Tag">
+    <select id="selectAllByList" resultType="top.brookezb.bhs.model.Tag">
         select *
         from bhs_tag
         where name in
-        <foreach collection="names" item="name" open="(" close=")" separator=",">
-            #{name}
+        <foreach collection="tags" item="tag" open="(" close=")" separator=",">
+            #{tag.name}
         </foreach>
     </select>
 
