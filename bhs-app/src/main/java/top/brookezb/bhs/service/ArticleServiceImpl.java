@@ -5,28 +5,34 @@ import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.brookezb.bhs.exception.InvalidException;
 import top.brookezb.bhs.exception.NotFoundException;
 import top.brookezb.bhs.mapper.ArticleMapper;
+import top.brookezb.bhs.mapper.CategoryMapper;
+import top.brookezb.bhs.mapper.TagMapper;
 import top.brookezb.bhs.model.Article;
+import top.brookezb.bhs.model.Tag;
+import top.brookezb.bhs.utils.IdUtils;
 
 import java.util.List;
 
 /**
  * @author brooke_zb
  */
-@CacheConfig(cacheNames = "article")
 @Service
 @AllArgsConstructor
+@CacheConfig(cacheNames = "article")
 public class ArticleServiceImpl implements ArticleService {
     private ArticleMapper articleMapper;
+    private CategoryMapper categoryMapper;
+    private TagMapper tagMapper;
 
-    @Cacheable(key = "#id")
+    @Cacheable(key = "#aid")
     @Override
-    public Article selectById(Long id) {
-        Article article = articleMapper.selectById(id);
+    public Article selectById(Long aid) {
+        Article article = articleMapper.selectById(aid);
         if (article == null) {
             throw new NotFoundException("文章不存在");
         }
@@ -34,33 +40,46 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public PageInfo<List<Article>> getArticles(int page, int size, String title, boolean enabled) {
+    public PageInfo<List<Article>> getArticles(int page, int size, String title, Article.Status status) {
         return null;
     }
 
     @Override
+    @Transactional
     public void insert(Article article) {
-        if (articleMapper.insert(article) < 1) {
-            throw new InvalidException("文章插入失败");
+        // 查询分类是否存在
+        if (article.getCategory() == null || categoryMapper.verifyCategory(article.getCategory().getCid()) == null) {
+            throw new InvalidException("文章分类不存在");
         }
+
+        // 插入id
+        article.setAid(IdUtils.nextId());
+
+        // 插入标签
+        tagMapper.insertList(article.getTags());
+        List<Tag> tags = tagMapper.selectAllByList(article.getTags());
+        tagMapper.insertRelationByAid(article.getAid(), tags);
+
+        articleMapper.insert(article);
     }
 
-    @Caching(evict = {
-            @CacheEvict(key = "#article.aid"),
-            @CacheEvict(cacheNames = "tag", key = "'article_' + #article.aid")
-    })
     @Override
+    @Transactional
+    @CacheEvict(key = "#article.aid")
     public void update(Article article) {
-        if (articleMapper.update(article) < 1) {
-            throw new InvalidException("文章更新失败");
+        if (articleMapper.verifyArticle(article.getAid()) == null) {
+            throw new NotFoundException("文章不存在");
         }
+        articleMapper.update(article);
     }
 
-    @CacheEvict(key = "#id")
     @Override
-    public void delete(Long id) {
-        if (articleMapper.delete(id) < 1) {
-            throw new InvalidException("文章删除失败");
+    @Transactional
+    @CacheEvict(key = "#aid")
+    public void delete(Long aid) {
+        if (articleMapper.verifyArticle(aid) == null) {
+            throw new NotFoundException("文章不存在");
         }
+        articleMapper.delete(aid);
     }
 }

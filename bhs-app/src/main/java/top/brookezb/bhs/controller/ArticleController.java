@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import top.brookezb.bhs.constant.AppConstants;
 import top.brookezb.bhs.entity.R;
 import top.brookezb.bhs.model.Article;
+import top.brookezb.bhs.model.User;
 import top.brookezb.bhs.service.ArticleService;
 
 /**
@@ -23,14 +24,18 @@ public class ArticleController {
 
     @PostMapping("")
     public R<?> insert(@RequestBody Article article, @SessionAttribute(AppConstants.SESSION_USER_KEY) Long uid) {
-        article.setUid(uid);
+        User user = new User();
+        user.setUid(uid);
+        article.setUser(user);
         articleService.insert(article);
         return R.success(null, "文章发布成功");
     }
 
     @PutMapping("")
     public R<?> update(@RequestBody Article article, @SessionAttribute(AppConstants.SESSION_USER_KEY) Long uid) {
-        article.setUid(uid);
+        User user = new User();
+        user.setUid(uid);
+        article.setUser(user);
         articleService.update(article);
         return R.success(null, "文章更新成功");
     }

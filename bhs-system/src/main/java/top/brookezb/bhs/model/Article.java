@@ -21,7 +21,7 @@ public class Article {
     /**
      * 作者id
      */
-    private Long uid;
+    private User user;
 
     /**
      * 分类id
@@ -91,6 +91,6 @@ public class Article {
     private Integer views;
 
     public enum Status {
-        PUBLISHED, DRAFT, INVISIBLE,
+        PUBLISHED, DRAFT, INVISIBLE;
     }
 }

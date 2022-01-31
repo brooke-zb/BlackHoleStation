@@ -14,10 +14,10 @@ public interface ArticleService {
     /**
      * 根据文章id获取文章
      *
-     * @param id 文章id
+     * @param aid 文章id
      * @return 文章
      */
-    Article selectById(Long id);
+    Article selectById(Long aid);
 
     /**
      * 获取文章列表
@@ -25,10 +25,10 @@ public interface ArticleService {
      * @param page 页码
      * @param size 每页数量
      * @param title 搜索标题
-     * @param published 是否只获取已发布的文章
+     * @param status 文章状态
      * @return 文章列表
      */
-    PageInfo<List<Article>> getArticles(int page, int size, String title, boolean published);
+    PageInfo<List<Article>> getArticles(int page, int size, String title, Article.Status status);
 
     /**
      * 新增文章
@@ -45,7 +45,7 @@ public interface ArticleService {
 
     /**
      * 删除文章
-     * @param id 文章id
+     * @param aid 文章id
      */
-    void delete(Long id);
+    void delete(Long aid);
 }
