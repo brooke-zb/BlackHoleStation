@@ -18,6 +18,8 @@ public interface CategoryMapper {
 
     List<Category> selectAll();
 
+    Integer verifyCategory(Long cid);
+
     int insert(Category category);
 
     int update(Category category);

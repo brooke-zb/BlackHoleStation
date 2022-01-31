@@ -57,4 +57,10 @@
         from bhs_category
         where parent = #{parent}
     </select>
+
+    <select id="verifyCategory" resultType="java.lang.Integer">
+        select cid
+        from bhs_category
+        where cid = #{cid}
+    </select>
 </mapper>
