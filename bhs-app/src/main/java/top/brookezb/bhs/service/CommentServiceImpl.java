@@ -92,6 +92,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true)
     public void update(Comment comment) {
         if (commentMapper.verifyComment(comment.getCoid()) == null) {
             throw new NotFoundException("评论不存在");
@@ -100,6 +101,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
+    @CacheEvict(allEntries = true)
     public void updateStatus(Comment comment) {
         if (commentMapper.verifyComment(comment.getCoid()) == null) {
             throw new NotFoundException("评论不存在");
@@ -109,6 +112,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true)
     public void delete(Long coid) {
         if (commentMapper.verifyComment(coid) == null) {
             throw new NotFoundException("评论不存在");
