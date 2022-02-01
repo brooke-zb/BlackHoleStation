@@ -1,5 +1,6 @@
 package top.brookezb.bhs.config;
 
+import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -7,6 +8,7 @@ import top.brookezb.bhs.aspect.AuthenticationAspect;
 import top.brookezb.bhs.handler.GlobalExceptionHandler;
 import top.brookezb.bhs.proerties.CsrfPathProperties;
 import top.brookezb.bhs.proerties.OssProperties;
+import top.brookezb.bhs.utils.MailUtils;
 import top.brookezb.bhs.utils.OssUtils;
 import top.brookezb.bhs.utils.RedisUtils;
 
@@ -17,10 +19,11 @@ import top.brookezb.bhs.utils.RedisUtils;
 @Import({
         OssUtils.class,
         RedisUtils.class,
+        MailUtils.class,
         AuthenticationAspect.class,
         WebMvcConfig.class,
         GlobalExceptionHandler.class
 })
-@EnableConfigurationProperties({CsrfPathProperties.class, OssProperties.class})
+@EnableConfigurationProperties({CsrfPathProperties.class, OssProperties.class, MailProperties.class})
 public class BlackHoleStationAutoConfiguration {
 }

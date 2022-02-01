@@ -1,5 +1,6 @@
 package top.brookezb.bhs.aspect;
 
+import cn.hutool.extra.servlet.ServletUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -31,10 +32,7 @@ public class ControllerLogAspect {
     public void log(JoinPoint joinPoint) {
         HttpServletRequest request = ServletUtils.getRequest();
         String method = joinPoint.getSignature().getDeclaringType().getName() + "#" + joinPoint.getSignature().getName();
-        String ip = request.getHeader("x-real-ip");
-        if (ip == null) {
-            ip = request.getRemoteAddr();
-        }
+        String ip = ServletUtil.getClientIP(request);
 
         log.info("{} Request: {url: {}, ip: {}, method: {}, args: {}}", request.getMethod(), request.getRequestURI(), ip, method, joinPoint.getArgs());
     }
