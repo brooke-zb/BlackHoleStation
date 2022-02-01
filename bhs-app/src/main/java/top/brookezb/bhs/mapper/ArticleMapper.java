@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import top.brookezb.bhs.model.Article;
 import top.brookezb.bhs.model.Tag;
+import top.brookezb.bhs.model.User;
 
 import java.util.List;
 
@@ -27,6 +28,8 @@ public interface ArticleMapper {
     Integer selectCountByCategoryId(Long cid);
 
     Integer verifyArticle(Long aid);
+
+    User selectUserById(Long aid);
 
     int insert(Article article);
 

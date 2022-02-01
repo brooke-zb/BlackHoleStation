@@ -1,5 +1,6 @@
 package top.brookezb.bhs.service;
 
+import cn.hutool.extra.servlet.ServletUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -10,7 +11,9 @@ import top.brookezb.bhs.exception.InvalidException;
 import top.brookezb.bhs.exception.NotFoundException;
 import top.brookezb.bhs.mapper.ArticleMapper;
 import top.brookezb.bhs.mapper.CommentMapper;
+import top.brookezb.bhs.model.Article;
 import top.brookezb.bhs.model.Comment;
+import top.brookezb.bhs.model.User;
 import top.brookezb.bhs.utils.IdUtils;
 import top.brookezb.bhs.utils.ServletUtils;
 
@@ -25,6 +28,7 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     private CommentMapper commentMapper;
     private ArticleMapper articleMapper;
+    private MailService mailService;
 
     @Override
     public Comment selectById(Long coid) {
@@ -85,9 +89,17 @@ public class CommentServiceImpl implements CommentService {
         comment.setCoid(IdUtils.nextId());
 
         // 插入ip
-        comment.setIp(ServletUtils.getRequest().getRemoteAddr());
+        comment.setIp(ServletUtil.getClientIP(ServletUtils.getRequest()));
 
         commentMapper.insert(comment);
+
+        // 发送通知邮件
+        User user = articleMapper.selectUserById(comment.getAid());
+        if (comment.getStatus() == Comment.Status.PUBLISHED) {
+            mailService.sendReplyMail(user.getMail(), comment.getNickname(), "https://blog.brooke-zb.top/article/" + comment.getAid() + "/" + comment.getCoid());
+        } else {
+            mailService.sendAuditMail("https://blog.brooke-zb.top/admin/comment");
+        }
     }
 
     @Override

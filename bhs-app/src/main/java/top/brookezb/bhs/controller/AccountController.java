@@ -109,9 +109,13 @@ public class AccountController {
     @PutMapping("")
     public R<?> updateUserInfo(@SessionAttribute(value = AppConstants.SESSION_USER_KEY, required = false) Long uid, @RequestBody User user) {
         user.setUid(uid);
-        if (userService.update(user)) {
-            return R.success(null, "信息更新成功");
-        }
-        return R.success(null, "信息没有变化");
+        userService.update(user);
+        return R.success(null, "信息更新成功");
     }
+
+//    @PostMapping("/mailto")
+//    public R<?> sendMail() {
+//        mailService.sendAuditMail("https://www.baidu.com");
+//        return R.success(null, "邮件已发送");
+//    }
 }

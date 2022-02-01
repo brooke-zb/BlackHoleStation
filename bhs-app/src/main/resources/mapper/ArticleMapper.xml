@@ -85,8 +85,8 @@
             , md5(bu.mail) as avatar
         </if>
         from bhs_article ba
-                 inner join bhs_category bc on ba.cid = bc.cid
-                 inner join bhs_user bu on ba.uid = bu.uid
+        inner join bhs_category bc on ba.cid = bc.cid
+        inner join bhs_user bu on ba.uid = bu.uid
     </select>
 
     <select id="selectAllByStatus" resultMap="articleMap">
@@ -95,8 +95,8 @@
             , md5(bu.mail) as avatar
         </if>
         from bhs_article ba
-                 inner join bhs_category bc on ba.cid = bc.cid
-                 inner join bhs_user bu on ba.uid = bu.uid
+        inner join bhs_category bc on ba.cid = bc.cid
+        inner join bhs_user bu on ba.uid = bu.uid
         where status = #{status}
     </select>
 
@@ -106,8 +106,8 @@
             , md5(bu.mail) as avatar
         </if>
         from bhs_article ba
-                 inner join bhs_category bc on ba.cid = bc.cid
-                 inner join bhs_user bu on ba.uid = bu.uid
+        inner join bhs_category bc on ba.cid = bc.cid
+        inner join bhs_user bu on ba.uid = bu.uid
         where ba.cid = #{cid}
     </select>
 
@@ -117,8 +117,8 @@
             , md5(bu.mail) as avatar
         </if>
         from bhs_article ba
-                 inner join bhs_category bc on ba.cid = bc.cid
-                 inner join bhs_user bu on ba.uid = bu.uid
+        inner join bhs_category bc on ba.cid = bc.cid
+        inner join bhs_user bu on ba.uid = bu.uid
         where bu.uid = #{uid}
     </select>
 
@@ -128,13 +128,13 @@
             , md5(bu.mail) as avatar
         </if>
         from bhs_article ba
-                 inner join bhs_category bc on ba.cid = bc.cid
-                 inner join bhs_user bu on ba.uid = bu.uid
+        inner join bhs_category bc on ba.cid = bc.cid
+        inner join bhs_user bu on ba.uid = bu.uid
         where aid in
-              (select aid
-               from bhs_tag_relation
-                        inner join bhs_tag bt on bhs_tag_relation.tid = bt.tid
-               where name = #{name})
+        (select aid
+        from bhs_tag_relation
+        inner join bhs_tag bt on bhs_tag_relation.tid = bt.tid
+        where name = #{name})
     </select>
 
     <select id="selectCountByCategoryId" resultType="java.lang.Integer">
@@ -147,5 +147,12 @@
         select aid
         from bhs_article
         where aid = #{aid}
+    </select>
+
+    <select id="selectUserById" resultType="top.brookezb.bhs.model.User">
+        select bu.*
+        from bhs_user bu
+                 left join bhs_article ba on bu.uid = ba.uid
+        where ba.aid = #{aid}
     </select>
 </mapper>
