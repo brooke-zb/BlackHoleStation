@@ -1,5 +1,6 @@
 package top.brookezb.bhs.handler;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -17,6 +18,7 @@ import javax.validation.ConstraintViolationException;
  *
  * @author brooke_zb
  */
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     /**
@@ -75,7 +77,8 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(RuntimeException.class)
-    public R<String> RuntimeException() {
+    public R<String> RuntimeException(Exception ex) {
+        log.error(ex.getMessage());
         return R.fail("操作出现异常，执行失败");
     }
 }

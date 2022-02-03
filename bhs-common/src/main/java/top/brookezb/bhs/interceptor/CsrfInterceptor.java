@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.HandlerInterceptor;
 import top.brookezb.bhs.constant.AppConstants;
+import top.brookezb.bhs.exception.AuthenticationException;
 import top.brookezb.bhs.exception.ForbiddenException;
 import top.brookezb.bhs.utils.CsrfUtils;
 
@@ -28,20 +29,21 @@ public class CsrfInterceptor implements HandlerInterceptor {
         // 获取前端提交的token
         String token = request.getHeader(AppConstants.CSRF_HEADER);
 
-        // 未登录或无token则返回403
+        // 未登录则返回401
         HttpSession session = request.getSession();
-        if (session.getAttribute(AppConstants.SESSION_USER_KEY) == null || token == null) {
+        if (session.getAttribute(AppConstants.SESSION_USER_KEY) == null) {
+            throw new AuthenticationException("请登录后再操作");
+        }
+
+        // 获取服务端token
+        Object sessionToken = session.getAttribute(AppConstants.CSRF_HEADER);
+
+        // 校验失败则返回403
+        if (sessionToken == null || !sessionToken.equals(token)) {
+            CsrfUtils.putToken(request, response);
             throw new ForbiddenException("未通过CSRF检测");
         }
 
-        // 获取服务端存储的token
-        String sessionToken = (String) session.getAttribute(AppConstants.CSRF_HEADER);
-        if (sessionToken != null && sessionToken.equals(token)) {
-            CsrfUtils.putToken(request, response);
-            return true;
-        }
-
-        CsrfUtils.putToken(request, response);
-        throw new ForbiddenException("未通过CSRF检测");
+        return true;
     }
 }
