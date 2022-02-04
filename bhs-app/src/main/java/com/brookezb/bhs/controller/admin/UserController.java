@@ -27,9 +27,9 @@ public class UserController {
     /**
      * 分页查询用户列表
      *
-     * @param page 当前页
+     * @param page     当前页
      * @param username 用户名
-     * @param enabled 是否启用
+     * @param enabled  是否启用
      * @return 查询结果
      */
     @GetMapping("")
@@ -78,7 +78,8 @@ public class UserController {
 
     /**
      * 更新用户状态
-     * @param id 用户id
+     *
+     * @param id     用户id
      * @param status 状态
      * @return 更新结果
      */

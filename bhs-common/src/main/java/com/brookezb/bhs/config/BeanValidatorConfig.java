@@ -16,13 +16,9 @@ import javax.validation.ValidatorFactory;
  */
 @Configuration
 public class BeanValidatorConfig {
-    @Bean
-    public MethodValidationPostProcessor methodValidationPostProcessor() {
-        MethodValidationPostProcessor postProcessor = new MethodValidationPostProcessor();
-        postProcessor.setValidator(validator());
-        return postProcessor;
-    }
-
+    /**
+     * 设置快速失败模式，减少多余验证
+     */
     @Bean
     public Validator validator() {
         ValidatorFactory validatorFactory = Validation.byProvider(HibernateValidator.class)

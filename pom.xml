@@ -22,16 +22,15 @@
 
         <spring-boot.version>2.6.3</spring-boot.version>
         <crypto.version>5.6.1</crypto.version>
-        <mysql.cj.version>8.0.25</mysql.cj.version>
+        <mysql.cj.version>8.0.28</mysql.cj.version>
         <pagehelper.version>5.3.0</pagehelper.version>
         <spring.pagehelper.version>1.4.1</spring.pagehelper.version>
-        <mybatis.version>2.2.0</mybatis.version>
-        <aliyun.oss.version>3.13.2</aliyun.oss.version>
+        <mybatis.version>2.2.2</mybatis.version>
+        <aliyun.oss.version>3.14.0</aliyun.oss.version>
         <servlet.version>4.0.1</servlet.version>
         <snowflake.version>1.0.6</snowflake.version>
-        <jackson.version>2.13.0</jackson.version>
+        <jackson.version>2.13.1</jackson.version>
         <caffeine.version>3.0.5</caffeine.version>
-        <hibernate.validation.version>6.2.1.Final</hibernate.validation.version>
         <hutool.version>5.7.20</hutool.version>
 
     </properties>
@@ -115,13 +114,6 @@
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-crypto</artifactId>
                 <version>${crypto.version}</version>
-            </dependency>
-
-            <!-- Bean Validation -->
-            <dependency>
-                <groupId>org.hibernate.validator</groupId>
-                <artifactId>hibernate-validator</artifactId>
-                <version>${hibernate.validation.version}</version>
             </dependency>
 
             <!-- Hutool -->

@@ -33,7 +33,7 @@
             <version>0.1.0-SNAPSPOT</version>
         </dependency>
 
-        <!-- SpringBoot WebFlux -->
+        <!-- Spring MVC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
