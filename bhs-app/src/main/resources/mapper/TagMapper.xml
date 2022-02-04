@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.brookezb.bhs.mapper.TagMapper">
+<mapper namespace="com.brookezb.bhs.mapper.TagMapper">
     <insert id="insert">
         insert ignore into bhs_tag(name)
         values (#{name})
@@ -60,24 +60,24 @@
         </foreach>
     </delete>
 
-    <select id="selectById" resultType="top.brookezb.bhs.model.Tag">
+    <select id="selectById" resultType="com.brookezb.bhs.model.Tag">
         select *
         from bhs_tag
         where tid = #{tid}
     </select>
 
-    <select id="selectByName" resultType="top.brookezb.bhs.model.Tag">
+    <select id="selectByName" resultType="com.brookezb.bhs.model.Tag">
         select *
         from bhs_tag
         where name = #{name}
     </select>
 
-    <select id="selectAll" resultType="top.brookezb.bhs.model.Tag">
+    <select id="selectAll" resultType="com.brookezb.bhs.model.Tag">
         select *
         from bhs_tag
     </select>
 
-    <select id="selectAllByList" resultType="top.brookezb.bhs.model.Tag">
+    <select id="selectAllByList" resultType="com.brookezb.bhs.model.Tag">
         select *
         from bhs_tag
         where name in
@@ -86,7 +86,7 @@
         </foreach>
     </select>
 
-    <select id="selectAllByAid" resultType="top.brookezb.bhs.model.Tag">
+    <select id="selectAllByAid" resultType="com.brookezb.bhs.model.Tag">
         select bt.*
         from bhs_tag bt
                  inner join bhs_tag_relation btr on bt.tid = btr.tid

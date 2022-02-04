@@ -2,11 +2,13 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.brookezb.bhs.mapper.RoleMapper">
-    <resultMap id="roleMap" type="top.brookezb.bhs.model.Role">
+<mapper namespace="com.brookezb.bhs.mapper.RoleMapper">
+    <resultMap id="roleMap" type="com.brookezb.bhs.model.Role">
         <id property="rid" column="rid"/>
         <result property="name" column="name"/>
-        <collection property="permissions" column="permission"/>
+        <collection property="permissions" ofType="string">
+            <result column="permission"/>
+        </collection>
     </resultMap>
 
     <insert id="insert">
@@ -65,7 +67,7 @@
         where br.rid = #{rid}
     </select>
 
-    <select id="selectByName" resultMap="roleMap">
+    <select id="selectByName" resultType="com.brookezb.bhs.model.Role">
         select *
         from bhs_role
         where name = #{name}

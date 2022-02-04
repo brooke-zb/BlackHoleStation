@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>top.brookezb</groupId>
+    <groupId>com.brookezb</groupId>
     <artifactId>black-hole-station</artifactId>
     <version>0.1.0-SNAPSPOT</version>
     <packaging>pom</packaging>
@@ -20,8 +20,8 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <spring-boot.version>2.6.1</spring-boot.version>
-        <spring.version>5.6.0</spring.version>
+        <spring-boot.version>2.6.3</spring-boot.version>
+        <crypto.version>5.6.1</crypto.version>
         <mysql.cj.version>8.0.25</mysql.cj.version>
         <pagehelper.version>5.3.0</pagehelper.version>
         <spring.pagehelper.version>1.4.1</spring.pagehelper.version>
@@ -114,7 +114,7 @@
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-crypto</artifactId>
-                <version>${spring.version}</version>
+                <version>${crypto.version}</version>
             </dependency>
 
             <!-- Bean Validation -->

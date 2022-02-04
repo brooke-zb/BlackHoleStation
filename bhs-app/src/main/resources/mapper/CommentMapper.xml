@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.brookezb.bhs.mapper.CommentMapper">
-    <resultMap id="ArticleCommentMap" type="top.brookezb.bhs.model.Comment">
+<mapper namespace="com.brookezb.bhs.mapper.CommentMapper">
+    <resultMap id="ArticleCommentMap" type="com.brookezb.bhs.model.Comment">
         <id property="coid" column="coid"/>
         <result property="parent" column="parent"/>
         <result property="status" column="status"/>
@@ -52,13 +52,13 @@
         </foreach>
     </delete>
 
-    <select id="selectById" resultType="top.brookezb.bhs.model.Comment">
+    <select id="selectById" resultType="com.brookezb.bhs.model.Comment">
         select *
         from bhs_comment
         where coid = #{coid}
     </select>
 
-    <select id="selectAll" resultType="top.brookezb.bhs.model.Comment">
+    <select id="selectAll" resultType="com.brookezb.bhs.model.Comment">
         select *
         from bhs_comment
         <where>
@@ -75,19 +75,19 @@
           and status = 'PUBLISHED'
     </select>
 
-    <select id="selectAllByNickname" resultType="top.brookezb.bhs.model.Comment">
+    <select id="selectAllByNickname" resultType="com.brookezb.bhs.model.Comment">
         select *
         from bhs_comment
         where nickname = #{name}
     </select>
 
-    <select id="selectAllByIp" resultType="top.brookezb.bhs.model.Comment">
+    <select id="selectAllByIp" resultType="com.brookezb.bhs.model.Comment">
         select *
         from bhs_comment
         where ip = #{ip}
     </select>
 
-    <select id="selectAllByParent" resultType="top.brookezb.bhs.model.Comment">
+    <select id="selectAllByParent" resultType="com.brookezb.bhs.model.Comment">
         select *
         from bhs_comment
         where parent = #{parent}

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.brookezb.bhs.mapper.ArticleMapper">
-    <resultMap id="articleMap" type="top.brookezb.bhs.model.Article">
+<mapper namespace="com.brookezb.bhs.mapper.ArticleMapper">
+    <resultMap id="articleMap" type="com.brookezb.bhs.model.Article">
         <id property="aid" column="aid"/>
         <result property="title" column="title"/>
         <result property="description" column="description"/>
@@ -149,7 +149,7 @@
         where aid = #{aid}
     </select>
 
-    <select id="selectUserById" resultType="top.brookezb.bhs.model.User">
+    <select id="selectUserById" resultType="com.brookezb.bhs.model.User">
         select bu.*
         from bhs_user bu
                  left join bhs_article ba on bu.uid = ba.uid
