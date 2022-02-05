@@ -17,6 +17,8 @@ public interface TagMapper {
 
     List<Tag> selectAll();
 
+    List<Tag> selectAllWithHeat();
+
     List<Tag> selectAllByList(List<Tag> tags);
 
     List<Tag> selectAllByAid(Long aid);

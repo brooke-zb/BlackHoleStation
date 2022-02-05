@@ -16,4 +16,9 @@ public class Tag {
      * 标签名称
      */
     private String name;
+
+    /**
+     * 标签热度
+     */
+    private Integer heat;
 }

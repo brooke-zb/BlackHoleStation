@@ -9,8 +9,6 @@ import com.brookezb.bhs.mapper.UserMapper;
 import com.brookezb.bhs.model.User;
 import com.brookezb.bhs.utils.CryptUtils;
 import com.brookezb.bhs.utils.RedisUtils;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -66,9 +64,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageInfo<List<User>> selectAll(int page, String username, Boolean enabled) {
-        return PageHelper.startPage(page, 20)
-                .doSelectPageInfo(() -> userMapper.selectAll(username, enabled));
+    public List<User> selectAll(int page, String username, Boolean enabled) {
+        return userMapper.selectAllByIdList(userMapper.selectAll(username, enabled));
     }
 
     @Override

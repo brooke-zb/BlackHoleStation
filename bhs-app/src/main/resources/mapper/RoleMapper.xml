@@ -73,9 +73,18 @@
         where name = #{name}
     </select>
 
-    <select id="selectAll" resultMap="roleMap">
+    <select id="selectAll" resultType="long">
+        select rid
+        from bhs_role
+    </select>
+
+    <select id="selectAllByIdList" resultMap="roleMap">
         select br.rid, br.name, brp.permission
         from bhs_role br
                  inner join bhs_role_permission brp on br.rid = brp.rid
+        where br.rid in
+        <foreach collection="rids" item="rid" open="(" close=")">
+            #{rid}
+        </foreach>
     </select>
 </mapper>

@@ -16,7 +16,9 @@ public interface RoleMapper {
 
     Role selectByName(String name);
 
-    List<Role> selectAll();
+    List<Long> selectAll();
+
+    List<Role> selectAllByIdList(List<Long> rids);
 
     int insert(Role role);
 

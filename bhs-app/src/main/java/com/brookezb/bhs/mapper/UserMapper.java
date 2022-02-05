@@ -15,7 +15,9 @@ public interface UserMapper {
 
     User selectByName(String name);
 
-    List<User> selectAll(@Param("username") String username, @Param("enabled") Boolean enabled);
+    List<Long> selectAll(@Param("username") String username, @Param("enabled") Boolean enabled);
+
+    List<User> selectAllByIdList(List<Long> uids);
 
     Integer selectCountByRoleId(Long rid);
 

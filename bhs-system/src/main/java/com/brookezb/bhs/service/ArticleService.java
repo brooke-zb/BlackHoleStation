@@ -21,14 +21,12 @@ public interface ArticleService {
 
     /**
      * 获取文章列表
-     *
-     * @param page 页码
-     * @param size 每页数量
-     * @param title 搜索标题
+     * @param uid 用户id
+     * @param cid 分类id
      * @param status 文章状态
      * @return 文章列表
      */
-    PageInfo<List<Article>> getArticles(int page, int size, String title, Article.Status status);
+    List<Article> getArticles(Long uid, Long cid, Article.Status status);
 
     /**
      * 新增文章

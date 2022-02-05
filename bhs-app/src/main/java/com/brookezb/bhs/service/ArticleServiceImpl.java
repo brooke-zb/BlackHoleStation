@@ -40,8 +40,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public PageInfo<List<Article>> getArticles(int page, int size, String title, Article.Status status) {
-        return null;
+    public List<Article> getArticles(Long uid, Long cid, Article.Status status) {
+        return articleMapper.selectAllByIdList(articleMapper.selectAll(uid, cid, status));
     }
 
     @Override
@@ -71,6 +71,11 @@ public class ArticleServiceImpl implements ArticleService {
             throw new NotFoundException("文章不存在");
         }
         articleMapper.update(article);
+
+        // 更新标签
+        tagMapper.insertList(article.getTags());
+        articleMapper.deleteTagsNotInList(article.getAid(), article.getTags());
+        articleMapper.insertTags(article.getAid(), tagMapper.selectAllByList(article.getTags()));
     }
 
     @Override

@@ -34,7 +34,7 @@
     </insert>
 
     <insert id="insertTags">
-        insert into bhs_tag_relation(aid, tid)
+        insert ignore into bhs_tag_relation(aid, tid)
         values
         <foreach collection="tags" item="tag" separator=",">
             (#{aid}, #{tag.tid})
@@ -64,77 +64,45 @@
         delete
         from bhs_tag_relation
         where aid = #{aid}
-        and tid in
+          and tid in
         (select tid from bhs_tag where name not in
         <foreach collection="tags" item="tag" open="(" close=")" separator=",">
-            #{tag}
+            #{tag.name}
         </foreach>)
     </delete>
 
     <select id="selectById" resultMap="articleMap">
-        select ba.*, bc.name, bu.name as username, md5(bu.mail) as avatar
+        select ba.*,
+               bc.name,
+               bu.name      as username,
+               md5(bu.mail) as avatar
         from bhs_article ba
                  inner join bhs_category bc on ba.cid = bc.cid
                  inner join bhs_user bu on ba.uid = bu.uid
-        where aid = #{aid}
+        where ba.aid = #{aid}
     </select>
 
     <select id="selectAll" resultMap="articleMap">
-        select ba.*, bc.name, bu.name as username
-        <if test="hashMail">
-            , md5(bu.mail) as avatar
-        </if>
-        from bhs_article ba
-        inner join bhs_category bc on ba.cid = bc.cid
-        inner join bhs_user bu on ba.uid = bu.uid
-    </select>
-
-    <select id="selectAllByStatus" resultMap="articleMap">
-        select ba.*, bc.name, bu.name as username
-        <if test="hashMail">
-            , md5(bu.mail) as avatar
-        </if>
-        from bhs_article ba
-        inner join bhs_category bc on ba.cid = bc.cid
-        inner join bhs_user bu on ba.uid = bu.uid
-        where status = #{status}
-    </select>
-
-    <select id="selectAllByCategoryId" resultMap="articleMap">
-        select ba.*, bc.name, bu.name as username
-        <if test="hashMail">
-            , md5(bu.mail) as avatar
-        </if>
-        from bhs_article ba
-        inner join bhs_category bc on ba.cid = bc.cid
-        inner join bhs_user bu on ba.uid = bu.uid
-        where ba.cid = #{cid}
-    </select>
-
-    <select id="selectAllByUserId" resultMap="articleMap">
-        select ba.*, bc.name, bu.name as username
-        <if test="hashMail">
-            , md5(bu.mail) as avatar
-        </if>
-        from bhs_article ba
-        inner join bhs_category bc on ba.cid = bc.cid
-        inner join bhs_user bu on ba.uid = bu.uid
-        where bu.uid = #{uid}
+        select aid
+        from bhs_article
+        <where>
+            <if test="cid != null">
+                cid = #{cid}
+            </if>
+            <if test="uid != null">
+                and uid = #{uid}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
     </select>
 
     <select id="selectAllByTagName" resultMap="articleMap">
-        select ba.*, bc.name, bu.name as username
-        <if test="hashMail">
-            , md5(bu.mail) as avatar
-        </if>
-        from bhs_article ba
-        inner join bhs_category bc on ba.cid = bc.cid
-        inner join bhs_user bu on ba.uid = bu.uid
-        where aid in
-        (select aid
-        from bhs_tag_relation
-        inner join bhs_tag bt on bhs_tag_relation.tid = bt.tid
-        where name = #{name})
+        select btr.aid
+        from bhs_tag_relation btr
+                 inner join bhs_tag bt on btr.tid = bt.tid
+        where name = #{name}
     </select>
 
     <select id="selectCountByCategoryId" resultType="java.lang.Integer">
@@ -154,5 +122,19 @@
         from bhs_user bu
                  left join bhs_article ba on bu.uid = ba.uid
         where ba.aid = #{aid}
+    </select>
+
+    <select id="selectAllByIdList" resultType="com.brookezb.bhs.model.Article">
+        select ba.*,
+               bc.name,
+               bu.name      as username,
+               md5(bu.mail) as avatar
+        from bhs_article ba
+                 inner join bhs_category bc on ba.cid = bc.cid
+                 inner join bhs_user bu on ba.uid = bu.uid
+        where aid in
+        <foreach collection="aids" item="aid" open="(" close=")">
+            #{aid}
+        </foreach>
     </select>
 </mapper>

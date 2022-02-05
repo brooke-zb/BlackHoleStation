@@ -15,15 +15,11 @@ import java.util.List;
 public interface ArticleMapper {
     Article selectById(Long aid);
 
-    List<Article> selectAll(boolean hashMail);
+    List<Long> selectAll(@Param("cid") Long cid, @Param("uid") Long uid, @Param("status") Article.Status status);
 
-    List<Article> selectAllByStatus(@Param("status") Article.Status status, @Param("hashMail") boolean hashMail);
+    List<Long> selectAllByTagName(@Param("name") String name, @Param("status") Article.Status status);
 
-    List<Article> selectAllByCategoryId(@Param("cid")Long cid, @Param("hashMail") boolean hashMail);
-
-    List<Article> selectAllByUserId(@Param("uid")Long uid, @Param("hashMail") boolean hashMail);
-
-    List<Article> selectAllByTagName(@Param("name")String name, @Param("hashMail") boolean hashMail);
+    List<Article> selectAllByIdList(List<Long> aids);
 
     Integer selectCountByCategoryId(Long cid);
 
@@ -39,5 +35,5 @@ public interface ArticleMapper {
 
     int delete(Long aid);
 
-    int deleteTagsNotInList(@Param("aid") Long aid, @Param("tags") List<String> tags);
+    int deleteTagsNotInList(@Param("aid") Long aid, @Param("tags") List<Tag> tags);
 }

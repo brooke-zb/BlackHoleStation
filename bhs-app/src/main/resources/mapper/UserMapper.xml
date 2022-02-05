@@ -63,19 +63,28 @@
         where uid = #{uid}
     </select>
 
-    <select id="selectAll" resultMap="userMap">
+    <select id="selectAll" resultType="long">
+        select uid
+        from bhs_user
+        <where>
+            <if test="username != null">
+                and name like concat('%', #{username}, '%')
+            </if>
+            <if test="enabled != null">
+                and enabled = #{enabled}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAllByIdList" resultMap="userMap">
         select bu.*, br.name as rolename, brp.permission
         from bhs_user bu
                  inner join bhs_role br on bu.rid = br.rid
                  inner join bhs_role_permission brp on br.rid = brp.rid
-        <where>
-            <if test="username != null">
-                and bu.name like concat('%', #{'%' + username}, '%')
-            </if>
-            <if test="enabled != null">
-                and bu.enabled = #{enabled}
-            </if>
-        </where>
+        where bu.uid in
+        <foreach collection="uids" item="uid" open="(" close=")">
+            #{uid}
+        </foreach>
     </select>
 
     <select id="selectByName" resultType="com.brookezb.bhs.model.User">
