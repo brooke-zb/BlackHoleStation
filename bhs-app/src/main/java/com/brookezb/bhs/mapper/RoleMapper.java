@@ -20,6 +20,8 @@ public interface RoleMapper {
 
     List<Role> selectAllByIdList(List<Long> rids);
 
+    Integer verifyRole(Long rid);
+
     int insert(Role role);
 
     int insertPermissionList(@Param("rid") Long rid, @Param("permissions") Set<String> permissions);

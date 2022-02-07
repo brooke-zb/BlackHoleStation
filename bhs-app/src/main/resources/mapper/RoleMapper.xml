@@ -54,10 +54,12 @@
         delete
         from bhs_role_permission
         where rid = #{rid}
-        and permission not in
-        <foreach collection="permissions" item="permission" open="(" close=")" separator=",">
-            #{permission}
-        </foreach>
+        <if test="@cn.hutool.core.collection.CollUtil@isNotEmpty(permissions)">
+            and permission not in
+            <foreach collection="permissions" item="permission" open="(" close=")" separator=",">
+                #{permission}
+            </foreach>
+        </if>
     </delete>
 
     <select id="selectById" resultMap="roleMap">
@@ -86,5 +88,11 @@
         <foreach collection="list" item="rid" open="(" close=")">
             #{rid}
         </foreach>
+    </select>
+
+    <select id="verifyRole" resultType="java.lang.Integer">
+        select rid
+        from bhs_role
+        where rid = #{rid}
     </select>
 </mapper>

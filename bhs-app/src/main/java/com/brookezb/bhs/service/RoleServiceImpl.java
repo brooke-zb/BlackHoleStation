@@ -40,8 +40,8 @@ public class RoleServiceImpl implements RoleService {
         if (roleMapper.insert(role) > 0) {
             Role newOne = roleMapper.selectByName(role.getName());
             if (newOne != null) {
+                if (role.getPermissions().isEmpty()) return;
                 roleMapper.insertPermissionList(newOne.getRid(), role.getPermissions());
-                return;
             }
             throw new InvalidException("未知错误，角色插入失败");
         }
@@ -54,9 +54,11 @@ public class RoleServiceImpl implements RoleService {
     @Override
     @Transactional
     public void update(Role role) {
-        if (roleMapper.selectById(role.getRid()) != null) {
+        if (roleMapper.verifyRole(role.getRid()) != null) {
             roleMapper.update(role);
             roleMapper.deletePermissionNotInList(role.getRid(), role.getPermissions());
+
+            if (role.getPermissions().isEmpty()) return;
             roleMapper.insertPermissionList(role.getRid(), role.getPermissions());
             return;
         }
