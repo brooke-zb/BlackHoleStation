@@ -1,6 +1,5 @@
 package com.brookezb.bhs.service;
 
-import com.github.pagehelper.PageInfo;
 import com.brookezb.bhs.model.Article;
 
 import java.util.List;

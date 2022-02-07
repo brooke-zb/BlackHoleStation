@@ -19,7 +19,7 @@
     <insert id="insertRelationByAid">
         insert ignore into bhs_tag_relation(aid, tid)
         values
-        <foreach collection="tags" item="tag" separator=",">
+        <foreach collection="list" item="tag" separator=",">
             (#{aid}, #{tag.tid})
         </foreach>
     </insert>
@@ -55,7 +55,7 @@
         delete
         from bhs_tag_relation
         where tid in
-        <foreach collection="tids" item="tid" open="(" close=")" separator=",">
+        <foreach collection="list" item="tid" open="(" close=")" separator=",">
             #{tid}
         </foreach>
     </delete>
@@ -81,7 +81,7 @@
         select *
         from bhs_tag
         where name in
-        <foreach collection="tags" item="tag" open="(" close=")" separator=",">
+        <foreach collection="list" item="tag" open="(" close=")" separator=",">
             #{tag.name}
         </foreach>
     </select>

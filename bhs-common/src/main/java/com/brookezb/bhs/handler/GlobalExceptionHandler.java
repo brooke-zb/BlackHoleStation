@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.brookezb.bhs.entity.R;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.ConstraintViolationException;
 
@@ -52,8 +53,8 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 返回400
-     * 处理参数校验异常
+     * 返回404
+     * 处理资源不存在异常
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
@@ -69,6 +70,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidException.class)
     public R<String> InvalidException(Exception ex) {
         return R.fail(ex.getMessage());
+    }
+
+    /**
+     * 返回404
+     * 处理找不到该接口情况
+     */
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public R<String> NoHandlerFoundException(Exception ex) {
+        return R.fail("接口不存在");
     }
 
     /**

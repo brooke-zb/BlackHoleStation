@@ -45,7 +45,7 @@
         delete
         from bhs_role_permission
         where rid in
-        <foreach collection="rids" item="rid" open="(" close=")" separator=",">
+        <foreach collection="list" item="rid" open="(" close=")" separator=",">
             #{rid}
         </foreach>
     </delete>
@@ -83,7 +83,7 @@
         from bhs_role br
                  inner join bhs_role_permission brp on br.rid = brp.rid
         where br.rid in
-        <foreach collection="rids" item="rid" open="(" close=")">
+        <foreach collection="list" item="rid" open="(" close=")">
             #{rid}
         </foreach>
     </select>

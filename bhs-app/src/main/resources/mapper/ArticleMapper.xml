@@ -133,7 +133,7 @@
                  inner join bhs_category bc on ba.cid = bc.cid
                  inner join bhs_user bu on ba.uid = bu.uid
         where aid in
-        <foreach collection="aids" item="aid" open="(" close=")">
+        <foreach collection="list" item="aid" open="(" close=")">
             #{aid}
         </foreach>
     </select>
