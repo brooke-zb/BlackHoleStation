@@ -29,9 +29,11 @@ public interface UserService {
 
     /**
      * 获取用户列表
+     * @param username 用户名
+     * @param enabled 用户状态
      * @return 用户列表
      */
-    List<User> selectAll(int page, String username, Boolean enabled);
+    List<User> selectAll(String username, Boolean enabled);
 
     /**
      * 生成免登录token
@@ -50,6 +52,8 @@ public interface UserService {
     void insert(User user);
 
     void update(User user);
+
+    void updatePassword(Long uid, String oldPassword, String newPassword);
 
     void updateStatus(Long uid, Boolean enabled);
 

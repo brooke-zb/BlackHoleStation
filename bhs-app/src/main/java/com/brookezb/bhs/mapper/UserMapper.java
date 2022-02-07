@@ -27,6 +27,8 @@ public interface UserMapper {
 
     int update(User user);
 
+    int updatePassword(@Param("uid") Long uid, @Param("password") String password);
+
     int updateStatus(@Param("uid") Long uid, @Param("enabled") Boolean enabled);
 
     int delete(Long uid);

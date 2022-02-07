@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> selectAll(int page, String username, Boolean enabled) {
+    public List<User> selectAll(String username, Boolean enabled) {
         return userMapper.selectAllByIdList(userMapper.selectAll(username, enabled));
     }
 
@@ -109,6 +109,19 @@ public class UserServiceImpl implements UserService {
             throw new InvalidException("更新用户信息失败");
         }
         throw new NotFoundException("没有找到该用户");
+    }
+
+    @Override
+    @CacheEvict(key = "#uid")
+    public void updatePassword(Long uid, String oldPassword, String newPassword) {
+        User user = userMapper.selectById(uid);
+        if (user == null) {
+            throw new NotFoundException("没有找到该用户");
+        }
+        if (!CryptUtils.BCrypt.matches(oldPassword, user.getPassword())) {
+            throw new AuthenticationException("旧密码错误");
+        }
+        userMapper.updatePassword(uid, CryptUtils.BCrypt.encode(newPassword));
     }
 
     @Override

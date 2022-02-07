@@ -1,5 +1,8 @@
 package com.brookezb.bhs.controller.admin;
 
+import com.brookezb.bhs.validation.UserGroup;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +40,8 @@ public class UserController {
             @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") Integer page,
             @RequestParam(required = false) String username,
             @RequestParam(required = false) Boolean enabled) {
-        return R.success(userService.selectAll(page, username, enabled));
+        PageHelper.startPage(page, 10);
+        return R.success(PageInfo.of(userService.selectAll(username, enabled)));
     }
 
     /**
@@ -47,7 +51,7 @@ public class UserController {
      * @return 新增结果
      */
     @PostMapping("")
-    public R<?> addUser(@RequestBody User user) {
+    public R<?> addUser(@RequestBody @Validated(UserGroup.Add.class) User user) {
         userService.insert(user);
         return R.success(null, "添加用户成功");
     }
@@ -59,7 +63,7 @@ public class UserController {
      * @return 更新结果
      */
     @PutMapping("")
-    public R<?> updateUser(@RequestBody User user) {
+    public R<?> updateUser(@RequestBody @Validated(UserGroup.Update.class) User user) {
         userService.update(user);
         return R.success(null, "更新用户成功");
     }

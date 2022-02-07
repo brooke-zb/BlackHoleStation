@@ -2,6 +2,7 @@ package com.brookezb.bhs.controller;
 
 import com.brookezb.bhs.annotation.RequireAuth;
 import com.brookezb.bhs.constant.AppConstants;
+import com.brookezb.bhs.entity.UpdatePasswordBody;
 import com.brookezb.bhs.exception.AuthenticationException;
 import com.brookezb.bhs.model.User;
 import lombok.AllArgsConstructor;
@@ -115,5 +116,12 @@ public class AccountController {
         user.setRole(null);
         userService.update(user);
         return R.success(null, "信息更新成功");
+    }
+
+    @RequireAuth
+    @PatchMapping("/password")
+    public R<?> updatePassword(@SessionAttribute(value = AppConstants.SESSION_USER_KEY, required = false) Long uid, @RequestBody UpdatePasswordBody body) {
+        userService.updatePassword(uid, body.getOldPassword(), body.getNewPassword());
+        return R.success(null, "密码更新成功");
     }
 }
