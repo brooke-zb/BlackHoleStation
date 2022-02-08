@@ -1,7 +1,6 @@
 package com.brookezb.bhs.controller.admin;
 
 import com.brookezb.bhs.model.Role;
-import com.brookezb.bhs.validation.RoleGroup;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
@@ -40,13 +39,13 @@ public class RoleController {
     }
 
     @PostMapping("")
-    public R<?> addRole(@RequestBody @Validated(RoleGroup.Add.class) Role role) {
+    public R<?> addRole(@RequestBody @Validated(Role.Add.class) Role role) {
         roleService.insert(role);
         return R.success(null, "添加角色成功");
     }
 
     @PutMapping("")
-    public R<?> updateRole(@RequestBody @Validated(RoleGroup.Update.class) Role role) {
+    public R<?> updateRole(@RequestBody @Validated(Role.Update.class) Role role) {
         roleService.update(role);
         return R.success(null, "更新角色成功");
     }

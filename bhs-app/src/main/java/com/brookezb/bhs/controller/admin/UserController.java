@@ -1,6 +1,5 @@
 package com.brookezb.bhs.controller.admin;
 
-import com.brookezb.bhs.validation.UserGroup;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
@@ -56,7 +55,7 @@ public class UserController {
      * @return 新增结果
      */
     @PostMapping("")
-    public R<?> addUser(@RequestBody @Validated(UserGroup.Add.class) User user) {
+    public R<?> addUser(@RequestBody @Validated(User.Add.class) User user) {
         userService.insert(user);
         return R.success(null, "添加用户成功");
     }
@@ -68,7 +67,7 @@ public class UserController {
      * @return 更新结果
      */
     @PutMapping("")
-    public R<?> updateUser(@RequestBody @Validated(UserGroup.Update.class) User user) {
+    public R<?> updateUser(@RequestBody @Validated(User.Update.class) User user) {
         userService.update(user);
         return R.success(null, "更新用户成功");
     }
