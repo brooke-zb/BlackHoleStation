@@ -84,7 +84,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public void insert(User user) {
         if (userMapper.selectByName(user.getName()) != null) {
-            throw new InvalidException("该用户名已存在");
+            throw new InvalidException("该用户名已被注册");
+        }
+        if (userMapper.verifyMail(user.getMail()) != null) {
+            throw new InvalidException("该邮箱已被注册");
         }
         if (user.getRole() == null || user.getRole().getRid() == null) {
             throw new InvalidException("未选择角色");

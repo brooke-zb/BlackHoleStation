@@ -59,7 +59,7 @@
     </select>
 
     <select id="verifyCategory" resultType="java.lang.Integer">
-        select cid
+        select 1
         from bhs_category
         where cid = #{cid}
     </select>

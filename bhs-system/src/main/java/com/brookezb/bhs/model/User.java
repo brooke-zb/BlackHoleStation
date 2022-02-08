@@ -12,6 +12,7 @@ import javax.validation.groups.Default;
  * 用户表
  */
 @Data
+@JsonIgnoreProperties(value = "password", allowSetters = true)
 public class User {
     /**
      * 用户id
@@ -36,7 +37,6 @@ public class User {
      * 密码
      */
     @NotNull(message = "用户密码不能为空", groups = Add.class)
-    @JsonIgnoreProperties(allowSetters = true)
     private String password;
 
     /**

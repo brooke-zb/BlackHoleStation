@@ -100,7 +100,7 @@
     </select>
 
     <select id="verifyComment" resultType="java.lang.Integer">
-        select coid
+        select 1
         from bhs_comment
         where coid = #{coid}
     </select>

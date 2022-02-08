@@ -111,12 +111,6 @@
         where cid = #{cid}
     </select>
 
-    <select id="verifyArticle" resultType="java.lang.Integer">
-        select aid
-        from bhs_article
-        where aid = #{aid}
-    </select>
-
     <select id="selectUserById" resultType="com.brookezb.bhs.model.User">
         select bu.*
         from bhs_user bu
@@ -136,5 +130,11 @@
         <foreach collection="list" item="aid" open="(" close=")" separator=",">
             #{aid}
         </foreach>
+    </select>
+
+    <select id="verifyArticle" resultType="java.lang.Integer">
+        select 1
+        from bhs_article
+        where aid = #{aid}
     </select>
 </mapper>

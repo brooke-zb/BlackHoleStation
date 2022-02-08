@@ -91,7 +91,7 @@
     </select>
 
     <select id="verifyRole" resultType="java.lang.Integer">
-        select rid
+        select 1
         from bhs_role
         where rid = #{rid}
     </select>

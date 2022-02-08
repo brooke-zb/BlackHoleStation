@@ -23,6 +23,8 @@ public interface UserMapper {
 
     Integer verifyUser(Long uid);
 
+    Integer verifyMail(String mail);
+
     int insert(User user);
 
     int update(User user);
