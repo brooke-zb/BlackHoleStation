@@ -89,10 +89,11 @@ public class UserServiceImpl implements UserService {
         if (user.getRole() == null || user.getRole().getRid() == null) {
             throw new InvalidException("未选择角色");
         }
-        if (roleMapper.selectById(user.getRole().getRid()) == null) {
+        if (roleMapper.verifyRole(user.getRole().getRid()) == null) {
             throw new InvalidException("未找到该角色");
         }
 
+        user.setPassword(CryptUtils.BCrypt.encode(user.getPassword()));
         if (userMapper.insert(user) > 0) {
             return;
         }
