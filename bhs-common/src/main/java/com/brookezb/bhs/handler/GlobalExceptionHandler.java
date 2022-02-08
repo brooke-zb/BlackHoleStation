@@ -1,15 +1,16 @@
 package com.brookezb.bhs.handler;
 
+import com.brookezb.bhs.entity.R;
 import com.brookezb.bhs.exception.AuthenticationException;
 import com.brookezb.bhs.exception.ForbiddenException;
 import com.brookezb.bhs.exception.InvalidException;
 import com.brookezb.bhs.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import com.brookezb.bhs.entity.R;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.validation.ConstraintViolationException;
@@ -47,8 +48,11 @@ public class GlobalExceptionHandler {
      * 处理参数校验异常
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ConstraintViolationException.class)
+    @ExceptionHandler({BindException.class, ConstraintViolationException.class})
     public R<String> ConstraintViolationException(Exception ex) {
+        if (ex instanceof BindException bex) {
+            return R.fail(bex.getBindingResult().getFieldError().getDefaultMessage());
+        }
         return R.fail(ex.getMessage().substring(ex.getMessage().indexOf(": ") + 2));
     }
 
@@ -87,7 +91,7 @@ public class GlobalExceptionHandler {
      * 处理其他异常
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(RuntimeException.class)
+    @ExceptionHandler(Exception.class)
     public R<String> RuntimeException(Exception ex) {
         log.error(ex.getMessage(), ex);
         return R.fail("操作出现异常，执行失败");
