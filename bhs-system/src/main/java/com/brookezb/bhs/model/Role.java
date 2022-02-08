@@ -21,7 +21,7 @@ public class Role {
     /**
      * 角色名
      */
-    @NotNull(message = "角色名不能为空", groups = {RoleGroup.Add.class, RoleGroup.Update.class})
+    @NotNull(message = "角色名不能为空", groups = {RoleGroup.Add.class})
     private String name;
 
     /**

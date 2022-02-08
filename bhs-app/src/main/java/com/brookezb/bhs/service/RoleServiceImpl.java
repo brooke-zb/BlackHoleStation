@@ -40,8 +40,10 @@ public class RoleServiceImpl implements RoleService {
         if (roleMapper.insert(role) > 0) {
             Role newOne = roleMapper.selectByName(role.getName());
             if (newOne != null) {
-                if (role.getPermissions().isEmpty()) return;
-                roleMapper.insertPermissionList(newOne.getRid(), role.getPermissions());
+                if (!role.getPermissions().isEmpty()) {
+                    roleMapper.insertPermissionList(newOne.getRid(), role.getPermissions());
+                }
+                return;
             }
             throw new InvalidException("未知错误，角色插入失败");
         }
@@ -55,11 +57,14 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     public void update(Role role) {
         if (roleMapper.verifyRole(role.getRid()) != null) {
-            roleMapper.update(role);
-            roleMapper.deletePermissionNotInList(role.getRid(), role.getPermissions());
+            if (role.getName() != null) {
+                roleMapper.update(role);
+            }
 
-            if (role.getPermissions().isEmpty()) return;
-            roleMapper.insertPermissionList(role.getRid(), role.getPermissions());
+            roleMapper.deletePermissionNotInList(role.getRid(), role.getPermissions());
+            if (!role.getPermissions().isEmpty()) {
+                roleMapper.insertPermissionList(role.getRid(), role.getPermissions());
+            }
             return;
         }
         throw new NotFoundException("未找到该角色");
@@ -71,7 +76,7 @@ public class RoleServiceImpl implements RoleService {
         if (userMapper.selectCountByRoleId(rid) > 0) {
             throw new InvalidException("该角色下存在用户，无法删除");
         }
-        if (roleMapper.selectById(rid) == null) {
+        if (roleMapper.verifyRole(rid) == null) {
             throw new NotFoundException("未找到该角色");
         }
         roleMapper.deletePermissionsById(rid);

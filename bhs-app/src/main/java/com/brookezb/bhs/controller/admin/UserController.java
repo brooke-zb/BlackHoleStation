@@ -11,6 +11,7 @@ import com.brookezb.bhs.model.User;
 import com.brookezb.bhs.service.UserService;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 
 /**
  * @author brooke_zb
@@ -38,10 +39,14 @@ public class UserController {
     @GetMapping("")
     public R<?> getUserList(
             @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") Integer page,
+            @RequestParam(defaultValue = "10") @Pattern(regexp = "^[123]0$", message = "页数需为10/20/30") String size,
             @RequestParam(required = false) String username,
-            @RequestParam(required = false) Boolean enabled) {
-        PageHelper.startPage(page, 10);
-        return R.success(PageInfo.of(userService.selectAll(username, enabled)));
+            @RequestParam(required = false) Boolean enabled
+    ) {
+        PageHelper.startPage(page, Integer.parseInt(size));
+        return R.success(
+                PageInfo.of(userService.selectAll(username, enabled))
+        );
     }
 
     /**
