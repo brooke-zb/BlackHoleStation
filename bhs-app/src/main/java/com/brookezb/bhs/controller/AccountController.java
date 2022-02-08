@@ -6,6 +6,7 @@ import com.brookezb.bhs.entity.UpdatePasswordBody;
 import com.brookezb.bhs.exception.AuthenticationException;
 import com.brookezb.bhs.model.User;
 import lombok.AllArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.brookezb.bhs.entity.LoginBody;
 import com.brookezb.bhs.entity.R;
@@ -34,7 +35,7 @@ public class AccountController {
      * @return 登录结果
      */
     @PostMapping("/token")
-    public R<?> login(@RequestBody LoginBody loginBody, HttpSession session, HttpServletResponse response) {
+    public R<?> login(@RequestBody @Validated LoginBody loginBody, HttpSession session, HttpServletResponse response) {
         // 获取用户
         User user = userService.checkUser(loginBody.getUsername(), loginBody.getPassword());
         session.setAttribute(AppConstants.SESSION_USER_KEY, user.getUid());
@@ -120,7 +121,7 @@ public class AccountController {
 
     @RequireAuth
     @PatchMapping("/password")
-    public R<?> updatePassword(@SessionAttribute(value = AppConstants.SESSION_USER_KEY, required = false) Long uid, @RequestBody UpdatePasswordBody body) {
+    public R<?> updatePassword(@SessionAttribute(value = AppConstants.SESSION_USER_KEY, required = false) Long uid, @RequestBody @Validated UpdatePasswordBody body) {
         userService.updatePassword(uid, body.getOldPassword(), body.getNewPassword());
         return R.success(null, "密码更新成功");
     }
