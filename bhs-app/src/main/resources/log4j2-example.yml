@@ -1,0 +1,48 @@
+Configuration:
+  status: warn
+
+  # 配置变量
+  properties:
+    property:
+      - name: log.path
+        value: /var/log/bhs # yourpath to save log here
+
+  appenders:
+    # 控制台
+    Console:
+      name: CONSOLE
+      target: SYSTEM_OUT
+      PatternLayout:
+        pattern: "%clr{%d{HH:mm:ss,SSS}}{faint} %clr{%5p} %clr{%pid}{magenta} - %clr{[%15.15t]}{faint} %clr{%-40.40logger{39}}{cyan} : %m%n"
+
+    # 日志文件
+    RollingFile:
+      - name: ROLLING_FILE
+        ignoreExceptions: false
+        fileName: ${log.path}/api/latest.log
+        filePattern: ${log.path}/api/%d{yyyy-MM-dd}-%i.log.gz
+        PatternLayout:
+          pattern: "time: %d{DEFAULT}:%n%mcause: %ex{1}%n%n"
+        Policies:
+          TimeBasedTriggeringPolicy:
+            interval: 24
+            modulate: true
+          SizeBasedTriggeringPolicy:
+            size: "100 MB"
+        DefaultRolloverStrategy:
+          max: 60
+
+  Loggers:
+    # 根日志
+    Root:
+      level: info
+      AppenderRef:
+        - ref: CONSOLE
+
+    Logger:
+      # 接口日志
+      - name: api
+        additivity: false
+        level: info
+        AppenderRef:
+          - ref: ROLLING_FILE

@@ -32,7 +32,8 @@
         <jackson.version>2.13.1</jackson.version>
         <caffeine.version>3.0.5</caffeine.version>
         <hutool.version>5.7.20</hutool.version>
-        <validator.version>7.0.2.Final</validator.version>
+        <validator.version>6.2.1.Final</validator.version>
+        <disruptor.version>3.4.4</disruptor.version>
 
     </properties>
 
@@ -45,6 +46,18 @@
                 <version>${spring-boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+                <version>${spring-boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-logging</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
 
             <!-- Mysql CJ -->
@@ -103,6 +116,13 @@
                 <version>${jackson.version}</version>
             </dependency>
 
+            <!-- Jackson Yaml -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.dataformat</groupId>
+                <artifactId>jackson-dataformat-yaml</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
             <!-- Caffeine Cache -->
             <dependency>
                 <groupId>com.github.ben-manes.caffeine</groupId>
@@ -127,8 +147,15 @@
             <!-- Bean Validation -->
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
-                <artifactId>hibernate-validator-cdi</artifactId>
+                <artifactId>hibernate-validator</artifactId>
                 <version>${validator.version}</version>
+            </dependency>
+
+            <!-- Disruptor -->
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${disruptor.version}</version>
             </dependency>
 
         </dependencies>

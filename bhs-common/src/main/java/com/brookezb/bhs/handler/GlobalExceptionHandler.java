@@ -5,7 +5,6 @@ import com.brookezb.bhs.exception.AuthenticationException;
 import com.brookezb.bhs.exception.ForbiddenException;
 import com.brookezb.bhs.exception.InvalidException;
 import com.brookezb.bhs.exception.NotFoundException;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,7 +19,6 @@ import javax.validation.ConstraintViolationException;
  *
  * @author brooke_zb
  */
-@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     /**
@@ -82,7 +80,7 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
-    public R<String> NoHandlerFoundException(Exception ex) {
+    public R<String> NoHandlerFoundException() {
         return R.fail("接口不存在");
     }
 
@@ -92,8 +90,7 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public R<String> RuntimeException(Exception ex) {
-        log.error(ex.getMessage(), ex);
+    public R<String> RuntimeException() {
         return R.fail("操作出现异常，执行失败");
     }
 }
