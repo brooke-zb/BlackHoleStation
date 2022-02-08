@@ -60,5 +60,7 @@ mybatis:
 csrf:
   path:
     include:
-      - /article/**
+      - /account/**
       - /admin/**
+    exclude:
+      - /account/token

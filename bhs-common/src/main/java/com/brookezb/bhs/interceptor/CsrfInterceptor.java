@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 @Slf4j
 public class CsrfInterceptor implements HandlerInterceptor {
     @Override
-    public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) {
         // 不拦截GET和OPTIONS请求
         if (request.getMethod().equals("GET") || request.getMethod().equals("OPTIONS")) {
             return true;
