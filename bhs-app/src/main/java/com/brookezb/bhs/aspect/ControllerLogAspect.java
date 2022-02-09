@@ -54,7 +54,7 @@ public class ControllerLogAspect {
                     ip: {}
                     function: {}
                     args: {}
-                    """, request.getMethod(), request.getRequestURI(), ip, method, joinPoint.getArgs(), ex);
+                    """, request.getMethod(), request.getRequestURI(), ip, method, joinPoint.getArgs());
             throw ex;
         }
     }
