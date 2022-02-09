@@ -1,5 +1,6 @@
 package com.brookezb.bhs.controller.admin;
 
+import com.brookezb.bhs.annotation.RequirePermission;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{id:\\d+}")
+    @RequirePermission("USER:GET")
     public R<?> getUser(@PathVariable Long id) {
         return R.success(userService.selectById(id));
     }
@@ -36,6 +38,7 @@ public class UserController {
      * @return 查询结果
      */
     @GetMapping("")
+    @RequirePermission("USER:GET")
     public R<?> getUserList(
             @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") Integer page,
             @RequestParam(defaultValue = "10") @Pattern(regexp = "^[123]0$", message = "页数需为10/20/30") String size,
@@ -55,6 +58,7 @@ public class UserController {
      * @return 新增结果
      */
     @PostMapping("")
+    @RequirePermission("USER:ADD")
     public R<?> addUser(@RequestBody @Validated(User.Add.class) User user) {
         userService.insert(user);
         return R.success(null, "添加用户成功");
@@ -67,6 +71,7 @@ public class UserController {
      * @return 更新结果
      */
     @PutMapping("")
+    @RequirePermission("USER:UPDATE")
     public R<?> updateUser(@RequestBody @Validated(User.Update.class) User user) {
         userService.update(user);
         return R.success(null, "更新用户成功");
@@ -78,6 +83,7 @@ public class UserController {
      * @param id 用户id
      * @return 删除结果
      */
+    @RequirePermission("USER:DELETE")
     @DeleteMapping("/{id:\\d+}")
     public R<?> deleteUser(@PathVariable Long id) {
         userService.delete(id);
@@ -91,6 +97,7 @@ public class UserController {
      * @param status 状态
      * @return 更新结果
      */
+    @RequirePermission("USER:UPDATE")
     @PatchMapping("/{id:\\d+}/status/{status:^true$|^false$}")
     public R<?> updateStatus(@PathVariable Long id, @PathVariable Boolean status) {
         userService.updateStatus(id, status);

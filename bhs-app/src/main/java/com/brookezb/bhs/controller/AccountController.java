@@ -119,6 +119,13 @@ public class AccountController {
         return R.success(null, "信息更新成功");
     }
 
+    /**
+     * 更新用户密码
+     *
+     * @param uid  用户id
+     * @param body 密码信息
+     * @return 更新结果
+     */
     @RequireAuth
     @PatchMapping("/password")
     public R<?> updatePassword(@SessionAttribute(value = AppConstants.SESSION_USER_KEY, required = false) Long uid, @RequestBody @Validated UpdatePasswordBody body) {
