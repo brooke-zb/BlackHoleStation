@@ -22,6 +22,8 @@ import com.brookezb.bhs.utils.RedisUtils;
         MailUtils.class,
         AuthenticationAspect.class,
         WebMvcConfig.class,
+        TaskPoolConfig.class,
+        BeanValidatorConfig.class,
         GlobalExceptionHandler.class
 })
 @EnableConfigurationProperties({CsrfPathProperties.class, OssProperties.class, MailProperties.class})
