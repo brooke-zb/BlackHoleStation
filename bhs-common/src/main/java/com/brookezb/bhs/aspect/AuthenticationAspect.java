@@ -83,7 +83,7 @@ public class AuthenticationAspect {
         if (anno == null) {
             return false;
         }
-        String[] requirePermissions = anno.values();
+        String[] requirePermissions = anno.value();
         RequirePermission.Relation relation = anno.relation();
 
         // 获取session中的用户id

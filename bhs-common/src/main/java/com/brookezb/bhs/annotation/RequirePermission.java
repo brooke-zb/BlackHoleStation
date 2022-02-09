@@ -16,7 +16,7 @@ public @interface RequirePermission {
     /**
      * 需要的权限名
      */
-    String[] values();
+    String[] value();
 
     /**
      * 权限关系，默认为or
