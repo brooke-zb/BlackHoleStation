@@ -7,7 +7,9 @@ import com.brookezb.bhs.exception.InvalidException;
 import com.brookezb.bhs.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -51,6 +53,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({BindException.class, ConstraintViolationException.class})
     public R<String> ConstraintViolationException(Exception ex) {
         if (ex instanceof BindException bex) {
+            assert bex.getBindingResult().getFieldError() != null;
             return R.fail(bex.getBindingResult().getFieldError().getDefaultMessage());
         }
         return R.fail(ex.getMessage().substring(ex.getMessage().indexOf(": ") + 2));
@@ -81,9 +84,19 @@ public class GlobalExceptionHandler {
      * 处理找不到该接口情况
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler({NoHandlerFoundException.class, NoSuchMethodException.class})
+    @ExceptionHandler({NoHandlerFoundException.class, HttpRequestMethodNotSupportedException.class})
     public R<String> NoHandlerFoundException() {
         return R.fail("接口不存在");
+    }
+
+    /**
+     * 返回400
+     * 处理参数缺失异常
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(HttpMessageConversionException.class)
+    public R<String> HttpMessageConversionException() {
+        return R.fail("接口必要参数缺失");
     }
 
     /**

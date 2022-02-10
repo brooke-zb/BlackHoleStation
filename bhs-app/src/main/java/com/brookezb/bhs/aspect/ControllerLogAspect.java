@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Aspect
 @Component
-@Slf4j(topic = "api")
+@Slf4j(topic = "api-log")
 public class ControllerLogAspect {
     @Pointcut("execution(public * com.brookezb.bhs.controller..*.*(..))")
     public void controller() {}

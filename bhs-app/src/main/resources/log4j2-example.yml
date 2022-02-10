@@ -37,7 +37,7 @@ Configuration:
         fileName: ${log.path}/api-error/latest.log
         filePattern: ${log.path}/api-error/%d{yyyy-MM-dd}-%i.log.gz
         PatternLayout:
-          pattern: "%d{DEFAULT}: %m%ex%n%n"
+          pattern: "%d{DEFAULT}: %m%ex%n"
         Policies:
           SizeBasedTriggeringPolicy:
             size: "128 MB"
