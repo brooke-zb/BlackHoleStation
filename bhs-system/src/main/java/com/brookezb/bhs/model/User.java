@@ -1,11 +1,13 @@
 package com.brookezb.bhs.model;
 
+import com.brookezb.bhs.constant.RegexConstants;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.groups.Default;
 
 /**
@@ -43,6 +45,7 @@ public class User {
      * 邮箱
      */
     @NotNull(message = "用户邮箱不能为空", groups = Add.class)
+    @Pattern(regexp = RegexConstants.MAIL, message = "用户邮箱不符合格式", groups = {Add.class, Update.class})
     private String mail;
 
     /**
@@ -61,6 +64,9 @@ public class User {
      */
     private boolean enabled;
 
-    public interface Add extends Default {}
-    public interface Update extends Default {}
+    public interface Add extends Default {
+    }
+
+    public interface Update extends Default {
+    }
 }

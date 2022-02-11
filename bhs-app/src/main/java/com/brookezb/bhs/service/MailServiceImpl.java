@@ -2,6 +2,7 @@ package com.brookezb.bhs.service;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.URLUtil;
+import com.brookezb.bhs.constant.MailConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -35,8 +36,8 @@ public class MailServiceImpl implements MailService {
     @Override
     public void sendReplyMail(String to, String nickname, String link) {
         Map<String, String> map = new HashMap<>(8);
-        map.put(templateKeyword[0], "回复通知");
-        map.put(templateKeyword[1], URLUtil.encode(nickname) + "在黑洞空间站回复了您，点击下方链接查看！");
+        map.put(templateKeyword[0], MailConstants.Reply.TITLE);
+        map.put(templateKeyword[1], String.format(MailConstants.Reply.CONTENT, URLUtil.encode(nickname)));
         map.put(templateKeyword[2], link);
         map.put(templateKeyword[3], adminMail);
 
@@ -47,8 +48,8 @@ public class MailServiceImpl implements MailService {
     @Override
     public void sendAuditMail(String link) {
         Map<String, String> map = new HashMap<>(8);
-        map.put(templateKeyword[0], "审核通知");
-        map.put(templateKeyword[1], "您在黑洞空间站有新的审核，点击下方链接查看！");
+        map.put(templateKeyword[0], MailConstants.Audit.TITLE);
+        map.put(templateKeyword[1], MailConstants.Audit.CONTENT);
         map.put(templateKeyword[2], link);
         map.put(templateKeyword[3], adminMail);
 

@@ -1,6 +1,7 @@
 package com.brookezb.bhs.controller.admin;
 
 import com.brookezb.bhs.annotation.RequirePermission;
+import com.brookezb.bhs.constant.RegexConstants;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
@@ -41,7 +42,7 @@ public class UserController {
     @RequirePermission("USER:GET")
     public R<?> getUserList(
             @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") Integer page,
-            @RequestParam(defaultValue = "10") @Pattern(regexp = "^[123]0$", message = "页数需为10/20/30") String size,
+            @RequestParam(defaultValue = "10") @Pattern(regexp = RegexConstants.PAGE, message = "页数需为10/20/30") String size,
             @RequestParam(required = false) String username,
             @RequestParam(required = false) Boolean enabled
     ) {
