@@ -53,6 +53,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @NonNull
     @Override
     @Cacheable(key = "#uid")
     public User selectById(Long uid) {
@@ -135,6 +136,11 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("没有找到该用户");
         }
         userMapper.updateStatus(uid, enabled);
+
+        // 封禁用户后删除登录状态
+        if (!enabled) {
+
+        }
     }
 
     @Override

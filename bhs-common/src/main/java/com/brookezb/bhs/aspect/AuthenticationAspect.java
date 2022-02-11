@@ -6,6 +6,7 @@ import com.brookezb.bhs.annotation.RequirePermission;
 import com.brookezb.bhs.constant.AppConstants;
 import com.brookezb.bhs.exception.AuthenticationException;
 import com.brookezb.bhs.exception.ForbiddenException;
+import com.brookezb.bhs.exception.NotFoundException;
 import com.brookezb.bhs.model.User;
 import com.brookezb.bhs.service.UserService;
 import com.brookezb.bhs.utils.ServletUtils;
@@ -87,16 +88,9 @@ public class AuthenticationAspect {
 
         // 获取session中的用户id
         HttpSession session = ServletUtils.getSession();
-        Long uid = (Long) session.getAttribute(AppConstants.SESSION_USER_KEY);
-        if (uid == null) {
-            throw new AuthenticationException("请登录后再操作");
-        }
 
         // 获取用户信息
-        User currentUser = userService.selectById(uid);
-        if (currentUser == null || !currentUser.isEnabled()) {
-            throw new AuthenticationException("未找到用户或用户已被禁用");
-        }
+        User currentUser = checkUserFromSession(session);
 
         // 判断权限
         if (relation == RequirePermission.Relation.OR) {
@@ -126,12 +120,8 @@ public class AuthenticationAspect {
             return false;
         }
 
-        // 获取session中的权限信息
-        HttpSession session = ServletUtils.getSession();
-        Long uid = (Long) session.getAttribute(AppConstants.SESSION_USER_KEY);
-        if (uid == null) {
-            throw new AuthenticationException("请登录后再操作");
-        }
+        // 获取session中的登录信息
+        checkUserFromSession(ServletUtils.getSession());
         return true;
     }
 
@@ -142,5 +132,32 @@ public class AuthenticationAspect {
      */
     public boolean permitAll(PermitAll anno) {
         return anno != null;
+    }
+
+    /**
+     * 检查用户
+     * @param session session
+     * @return 用户信息
+     */
+    private User checkUserFromSession(HttpSession session) {
+        Long uid = (Long) session.getAttribute(AppConstants.SESSION_USER_KEY);
+        if (uid == null) {
+            throw new AuthenticationException("请登录后再操作");
+        }
+        try {
+            User currentUser = userService.selectById(uid);
+            if (!currentUser.isEnabled()) {
+                removeLoginStatus(session);
+                throw new AuthenticationException("用户已被禁用");
+            }
+            return currentUser;
+        } catch (NotFoundException ex) {
+            removeLoginStatus(session);
+            throw new AuthenticationException("用户不存在");
+        }
+    }
+
+    private void removeLoginStatus(HttpSession session) {
+        session.removeAttribute(AppConstants.SESSION_USER_KEY);
     }
 }

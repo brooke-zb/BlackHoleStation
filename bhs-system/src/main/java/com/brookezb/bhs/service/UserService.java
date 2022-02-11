@@ -25,6 +25,7 @@ public interface UserService {
      * @param uid 用户id
      * @return 用户信息
      */
+    @NonNull
     User selectById(Long uid);
 
     /**

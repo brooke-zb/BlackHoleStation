@@ -1,5 +1,6 @@
 package com.brookezb.bhs.interceptor;
 
+import com.brookezb.bhs.exception.NotFoundException;
 import com.brookezb.bhs.utils.CsrfUtils;
 import com.brookezb.bhs.utils.RedisUtils;
 import lombok.AllArgsConstructor;
@@ -43,21 +44,22 @@ public class DynamicAuthInterceptor implements HandlerInterceptor {
     private void login(HttpServletRequest request, HttpServletResponse response, String token) {
         String uid = redisUtils.getStringValue(AppConstants.REDIS_USER_TOKEN + token);
         if (uid != null) {
-            // 获取过期时间
+            // uid存在，获取过期时间
             Long expire = redisUtils.getExpire(AppConstants.REDIS_USER_TOKEN + token);
             redisUtils.delete(AppConstants.REDIS_USER_TOKEN + token);
             Long userId = Long.valueOf(uid);
 
-            // 判断用户是否存在
-            User user = userService.selectById(userId);
-            if (user == null) {
-                // 用户不存在则删除cookie
-                Cookie removeToken = new Cookie(AppConstants.AUTH_TOKEN_HEADER, "");
-                removeToken.setPath("/");
-                removeToken.setMaxAge(0);
-                response.addCookie(removeToken);
-                return;
+            // 判断用户是否存在以及是否被封禁
+            try {
+                User user = userService.selectById(userId);
+                if (!user.isEnabled()) {
+                    removeToken(response);
+                }
+            } catch (NotFoundException ex) {
+                removeToken(response);
             }
+
+            // 用户存在且未被封禁，则设置session
             request.getSession().setAttribute(AppConstants.SESSION_USER_KEY, userId);
             CsrfUtils.putToken(request, response);
 
@@ -69,5 +71,12 @@ public class DynamicAuthInterceptor implements HandlerInterceptor {
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
         }
+    }
+
+    private void removeToken(HttpServletResponse response) {
+        Cookie removeToken = new Cookie(AppConstants.AUTH_TOKEN_HEADER, "");
+        removeToken.setPath("/");
+        removeToken.setMaxAge(0);
+        response.addCookie(removeToken);
     }
 }
