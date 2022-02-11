@@ -61,8 +61,12 @@ mybatis:
 
 csrf:
   path:
-    include:
+    includes:
       - /account/**
       - /admin/**
-    exclude:
+    excludes:
       - /account/token
+
+cors:
+  origins:
+    - https://www.example.com

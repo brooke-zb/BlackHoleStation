@@ -29,6 +29,11 @@
       "name": "aliyun.oss.namespace",
       "type": "java.lang.String",
       "sourceType": "com.brookezb.bhs.proerties.OssProperties"
+    },
+    {
+      "name": "cors.origins",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "com.brookezb.bhs.proerties.CorsProperties"
     }
   ]
 }

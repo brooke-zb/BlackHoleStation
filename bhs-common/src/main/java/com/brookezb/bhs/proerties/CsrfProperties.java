@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Data
 @ConfigurationProperties(prefix = "csrf.path")
-public class CsrfPathProperties {
-    private List<String> include = new ArrayList<>();
-    private List<String> exclude = new ArrayList<>();
+public class CsrfProperties {
+    private List<String> includes = new ArrayList<>();
+    private List<String> excludes = new ArrayList<>();
 }
