@@ -1,8 +1,8 @@
 package com.brookezb.bhs.utils;
 
 import com.brookezb.bhs.constant.AppConstants;
+import org.springframework.http.ResponseCookie;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
@@ -15,7 +15,8 @@ import java.util.UUID;
 public class CsrfUtils {
     /**
      * 设置新的CSRF token
-     * @param request 请求
+     *
+     * @param request  请求
      * @param response 响应
      */
     public static void putToken(HttpServletRequest request, HttpServletResponse response) {
@@ -26,8 +27,11 @@ public class CsrfUtils {
         request.getSession().setAttribute(AppConstants.CSRF_HEADER, token);
 
         // 将token放入cookie中
-        Cookie csrfToken = new Cookie(AppConstants.CSRF_HEADER, token);
-        csrfToken.setPath("/");
-        response.addCookie(csrfToken);
+        ResponseCookie csrfToken = ResponseCookie.from(AppConstants.CSRF_HEADER, token)
+                .path("/")
+                .sameSite("None")
+                .secure(true)
+                .build();
+        response.addHeader("Set-Cookie", csrfToken.toString());
     }
 }

@@ -1,5 +1,6 @@
 package com.brookezb.bhs.config;
 
+import com.brookezb.bhs.interceptor.CsrfInterceptor;
 import com.brookezb.bhs.interceptor.DynamicAuthInterceptor;
 import com.brookezb.bhs.proerties.CorsProperties;
 import com.brookezb.bhs.proerties.CsrfProperties;
@@ -8,10 +9,10 @@ import com.brookezb.bhs.utils.RedisUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import com.brookezb.bhs.interceptor.CsrfInterceptor;
 
 /**
  * MVC配置类
@@ -51,8 +52,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins(corsProperties.getOrigins())
-                .allowedMethods("*")
-                .allowedHeaders("*")
+                .allowedMethods(CorsConfiguration.ALL)
+                .allowedHeaders(CorsConfiguration.ALL)
                 .allowCredentials(true)
                 .maxAge(60 * 60 * 24);
     }

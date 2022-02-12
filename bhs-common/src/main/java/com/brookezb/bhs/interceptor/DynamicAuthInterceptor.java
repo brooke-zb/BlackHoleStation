@@ -1,16 +1,16 @@
 package com.brookezb.bhs.interceptor;
 
+import com.brookezb.bhs.constant.AppConstants;
 import com.brookezb.bhs.exception.NotFoundException;
+import com.brookezb.bhs.model.User;
+import com.brookezb.bhs.service.UserService;
 import com.brookezb.bhs.utils.CsrfUtils;
 import com.brookezb.bhs.utils.RedisUtils;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.HandlerInterceptor;
-import com.brookezb.bhs.constant.AppConstants;
-import com.brookezb.bhs.model.User;
-import com.brookezb.bhs.service.UserService;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -65,18 +65,24 @@ public class DynamicAuthInterceptor implements HandlerInterceptor {
 
             // 生成新的token
             String newToken = userService.generateAuthToken(userId, expire);
-            Cookie cookie = new Cookie(AppConstants.AUTH_TOKEN_HEADER, newToken);
-            cookie.setMaxAge(expire.intValue());
-            cookie.setPath("/");
-            cookie.setHttpOnly(true);
-            response.addCookie(cookie);
+            ResponseCookie cookie = ResponseCookie.from(AppConstants.AUTH_TOKEN_HEADER, newToken)
+                    .maxAge(expire)
+                    .path("/")
+                    .httpOnly(true)
+                    .sameSite("None")
+                    .secure(true)
+                    .build();
+            response.addHeader("Set-Cookie", cookie.toString());
         }
     }
 
     private void removeToken(HttpServletResponse response) {
-        Cookie removeToken = new Cookie(AppConstants.AUTH_TOKEN_HEADER, "");
-        removeToken.setPath("/");
-        removeToken.setMaxAge(0);
-        response.addCookie(removeToken);
+        ResponseCookie removeToken = ResponseCookie.from(AppConstants.AUTH_TOKEN_HEADER, "")
+                .path("/")
+                .maxAge(0L)
+                .sameSite("None")
+                .secure(true)
+                .build();
+        response.addHeader("Set-Cookie", removeToken.toString());
     }
 }

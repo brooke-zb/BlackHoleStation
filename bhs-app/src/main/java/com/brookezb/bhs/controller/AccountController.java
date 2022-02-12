@@ -2,17 +2,18 @@ package com.brookezb.bhs.controller;
 
 import com.brookezb.bhs.annotation.RequireAuth;
 import com.brookezb.bhs.constant.AppConstants;
-import com.brookezb.bhs.entity.UpdatePasswordBody;
-import com.brookezb.bhs.exception.AuthenticationException;
-import com.brookezb.bhs.model.User;
-import lombok.AllArgsConstructor;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 import com.brookezb.bhs.entity.LoginBody;
 import com.brookezb.bhs.entity.R;
+import com.brookezb.bhs.entity.UpdatePasswordBody;
+import com.brookezb.bhs.exception.AuthenticationException;
+import com.brookezb.bhs.exception.NotFoundException;
+import com.brookezb.bhs.model.User;
 import com.brookezb.bhs.service.UserService;
+import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseCookie;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.UUID;
@@ -43,20 +44,26 @@ public class AccountController {
         // 设置免登录token
         if (loginBody.isRememberMe()) {
             String token = userService.generateAuthToken(user.getUid(), 60 * 60 * 24 * 7L);
-            Cookie auth_token = new Cookie(AppConstants.AUTH_TOKEN_HEADER, token);
-            auth_token.setMaxAge(60 * 60 * 24 * 7);
-            auth_token.setPath("/");
-            auth_token.setHttpOnly(true);
-            response.addCookie(auth_token);
+            ResponseCookie auth_token = ResponseCookie.from(AppConstants.AUTH_TOKEN_HEADER, token)
+                    .httpOnly(true)
+                    .maxAge(60 * 60 * 24 * 7L)
+                    .path("/")
+                    .sameSite("None")
+                    .secure(true)
+                    .build();
+            response.addHeader("Set-Cookie", auth_token.toString());
         }
 
         // 设置CSRF token
         String token = UUID.randomUUID().toString();
         session.setAttribute(AppConstants.CSRF_HEADER, token);
 
-        Cookie token_cookie = new Cookie(AppConstants.CSRF_HEADER, token);
-        token_cookie.setPath("/");
-        response.addCookie(token_cookie);
+        ResponseCookie token_cookie = ResponseCookie.from(AppConstants.CSRF_HEADER, token)
+                .path("/")
+                .sameSite("None")
+                .secure(true)
+                .build();
+        response.addHeader("Set-Cookie", token_cookie.toString());
 
         return R.success(null, "登录成功");
     }
@@ -72,10 +79,13 @@ public class AccountController {
         session.removeAttribute(AppConstants.SESSION_USER_KEY);
 
         // 删除免登录token
-        Cookie removeAuthToken = new Cookie(AppConstants.AUTH_TOKEN_HEADER, "");
-        removeAuthToken.setMaxAge(0);
-        removeAuthToken.setPath("/");
-        response.addCookie(removeAuthToken);
+        ResponseCookie removeAuthToken = ResponseCookie.from(AppConstants.AUTH_TOKEN_HEADER, "")
+                .sameSite("None")
+                .secure(true)
+                .maxAge(0L)
+                .path("/")
+                .build();
+        response.addHeader("Set-Cookie", removeAuthToken.toString());
 
         if (authToken != null) {
             userService.removeAuthToken(authToken);
@@ -96,11 +106,16 @@ public class AccountController {
         if (uid == null) {
             throw new AuthenticationException("请先登录后再操作");
         }
-        User user = userService.selectById(uid);
-        if (user == null || !user.isEnabled()) {
-            throw new AuthenticationException("没有找到该账号或账号已被禁用");
+        try {
+            User user = userService.selectById(uid);
+            if (!user.isEnabled()) {
+                throw new AuthenticationException("该账号已被禁用");
+            }
+            return R.success(user);
         }
-        return R.success(user);
+        catch (NotFoundException ex) {
+            throw new AuthenticationException("没有找到该账号");
+        }
     }
 
     /**
