@@ -12,6 +12,8 @@ public interface TagService {
 
     List<Tag> selectAll();
 
+    List<Tag> selectAllWithHeat();
+
     void insert(Tag tag);
 
     void update(Tag tag);

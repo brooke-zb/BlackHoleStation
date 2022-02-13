@@ -18,6 +18,6 @@ public class TagController {
 
     @GetMapping("")
     public R<?> getTagList() {
-        return R.success(tagService.selectAll());
+        return R.success(tagService.selectAllWithHeat());
     }
 }

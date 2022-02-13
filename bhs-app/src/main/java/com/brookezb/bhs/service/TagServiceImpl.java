@@ -33,6 +33,11 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public List<Tag> selectAllWithHeat() {
+        return tagMapper.selectAllWithHeat();
+    }
+
+    @Override
     @Transactional
     public void insert(Tag tag) {
         if (tagMapper.insert(tag) > 0) {
