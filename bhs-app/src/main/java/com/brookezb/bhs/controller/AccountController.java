@@ -48,8 +48,6 @@ public class AccountController {
                     .httpOnly(true)
                     .maxAge(60 * 60 * 24 * 7L)
                     .path("/")
-                    .sameSite("None")
-                    .secure(true)
                     .build();
             response.addHeader("Set-Cookie", auth_token.toString());
         }
@@ -60,8 +58,6 @@ public class AccountController {
 
         ResponseCookie token_cookie = ResponseCookie.from(AppConstants.CSRF_HEADER, token)
                 .path("/")
-                .sameSite("None")
-                .secure(true)
                 .build();
         response.addHeader("Set-Cookie", token_cookie.toString());
 
@@ -80,8 +76,6 @@ public class AccountController {
 
         // 删除免登录token
         ResponseCookie removeAuthToken = ResponseCookie.from(AppConstants.AUTH_TOKEN_HEADER, "")
-                .sameSite("None")
-                .secure(true)
                 .maxAge(0L)
                 .path("/")
                 .build();

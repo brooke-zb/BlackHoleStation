@@ -69,8 +69,6 @@ public class DynamicAuthInterceptor implements HandlerInterceptor {
                     .maxAge(expire)
                     .path("/")
                     .httpOnly(true)
-                    .sameSite("None")
-                    .secure(true)
                     .build();
             response.addHeader("Set-Cookie", cookie.toString());
         }
@@ -80,8 +78,6 @@ public class DynamicAuthInterceptor implements HandlerInterceptor {
         ResponseCookie removeToken = ResponseCookie.from(AppConstants.AUTH_TOKEN_HEADER, "")
                 .path("/")
                 .maxAge(0L)
-                .sameSite("None")
-                .secure(true)
                 .build();
         response.addHeader("Set-Cookie", removeToken.toString());
     }

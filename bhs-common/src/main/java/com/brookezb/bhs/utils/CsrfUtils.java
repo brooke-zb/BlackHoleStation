@@ -29,8 +29,6 @@ public class CsrfUtils {
         // 将token放入cookie中
         ResponseCookie csrfToken = ResponseCookie.from(AppConstants.CSRF_HEADER, token)
                 .path("/")
-                .sameSite("None")
-                .secure(true)
                 .build();
         response.addHeader("Set-Cookie", csrfToken.toString());
     }
