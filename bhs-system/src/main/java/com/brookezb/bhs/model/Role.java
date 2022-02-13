@@ -29,6 +29,6 @@ public class Role {
     @NotNull(message = "角色权限不能为空", groups = {Add.class, Update.class})
     private Set<String> permissions;
 
-    public interface Add extends Default {};
-    public interface Update extends Default {};
+    public interface Add extends Default {}
+    public interface Update extends Default {}
 }

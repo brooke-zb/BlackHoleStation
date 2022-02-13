@@ -64,9 +64,7 @@ public class User {
      */
     private boolean enabled;
 
-    public interface Add extends Default {
-    }
+    public interface Add extends Default {}
 
-    public interface Update extends Default {
-    }
+    public interface Update extends Default {}
 }

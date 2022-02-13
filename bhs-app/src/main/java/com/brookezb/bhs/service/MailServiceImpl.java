@@ -35,11 +35,12 @@ public class MailServiceImpl implements MailService {
     @Async("mailExecutor")
     @Override
     public void sendReplyMail(String to, String nickname, String link) {
-        Map<String, String> map = new HashMap<>(8);
-        map.put(templateKeyword[0], MailConstants.Reply.TITLE);
-        map.put(templateKeyword[1], String.format(MailConstants.Reply.CONTENT, URLUtil.encode(nickname)));
-        map.put(templateKeyword[2], link);
-        map.put(templateKeyword[3], adminMail);
+        Map<String, String> map = Map.of(
+                templateKeyword[0], MailConstants.Reply.TITLE,
+                templateKeyword[1], String.format(MailConstants.Reply.CONTENT, URLUtil.encode(nickname)),
+                templateKeyword[2], link,
+                templateKeyword[3], adminMail
+        );
 
         mailUtils.sendMimeMail(to, "[黑洞空间站]回复通知", parseTemplate(map));
     }
@@ -47,11 +48,12 @@ public class MailServiceImpl implements MailService {
     @Async("mailExecutor")
     @Override
     public void sendAuditMail(String link) {
-        Map<String, String> map = new HashMap<>(8);
-        map.put(templateKeyword[0], MailConstants.Audit.TITLE);
-        map.put(templateKeyword[1], MailConstants.Audit.CONTENT);
-        map.put(templateKeyword[2], link);
-        map.put(templateKeyword[3], adminMail);
+        Map<String, String> map = Map.of(
+                templateKeyword[0], MailConstants.Audit.TITLE,
+                templateKeyword[1], MailConstants.Audit.CONTENT,
+                templateKeyword[2], link,
+                templateKeyword[3], adminMail
+        );
 
         mailUtils.sendMimeMail(adminMail, "[黑洞空间站]审核通知", parseTemplate(map));
     }

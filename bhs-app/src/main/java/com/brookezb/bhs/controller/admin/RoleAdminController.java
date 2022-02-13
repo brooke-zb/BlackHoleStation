@@ -19,7 +19,7 @@ import javax.validation.constraints.Pattern;
 @RestController
 @RequestMapping("/admin/role")
 @AllArgsConstructor
-public class RoleController {
+public class RoleAdminController {
     private RoleService roleService;
 
     @GetMapping("/{id:\\d+}")

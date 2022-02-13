@@ -21,7 +21,7 @@ import javax.validation.constraints.Pattern;
 @RestController
 @RequestMapping("/admin/user")
 @AllArgsConstructor
-public class UserController {
+public class UserAdminController {
     private UserService userService;
 
     @GetMapping("/{id:\\d+}")
