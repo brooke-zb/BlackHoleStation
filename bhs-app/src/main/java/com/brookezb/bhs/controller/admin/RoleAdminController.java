@@ -1,5 +1,6 @@
 package com.brookezb.bhs.controller.admin;
 
+import com.brookezb.bhs.annotation.RequirePermission;
 import com.brookezb.bhs.model.Role;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,11 +24,13 @@ public class RoleAdminController {
     private RoleService roleService;
 
     @GetMapping("/{id:\\d+}")
+    @RequirePermission("ROLE:GET")
     public R<?> getRole(@PathVariable Long id) {
         return R.success(roleService.selectById(id));
     }
 
     @GetMapping("")
+    @RequirePermission("ROLE:GET")
     public R<?> getRoleList(
             @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") Integer page,
             @RequestParam(defaultValue = "10") @Pattern(regexp = "^[123]0$", message = "页数需为10/20/30") String size
@@ -39,18 +42,21 @@ public class RoleAdminController {
     }
 
     @PostMapping("")
+    @RequirePermission("ROLE:ADD")
     public R<?> addRole(@RequestBody @Validated(Role.Add.class) Role role) {
         roleService.insert(role);
         return R.success(null, "添加角色成功");
     }
 
     @PutMapping("")
+    @RequirePermission("ROLE:UPDATE")
     public R<?> updateRole(@RequestBody @Validated(Role.Update.class) Role role) {
         roleService.update(role);
         return R.success(null, "更新角色成功");
     }
 
     @DeleteMapping("/{id:\\d+}")
+    @RequirePermission("ROLE:DELETE")
     public R<?> deleteRole(@PathVariable Long id) {
         roleService.delete(id);
         return R.success(null, "删除角色成功");

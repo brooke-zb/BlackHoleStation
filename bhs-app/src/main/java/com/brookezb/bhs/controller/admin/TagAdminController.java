@@ -1,5 +1,6 @@
 package com.brookezb.bhs.controller.admin;
 
+import com.brookezb.bhs.annotation.RequirePermission;
 import com.brookezb.bhs.entity.R;
 import com.brookezb.bhs.model.Tag;
 import com.brookezb.bhs.service.TagService;
@@ -25,24 +26,28 @@ public class TagAdminController {
     }
 
     @PostMapping("")
+    @RequirePermission("TAG:ADD")
     public R<?> addTag(@RequestBody @Validated(Tag.Add.class) Tag tag) {
         tagService.insert(tag);
         return R.success(null, "添加标签成功");
     }
 
     @PutMapping("")
+    @RequirePermission("TAG:UPDATE")
     public R<?> updateTag(@RequestBody @Validated(Tag.Update.class) Tag tag) {
         tagService.update(tag);
         return R.success(null, "更新标签成功");
     }
 
     @DeleteMapping("/{id:\\d+}")
+    @RequirePermission("TAG:DELETE")
     public R<?> deleteTag(@PathVariable("id") Long id) {
         tagService.delete(id);
         return R.success(null, "删除标签成功");
     }
 
     @DeleteMapping("/{ids:\\d+(?:,\\d+)+}")
+    @RequirePermission("TAG:DELETE")
     public R<?> deleteTagList(@PathVariable String ids) {
         List<Long> list = Arrays.stream(ids.split(","))
                 .map(Long::parseLong)
