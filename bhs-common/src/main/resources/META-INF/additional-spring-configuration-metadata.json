@@ -32,7 +32,7 @@
     },
     {
       "name": "cors.origins",
-      "type": "java.util.List<java.lang.String>",
+      "type": "java.lang.String[]",
       "sourceType": "com.brookezb.bhs.proerties.CorsProperties"
     }
   ]

@@ -19,6 +19,11 @@ import java.util.List;
 public class TagAdminController {
     private TagService tagService;
 
+    @GetMapping("")
+    public R<?> getTagList() {
+        return R.success(tagService.selectAll());
+    }
+
     @PostMapping("")
     public R<?> addTag(@RequestBody @Validated(Tag.Add.class) Tag tag) {
         tagService.insert(tag);
