@@ -21,8 +21,14 @@
 
     <update id="update">
         update ignore bhs_category
-        set name   = #{name},
-            parent = #{parent}
+        <set>
+            <if test="category.name != null">
+                name = #{name}
+            </if>
+            <if test="category.parent != null">
+                parent = #{parent}
+            </if>
+        </set>
         where cid = #{cid}
     </update>
 
@@ -40,8 +46,8 @@
 
     <select id="selectById" resultMap="categoryMapper">
         select parent.*,
-               child.cid as c_cid,
-               child.name as c_name,
+               child.cid    as c_cid,
+               child.name   as c_name,
                child.parent as c_parent
         from bhs_category parent
                  left join bhs_category child on parent.cid = child.parent
@@ -50,8 +56,8 @@
 
     <select id="selectAll" resultMap="categoryMapper">
         select parent.*,
-               child.cid as c_cid,
-               child.name as c_name,
+               child.cid    as c_cid,
+               child.name   as c_name,
                child.parent as c_parent
         from bhs_category parent
                  left join bhs_category child on parent.cid = child.parent

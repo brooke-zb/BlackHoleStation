@@ -20,7 +20,7 @@ public class Category {
     /**
      * 分类名称
      */
-    @NotNull(message = "分类名称不能为空", groups = Add.class)
+    @NotNull(message = "分类名称不能为空", groups = {Add.class, Update.class})
     private String name;
 
     /**
