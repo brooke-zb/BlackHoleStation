@@ -23,10 +23,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category selectById(Long cid) {
         Category category = categoryMapper.selectById(cid);
-        if (category != null) {
-            return category;
+        if (category == null) {
+            throw new NotFoundException("未找到该分类");
         }
-        throw new NotFoundException("未找到该分类");
+        return category;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void insert(Category category) {
-        if (categoryMapper.selectByName(category.getName()) != null) {
+        if (categoryMapper.verifyName(category.getName()) != null) {
             throw new InvalidException("该分类已存在");
         }
         Category parent = categoryMapper.selectById(category.getParent());
@@ -63,9 +63,9 @@ public class CategoryServiceImpl implements CategoryService {
             throw new NotFoundException("未找到该分类");
         }
 
-        // 检查该分类是否为顶级分类，是则不能修改父分类
+        // 检查该分类下有无子分类，有则不能修改父分类
         if (old.getChildren().size() > 0 && category.getParent() != null) {
-            throw new InvalidException("该分类为顶级分类，无法修改父分类");
+            throw new InvalidException("该分类下有子分类，无法修改父分类");
         }
         categoryMapper.update(category);
     }

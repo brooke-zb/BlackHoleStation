@@ -12,11 +12,9 @@ import java.util.List;
 public interface CategoryMapper {
     Category selectById(Long cid);
 
-    Category selectByName(String name);
-
-    Category selectByParent(Long parent);
-
     List<Category> selectAll();
+
+    Integer verifyName(String name);
 
     Integer verifyCategory(Long cid);
 

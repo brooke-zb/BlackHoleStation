@@ -7,7 +7,11 @@
         <id property="cid" column="cid"/>
         <result property="name" column="name"/>
         <result property="parent" column="parent"/>
-        <collection property="children" column="cid" select="selectByParent"/>
+        <collection property="children">
+            <result property="cid" column="c_cid"/>
+            <result property="name" column="c_name"/>
+            <result property="parent" column="c_parent"/>
+        </collection>
     </resultMap>
 
     <insert id="insert">
@@ -35,27 +39,29 @@
     </delete>
 
     <select id="selectById" resultMap="categoryMapper">
-        select *
-        from bhs_category
-        where cid = #{cid}
+        select parent.*,
+               child.cid as c_cid,
+               child.name as c_name,
+               child.parent as c_parent
+        from bhs_category parent
+                 left join bhs_category child on parent.cid = child.parent
+        where parent.cid = #{cid}
     </select>
 
     <select id="selectAll" resultMap="categoryMapper">
-        select *
-        from bhs_category
-        where parent is null
+        select parent.*,
+               child.cid as c_cid,
+               child.name as c_name,
+               child.parent as c_parent
+        from bhs_category parent
+                 left join bhs_category child on parent.cid = child.parent
+        where parent.parent is null
     </select>
 
-    <select id="selectByName" resultMap="categoryMapper">
-        select *
+    <select id="verifyName" resultType="java.lang.Integer">
+        select 1
         from bhs_category
         where name = #{name}
-    </select>
-
-    <select id="selectByParent" resultMap="categoryMapper">
-        select *
-        from bhs_category
-        where parent = #{parent}
     </select>
 
     <select id="verifyCategory" resultType="java.lang.Integer">
