@@ -1,5 +1,6 @@
 package com.brookezb.bhs.service;
 
+import com.brookezb.bhs.entity.ArticleTimeline;
 import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
@@ -40,8 +41,28 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> getArticles(Long uid, Long cid, Article.Status status) {
-        return articleMapper.selectAllByIdList(articleMapper.selectAll(uid, cid, status));
+    public List<Article> selectAll(Article.Status status) {
+        return articleMapper.selectAllByIdList(articleMapper.selectAll(status));
+    }
+
+    @Override
+    public List<Article> selectAllByUserId(Long uid, Article.Status status) {
+        return articleMapper.selectAllByIdList(articleMapper.selectAllByUserId(uid, status));
+    }
+
+    @Override
+    public List<Article> selectAllByCategoryId(Long cid, Article.Status status) {
+        return articleMapper.selectAllByIdList(articleMapper.selectAllByCategoryId(cid, status));
+    }
+
+    @Override
+    public List<Article> selectAllByTagName(String tag, Article.Status status) {
+        return articleMapper.selectAllByIdList(articleMapper.selectAllByTagName(tag, status));
+    }
+
+    @Override
+    public List<ArticleTimeline> selectAllTimeline() {
+        return articleMapper.selectAllTimeline();
     }
 
     @Override

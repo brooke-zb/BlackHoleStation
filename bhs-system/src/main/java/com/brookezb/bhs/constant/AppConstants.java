@@ -15,4 +15,8 @@ public class AppConstants {
     public static final String AUTH_TOKEN_HEADER = "Authorization";
 
     public static final String SESSION_USER_KEY = "uid";
+
+    public static final int DEFAULT_PAGE_SIZE = 10;
+
+    public static final int TIMELINE_SIZE = 20;
 }

@@ -79,11 +79,6 @@ public class Article {
     private Status status;
 
     /**
-     * 文章密码
-     */
-    private String password;
-
-    /**
      * 浏览量
      */
     private Integer views;

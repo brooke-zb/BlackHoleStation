@@ -1,5 +1,6 @@
 package com.brookezb.bhs.mapper;
 
+import com.brookezb.bhs.entity.ArticleTimeline;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.brookezb.bhs.model.Article;
@@ -15,11 +16,17 @@ import java.util.List;
 public interface ArticleMapper {
     Article selectById(Long aid);
 
-    List<Long> selectAll(@Param("cid") Long cid, @Param("uid") Long uid, @Param("status") Article.Status status);
+    List<Long> selectAll(Article.Status status);
+
+    List<Long> selectAllByUserId(@Param("uid") Long uid, @Param("status") Article.Status status);
+
+    List<Long> selectAllByCategoryId(@Param("cid") Long cid, @Param("status") Article.Status status);
 
     List<Long> selectAllByTagName(@Param("name") String name, @Param("status") Article.Status status);
 
     List<Article> selectAllByIdList(List<Long> aids);
+
+    List<ArticleTimeline> selectAllTimeline();
 
     Integer selectCountByCategoryId(Long cid);
 

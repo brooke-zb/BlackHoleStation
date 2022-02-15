@@ -1,5 +1,6 @@
 package com.brookezb.bhs.service;
 
+import com.brookezb.bhs.entity.ArticleTimeline;
 import com.brookezb.bhs.model.Article;
 
 import java.util.List;
@@ -20,12 +21,18 @@ public interface ArticleService {
 
     /**
      * 获取文章列表
-     * @param uid 用户id
-     * @param cid 分类id
      * @param status 文章状态
      * @return 文章列表
      */
-    List<Article> getArticles(Long uid, Long cid, Article.Status status);
+    List<Article> selectAll(Article.Status status);
+
+    List<Article> selectAllByUserId(Long uid, Article.Status status);
+
+    List<Article> selectAllByCategoryId(Long cid, Article.Status status);
+
+    List<Article> selectAllByTagName(String tag, Article.Status status);
+
+    List<ArticleTimeline> selectAllTimeline();
 
     /**
      * 新增文章
