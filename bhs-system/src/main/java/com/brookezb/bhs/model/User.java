@@ -19,7 +19,7 @@ public class User {
     /**
      * 用户id
      */
-    @NotNull(message = "用户id不能为空", groups = Update.class)
+    @NotNull(message = "用户id不能为空", groups = {Update.class, Article.Add.class})
     private Long uid;
 
     /**

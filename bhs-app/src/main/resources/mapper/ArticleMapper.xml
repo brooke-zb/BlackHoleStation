@@ -16,12 +16,12 @@
         <result property="status" column="status"/>
         <result property="views" column="views"/>
         <association property="user">
-            <id property="uid" column="uid"/>
+            <result property="uid" column="uid"/>
             <result property="name" column="username"/>
             <result property="avatar" column="avatar"/>
         </association>
         <association property="category">
-            <id property="cid" column="cid"/>
+            <result property="cid" column="cid"/>
             <result property="name" column="name"/>
         </association>
     </resultMap>
@@ -83,25 +83,23 @@
     </select>
 
     <select id="selectAll" resultType="java.lang.Long">
-        select aid
-        from bhs_article
+        select distinct ba.aid
+        from bhs_article ba
+                 left join bhs_tag_relation btr on btr.aid = ba.aid
         <where>
+            <if test="uid != null">
+                and uid = #{uid}
+            </if>
+            <if test="cid != null">
+                and cid = #{uid}
+            </if>
+            <if test="tid != null">
+                and tid = #{tid}
+            </if>
             <if test="status != null">
                 and status = #{status}
             </if>
         </where>
-    </select>
-
-    <select id="selectAllByUserId" resultType="java.lang.Long">
-        select aid
-        from bhs_article
-        where uid = #{uid}
-    </select>
-
-    <select id="selectAllByCategoryId" resultType="java.lang.Long">
-        select aid
-        from bhs_article
-        where cid = #{cid}
     </select>
 
     <select id="selectAllByTagName" resultType="java.lang.Long">
@@ -126,7 +124,17 @@
     </select>
 
     <select id="selectAllByIdList" resultMap="articleMap">
-        select ba.*,
+        select ba.aid,
+               ba.uid,
+               ba.cid,
+               ba.title,
+               ba.description,
+               ba.commentabled,
+               ba.appreciatabled,
+               ba.created,
+               ba.modified,
+               ba.status,
+               ba.views,
                bc.name,
                bu.name      as username,
                md5(bu.mail) as avatar

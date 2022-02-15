@@ -1,5 +1,6 @@
 package com.brookezb.bhs.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ public class Category {
     /**
      * 分类id
      */
-    @NotNull(message = "分类id不能为空", groups = Update.class)
+    @NotNull(message = "分类id不能为空", groups = {Update.class, Article.Add.class})
     private Long cid;
 
     /**
@@ -31,6 +32,7 @@ public class Category {
     /**
      * 子分类
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Category> children;
 
     public interface Add extends Default {}

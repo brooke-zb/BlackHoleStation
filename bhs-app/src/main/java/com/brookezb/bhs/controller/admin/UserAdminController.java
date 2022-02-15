@@ -99,7 +99,7 @@ public class UserAdminController {
      * @return 更新结果
      */
     @RequirePermission("USER:UPDATE")
-    @PatchMapping("/{id:\\d+}/status/{status:^true$|^false$}")
+    @PatchMapping("/{id:\\d+}/status/{status:true|false}")
     public R<?> updateStatus(@PathVariable Long id, @PathVariable Boolean status) {
         userService.updateStatus(id, status);
         return R.success(null, "更新用户状态成功");

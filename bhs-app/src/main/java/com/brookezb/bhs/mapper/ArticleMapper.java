@@ -16,11 +16,7 @@ import java.util.List;
 public interface ArticleMapper {
     Article selectById(Long aid);
 
-    List<Long> selectAll(Article.Status status);
-
-    List<Long> selectAllByUserId(@Param("uid") Long uid, @Param("status") Article.Status status);
-
-    List<Long> selectAllByCategoryId(@Param("cid") Long cid, @Param("status") Article.Status status);
+    List<Long> selectAll(@Param("uid") Long uid, @Param("cid") Long cid, @Param("tid") Long tid, @Param("status") Article.Status status);
 
     List<Long> selectAllByTagName(@Param("name") String name, @Param("status") Article.Status status);
 

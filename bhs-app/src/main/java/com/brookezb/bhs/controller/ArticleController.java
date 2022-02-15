@@ -1,8 +1,8 @@
 package com.brookezb.bhs.controller;
 
 import com.brookezb.bhs.constant.AppConstants;
+import com.brookezb.bhs.exception.NotFoundException;
 import com.brookezb.bhs.model.Article;
-import com.brookezb.bhs.model.User;
 import com.brookezb.bhs.service.ArticleService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -25,7 +25,11 @@ public class ArticleController {
 
     @GetMapping("/{id:\\d+}")
     public R<?> getArticle(@PathVariable Long id) {
-        return R.success(articleService.selectById(id));
+        Article article = articleService.selectById(id);
+        if (article.getStatus() != Article.Status.PUBLISHED) {
+            throw new NotFoundException("文章不存在或已被删除");
+        }
+        return R.success();
     }
 
     @GetMapping({
@@ -41,17 +45,11 @@ public class ArticleController {
             @PathVariable(required = false) String tag
     ) {
         PageHelper.startPage(page, AppConstants.DEFAULT_PAGE_SIZE).setOrderBy("created desc");
-        if (uid != null) {
-            return R.success(new PageInfo<>(articleService.selectAllByUserId(uid, Article.Status.PUBLISHED)));
-        }
-        if (cid != null) {
-            return R.success(new PageInfo<>(articleService.selectAllByCategoryId(cid, Article.Status.PUBLISHED)));
-        }
         if (tag != null) {
             return R.success(new PageInfo<>(articleService.selectAllByTagName(tag, Article.Status.PUBLISHED)));
         }
         return R.success(
-                PageInfo.of(articleService.selectAll(Article.Status.PUBLISHED))
+                PageInfo.of(articleService.selectAll(uid, cid, null, Article.Status.PUBLISHED))
         );
     }
 

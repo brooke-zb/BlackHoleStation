@@ -1,13 +1,6 @@
 package com.brookezb.bhs.service;
 
 import com.brookezb.bhs.entity.ArticleTimeline;
-import com.github.pagehelper.PageInfo;
-import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import com.brookezb.bhs.exception.InvalidException;
 import com.brookezb.bhs.exception.NotFoundException;
 import com.brookezb.bhs.mapper.ArticleMapper;
@@ -16,7 +9,14 @@ import com.brookezb.bhs.mapper.TagMapper;
 import com.brookezb.bhs.model.Article;
 import com.brookezb.bhs.model.Tag;
 import com.brookezb.bhs.utils.IdUtils;
+import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,29 +35,27 @@ public class ArticleServiceImpl implements ArticleService {
     public Article selectById(Long aid) {
         Article article = articleMapper.selectById(aid);
         if (article == null) {
-            throw new NotFoundException("文章不存在");
+            throw new NotFoundException("文章不存在或已被删除");
         }
         return article;
     }
 
     @Override
-    public List<Article> selectAll(Article.Status status) {
-        return articleMapper.selectAllByIdList(articleMapper.selectAll(status));
-    }
-
-    @Override
-    public List<Article> selectAllByUserId(Long uid, Article.Status status) {
-        return articleMapper.selectAllByIdList(articleMapper.selectAllByUserId(uid, status));
-    }
-
-    @Override
-    public List<Article> selectAllByCategoryId(Long cid, Article.Status status) {
-        return articleMapper.selectAllByIdList(articleMapper.selectAllByCategoryId(cid, status));
+    public List<Article> selectAll(Long uid, Long cid, Long tid, Article.Status status) {
+        List<Long> ids = articleMapper.selectAll(uid, cid, tid, status);
+        if (ids.size() == 0) {
+            return new ArrayList<>(0);
+        }
+        return articleMapper.selectAllByIdList(ids);
     }
 
     @Override
     public List<Article> selectAllByTagName(String tag, Article.Status status) {
-        return articleMapper.selectAllByIdList(articleMapper.selectAllByTagName(tag, status));
+        List<Long> ids = articleMapper.selectAllByTagName(tag, status);
+        if (ids.size() == 0) {
+            return new ArrayList<>(0);
+        }
+        return articleMapper.selectAllByIdList(ids);
     }
 
     @Override

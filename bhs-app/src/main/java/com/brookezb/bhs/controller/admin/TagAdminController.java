@@ -1,5 +1,6 @@
 package com.brookezb.bhs.controller.admin;
 
+import com.brookezb.bhs.annotation.RequireAuth;
 import com.brookezb.bhs.annotation.RequirePermission;
 import com.brookezb.bhs.entity.R;
 import com.brookezb.bhs.model.Tag;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * @author brooke_zb
  */
+@RequireAuth
 @RestController
 @RequestMapping("/admin/tag")
 @AllArgsConstructor
