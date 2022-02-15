@@ -16,6 +16,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -58,15 +59,19 @@ public class UserServiceImpl implements UserService {
     @Cacheable(key = "#uid")
     public User selectById(Long uid) {
         User user = userMapper.selectById(uid);
-        if (user != null) {
-            return user;
+        if (user == null) {
+            throw new NotFoundException("没有找到该用户");
         }
-        throw new NotFoundException("没有找到该用户");
+        return user;
     }
 
     @Override
     public List<User> selectAll(String username, Boolean enabled) {
-        return userMapper.selectAllByIdList(userMapper.selectAll(username, enabled));
+        List<Long> ids = userMapper.selectAll(username, enabled);
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return userMapper.selectAllByIdList(ids);
     }
 
     @Override

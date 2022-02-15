@@ -43,8 +43,8 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<Article> selectAll(Long uid, Long cid, Long tid, Article.Status status) {
         List<Long> ids = articleMapper.selectAll(uid, cid, tid, status);
-        if (ids.size() == 0) {
-            return new ArrayList<>(0);
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
         }
         return articleMapper.selectAllByIdList(ids);
     }
@@ -52,8 +52,8 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<Article> selectAllByTagName(String tag, Article.Status status) {
         List<Long> ids = articleMapper.selectAllByTagName(tag, status);
-        if (ids.size() == 0) {
-            return new ArrayList<>(0);
+        if (ids.isEmpty()) {
+            return new ArrayList<>();
         }
         return articleMapper.selectAllByIdList(ids);
     }
