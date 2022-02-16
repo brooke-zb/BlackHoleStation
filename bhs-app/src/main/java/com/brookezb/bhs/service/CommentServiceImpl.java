@@ -68,8 +68,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    @CacheEvict(key = "'aid_' + #comment.getAid()", condition = "#withPend == false")
-    public void insert(Comment comment, boolean withPend) {
+    @CacheEvict(key = "'aid_' + #comment.getAid()", condition = "#result == true")
+    public boolean insert(Comment comment, boolean withPend) {
         // 查询文章是否存在
         if (articleMapper.verifyArticle(comment.getAid()) == null) {
             throw new InvalidException("评论文章不存在");
@@ -119,6 +119,9 @@ public class CommentServiceImpl implements CommentService {
         } else {
             mailService.sendAuditMail("https://blog.brooke-zb.top/admin/comment");
         }
+
+        // 返回审核状态
+        return comment.getStatus() == Comment.Status.PUBLISHED;
     }
 
     @Override

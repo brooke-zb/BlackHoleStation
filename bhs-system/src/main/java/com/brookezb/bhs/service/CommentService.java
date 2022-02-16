@@ -18,7 +18,7 @@ public interface CommentService {
 
     List<Comment> selectByIp(String ip);
 
-    void insert(Comment comment, boolean verify);
+    boolean insert(Comment comment, boolean verify);
 
     void update(Comment comment);
 

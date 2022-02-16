@@ -43,7 +43,9 @@ public class CommentController {
             @RequestBody @Validated(Comment.Add.class) Comment comment,
             @SessionAttribute(value = AppConstants.SESSION_USER_KEY, required = false) Long uid
     ) {
-        commentService.insert(comment, uid == null);
-        return R.success(null, "评论成功");
+        if (commentService.insert(comment, uid == null)) {
+            return R.success(null, "评论成功");
+        }
+        return R.success(null, "评论成功，请等待审核");
     }
 }
