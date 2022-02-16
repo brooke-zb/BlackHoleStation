@@ -79,19 +79,6 @@ public class UserAdminController {
     }
 
     /**
-     * 删除用户
-     *
-     * @param id 用户id
-     * @return 删除结果
-     */
-    @RequirePermission("USER:DELETE")
-    @DeleteMapping("/{id:\\d+}")
-    public R<?> deleteUser(@PathVariable Long id) {
-        userService.delete(id);
-        return R.success(null, "删除用户成功");
-    }
-
-    /**
      * 更新用户状态
      *
      * @param id     用户id
@@ -103,6 +90,19 @@ public class UserAdminController {
     public R<?> updateStatus(@PathVariable Long id, @PathVariable Boolean status) {
         userService.updateStatus(id, status);
         return R.success(null, "更新用户状态成功");
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param id 用户id
+     * @return 删除结果
+     */
+    @RequirePermission("USER:DELETE")
+    @DeleteMapping("/{id:\\d+}")
+    public R<?> deleteUser(@PathVariable Long id) {
+        userService.delete(id);
+        return R.success(null, "删除用户成功");
     }
 
 }
