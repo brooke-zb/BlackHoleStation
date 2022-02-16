@@ -10,7 +10,7 @@
         <result property="created" column="created"/>
         <result property="content" column="content"/>
         <result property="site" column="site"/>
-        <result property="email" column="email"/>
+        <result property="avatar" column="avatar"/>
         <result property="nickname" column="nickname"/>
         <result property="reply" column="reply"/>
         <result property="aid" column="aid"/>
@@ -21,7 +21,7 @@
             <result property="created" column="created"/>
             <result property="content" column="content"/>
             <result property="site" column="site"/>
-            <result property="email" column="email"/>
+            <result property="avatar" column="avatar"/>
             <result property="nickname" column="nickname"/>
             <result property="reply" column="reply"/>
             <result property="aid" column="aid"/>
@@ -100,17 +100,24 @@
 
     <select id="selectAllByIdList" resultMap="CommentMap">
         select bc1.*,
-               bc2.coid     as c_coid,
-               bc2.aid      as c_aid,
-               bc2.nickname as c_nickname,
-               bc2.email    as c_email,
-               bc2.site     as c_site,
-               bc2.ip       as c_ip,
-               bc2.content  as c_content,
-               bc2.created  as c_created,
-               bc2.status   as c_status,
-               bc2.parent   as c_parent,
-               bc2.reply    as c_reply
+               bc1.coid,
+               bc1.aid,
+               bc1.nickname,
+               md5(bc1.email) as avatar,
+               bc1.site,
+               bc1.content,
+               bc1.created,
+               bc1.parent,
+               bc1.reply,
+               bc2.coid       as c_coid,
+               bc2.aid        as c_aid,
+               bc2.nickname   as c_nickname,
+               md5(bc2.email) as c_avatar,
+               bc2.site       as c_site,
+               bc2.content    as c_content,
+               bc2.created    as c_created,
+               bc2.parent     as c_parent,
+               bc2.reply      as c_reply
         from bhs_comment bc1
                  left join bhs_comment bc2 on bc1.coid = bc2.parent
         where bc1.coid in

@@ -5,6 +5,7 @@ import com.brookezb.bhs.exception.InvalidException;
 import com.brookezb.bhs.exception.NotFoundException;
 import com.brookezb.bhs.mapper.ArticleMapper;
 import com.brookezb.bhs.mapper.CommentMapper;
+import com.brookezb.bhs.model.Comment;
 import com.brookezb.bhs.model.User;
 import com.brookezb.bhs.utils.IdUtils;
 import com.brookezb.bhs.utils.ServletUtils;
@@ -14,7 +15,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.brookezb.bhs.model.Comment;
 
 import java.util.List;
 
@@ -46,6 +46,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Cacheable(key = "'aid_' + #aid")
     public List<Comment> selectAllByArticleId(Long aid) {
+        if (articleMapper.verifyArticle(aid) == null) {
+            throw new NotFoundException("文章不存在");
+        }
         var ids = commentMapper.selectAllByArticleId(aid);
         if (ids.isEmpty()) {
             return List.of();
@@ -72,9 +75,22 @@ public class CommentServiceImpl implements CommentService {
             throw new InvalidException("评论文章不存在");
         }
 
-        // 查询父评论是否存在
-        if (comment.getParent() != null && commentMapper.verifyComment(comment.getParent()) == null) {
-            throw new InvalidException("父评论不存在");
+        // 非顶级评论处理
+        if (comment.getReply() != null) {
+            Comment reply = commentMapper.selectById(comment.getReply());
+
+            // 回复评论不存在或非审核通过
+            if (reply == null || reply.getStatus() != Comment.Status.PUBLISHED) {
+                throw new InvalidException("回复的评论不存在");
+            }
+
+            // 评论层级判断
+            if (reply.getParent() == null) {
+                comment.setParent(reply.getCoid());
+                comment.setReply(null);
+            } else {
+                comment.setParent(reply.getParent());
+            }
         }
 
         // 检查评论者邮箱是否受信任

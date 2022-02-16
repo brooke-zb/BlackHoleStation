@@ -5,6 +5,9 @@ import java.util.List;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.groups.Default;
+
 /**
  * 评论表
  */
@@ -13,22 +16,30 @@ public class Comment {
     /**
      * 评论id
      */
+    @NotNull(message = "评论id不能为空", groups = Update.class)
     private Long coid;
 
     /**
      * 文章id
      */
+    @NotNull(message = "文章id不能为空", groups = Add.class)
     private Long aid;
 
     /**
      * 昵称
      */
+    @NotNull(message = "昵称不能为空", groups = Add.class)
     private String nickname;
 
     /**
      * 邮箱
      */
     private String email;
+
+    /**
+     * 头像（邮箱hash）
+     */
+    private String avatar;
 
     /**
      * 网址
@@ -43,6 +54,7 @@ public class Comment {
     /**
      * 内容
      */
+    @NotNull(message = "内容不能为空", groups = Add.class)
     private String content;
 
     /**
@@ -84,4 +96,7 @@ public class Comment {
          */
         INVISIBLE
     }
+
+    public interface Add extends Default {}
+    public interface Update extends Default {}
 }
