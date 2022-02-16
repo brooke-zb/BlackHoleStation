@@ -11,9 +11,9 @@ import java.util.List;
  */
 @Mapper
 public interface CommentMapper {
-    Comment selectById(Long coid);
+    Comment selectById(@Param("coid") Long coid, @Param("isAdmin") boolean isAdmin);
 
-    List<Comment> selectAll(Comment.Status status);
+    List<Comment> selectAll(@Param("aid") Long aid, @Param("ip") String ip, @Param("status") Comment.Status status);
 
     List<Long> selectAllByArticleId(Long aid);
 
@@ -32,6 +32,8 @@ public interface CommentMapper {
     int update(Comment comment);
 
     int updateStatus(@Param("coid") Long coid, @Param("status") Comment.Status status);
+
+    int updateStatusList(@Param("coids") List<Long> coids, @Param("status") Comment.Status status);
 
     int delete(Long coid);
 

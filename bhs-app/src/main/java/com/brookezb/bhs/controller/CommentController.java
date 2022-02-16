@@ -24,7 +24,7 @@ public class CommentController {
 
     @GetMapping("/{id:\\d+}")
     public R<?> getComment(@PathVariable Long id) {
-        return R.success(commentService.selectById(id));
+        return R.success(commentService.selectById(id, false));
     }
 
     @GetMapping("")

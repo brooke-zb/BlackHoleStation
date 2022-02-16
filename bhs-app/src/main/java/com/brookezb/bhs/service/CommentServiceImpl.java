@@ -30,8 +30,8 @@ public class CommentServiceImpl implements CommentService {
     private MailService mailService;
 
     @Override
-    public Comment selectById(Long coid) {
-        Comment comment = commentMapper.selectById(coid);
+    public Comment selectById(Long coid, boolean isAdmin) {
+        Comment comment = commentMapper.selectById(coid, isAdmin);
         if (comment == null) {
             throw new NotFoundException("评论不存在");
         }
@@ -39,8 +39,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> selectAll(Comment.Status status) {
-        return commentMapper.selectAll(status);
+    public List<Comment> selectAll(Long aid, String ip, Comment.Status status) {
+        return commentMapper.selectAll(aid, ip, status);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class CommentServiceImpl implements CommentService {
 
         // 非顶级评论处理
         if (comment.getReply() != null) {
-            Comment reply = commentMapper.selectById(comment.getReply());
+            Comment reply = commentMapper.selectById(comment.getReply(), true);
 
             // 回复评论不存在或非审核通过
             if (reply == null || reply.getStatus() != Comment.Status.PUBLISHED) {
@@ -137,11 +137,19 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     @CacheEvict(allEntries = true)
-    public void updateStatus(Comment comment) {
-        if (commentMapper.verifyComment(comment.getCoid()) == null) {
+    public void updateStatus(Long coid, Comment.Status status) {
+        if (commentMapper.verifyComment(coid) == null) {
             throw new NotFoundException("评论不存在");
         }
-        commentMapper.updateStatus(comment.getCoid(), comment.getStatus());
+        commentMapper.updateStatus(coid, status);
+    }
+
+    @Override
+    public void updateStatusList(List<Long> coids, Comment.Status status) {
+        if (coids.isEmpty()) {
+            return;
+        }
+        commentMapper.updateStatusList(coids, status);
     }
 
     @Override

@@ -8,9 +8,9 @@ import java.util.List;
  * @author brooke_zb
  */
 public interface CommentService {
-    Comment selectById(Long coid);
+    Comment selectById(Long coid, boolean isAdmin);
 
-    List<Comment> selectAll(Comment.Status status);
+    List<Comment> selectAll(Long aid, String ip, Comment.Status status);
 
     List<Comment> selectAllByArticleId(Long aid);
 
@@ -22,7 +22,9 @@ public interface CommentService {
 
     void update(Comment comment);
 
-    void updateStatus(Comment comment);
+    void updateStatus(Long coid, Comment.Status status);
+
+    void updateStatusList(List<Long> coids, Comment.Status status);
 
     void delete(Long coid);
 

@@ -48,6 +48,15 @@
         where coid = #{coid}
     </update>
 
+    <update id="updateStatusList">
+        update bhs_comment
+        set status = #{status}
+        where coid in
+        <foreach collection="coids" item="coid" open="(" close=")" separator=",">
+            #{coid}
+        </foreach>
+    </update>
+
     <delete id="delete">
         delete
         from bhs_comment
@@ -58,23 +67,51 @@
         delete
         from bhs_comment
         where coid in
-        <foreach collection="list" item="coid" separator="," open="(" close=")">
+        <foreach collection="list" item="coid" open="(" close=")" separator=",">
+            #{coid}
+        </foreach>
+        and parent in
+        <foreach collection="list" item="coid" open="(" close=")" separator=",">
             #{coid}
         </foreach>
     </delete>
 
     <select id="selectById" resultType="com.brookezb.bhs.model.Comment">
-        select *
+        select coid,
+               aid,
+               nickname,
+               md5(email) as avatar,
+               site,
+               content,
+               created,
+               status,
+               parent,
+               reply
+        <if test="isAdmin == true">
+            ,email
+            ,ip
+        </if>
         from bhs_comment
-        where coid = #{coid}
+        <where>
+            coid = #{coid}
+            <if test="isAdmin != true">
+                and status = 'PUBLISHED'
+            </if>
+        </where>
     </select>
 
     <select id="selectAll" resultType="com.brookezb.bhs.model.Comment">
         select *
         from bhs_comment
         <where>
+            <if test="aid != null">
+                and aid = #{aid}
+            </if>
+            <if test="ip != null">
+                and ip = #{aid}
+            </if>
             <if test="status != null">
-                status = #{status}
+                and status = #{status}
             </if>
         </where>
     </select>
