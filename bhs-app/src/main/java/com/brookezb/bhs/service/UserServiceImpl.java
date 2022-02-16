@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
     public List<User> selectAll(String username, Boolean enabled) {
         List<Long> ids = userMapper.selectAll(username, enabled);
         if (ids.isEmpty()) {
-            return new ArrayList<>();
+            return List.of();
         }
         return userMapper.selectAllByIdList(ids);
     }

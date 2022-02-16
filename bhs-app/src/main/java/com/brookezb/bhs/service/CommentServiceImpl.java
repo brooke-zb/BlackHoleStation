@@ -46,7 +46,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Cacheable(key = "'aid_' + #aid")
     public List<Comment> selectAllByArticleId(Long aid) {
-        return commentMapper.selectAllByArticleId(aid);
+        var ids = commentMapper.selectAllByArticleId(aid);
+        if (ids.isEmpty()) {
+            return List.of();
+        }
+        return commentMapper.selectAllByIdList(ids);
     }
 
     @Override

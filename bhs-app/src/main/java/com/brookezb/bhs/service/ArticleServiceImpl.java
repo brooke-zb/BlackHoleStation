@@ -44,7 +44,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<Article> selectAll(Long uid, Long cid, Long tid, Article.Status status) {
         List<Long> ids = articleMapper.selectAll(uid, cid, tid, status);
         if (ids.isEmpty()) {
-            return new ArrayList<>();
+            return List.of();
         }
         return articleMapper.selectAllByIdList(ids);
     }
@@ -53,7 +53,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<Article> selectAllByTagName(String tag, Article.Status status) {
         List<Long> ids = articleMapper.selectAllByTagName(tag, status);
         if (ids.isEmpty()) {
-            return new ArrayList<>();
+            return List.of();
         }
         return articleMapper.selectAllByIdList(ids);
     }

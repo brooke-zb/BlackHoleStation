@@ -15,13 +15,13 @@ public interface CommentMapper {
 
     List<Comment> selectAll(Comment.Status status);
 
-    List<Comment> selectAllByArticleId(Long aid);
+    List<Long> selectAllByArticleId(Long aid);
 
     List<Comment> selectAllByNickname(String name);
 
     List<Comment> selectAllByIp(String ip);
 
-    List<Comment> selectAllByParent(Long parent);
+    List<Comment> selectAllByIdList(List<Long> coids);
 
     String selectTrustEmail(String email);
 

@@ -7,10 +7,10 @@
         <id property="cid" column="cid"/>
         <result property="name" column="name"/>
         <result property="parent" column="parent"/>
-        <collection property="children">
-            <result property="cid" column="c_cid"/>
-            <result property="name" column="c_name"/>
-            <result property="parent" column="c_parent"/>
+        <collection property="children" columnPrefix="c_">
+            <id property="cid" column="cid"/>
+            <result property="name" column="name"/>
+            <result property="parent" column="parent"/>
         </collection>
     </resultMap>
 

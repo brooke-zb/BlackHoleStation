@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.brookezb.bhs.mapper.CommentMapper">
-    <resultMap id="ArticleCommentMap" type="com.brookezb.bhs.model.Comment">
+    <resultMap id="CommentMap" type="com.brookezb.bhs.model.Comment">
         <id property="coid" column="coid"/>
         <result property="parent" column="parent"/>
         <result property="status" column="status"/>
@@ -14,7 +14,18 @@
         <result property="nickname" column="nickname"/>
         <result property="reply" column="reply"/>
         <result property="aid" column="aid"/>
-        <collection property="children" column="coid" select="selectAllByParent"/>
+        <collection property="children" columnPrefix="c_">
+            <id property="coid" column="coid"/>
+            <result property="parent" column="parent"/>
+            <result property="status" column="status"/>
+            <result property="created" column="created"/>
+            <result property="content" column="content"/>
+            <result property="site" column="site"/>
+            <result property="email" column="email"/>
+            <result property="nickname" column="nickname"/>
+            <result property="reply" column="reply"/>
+            <result property="aid" column="aid"/>
+        </collection>
     </resultMap>
 
     <insert id="insert">
@@ -68,8 +79,8 @@
         </where>
     </select>
 
-    <select id="selectAllByArticleId" resultMap="ArticleCommentMap">
-        select *
+    <select id="selectAllByArticleId" resultType="java.lang.Long">
+        select coid
         from bhs_comment
         where aid = #{aid}
           and status = 'PUBLISHED'
@@ -87,10 +98,25 @@
         where ip = #{ip}
     </select>
 
-    <select id="selectAllByParent" resultType="com.brookezb.bhs.model.Comment">
-        select *
-        from bhs_comment
-        where parent = #{parent}
+    <select id="selectAllByIdList" resultMap="CommentMap">
+        select bc1.*,
+               bc2.coid     as c_coid,
+               bc2.aid      as c_aid,
+               bc2.nickname as c_nickname,
+               bc2.email    as c_email,
+               bc2.site     as c_site,
+               bc2.ip       as c_ip,
+               bc2.content  as c_content,
+               bc2.created  as c_created,
+               bc2.status   as c_status,
+               bc2.parent   as c_parent,
+               bc2.reply    as c_reply
+        from bhs_comment bc1
+                 left join bhs_comment bc2 on bc1.coid = bc2.parent
+        where bc1.coid in
+        <foreach collection="coids" item="coid" open="(" close=")" separator=",">
+            #{coid}
+        </foreach>
     </select>
 
     <select id="selectTrustEmail" resultType="java.lang.String">

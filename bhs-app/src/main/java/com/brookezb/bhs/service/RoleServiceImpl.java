@@ -34,7 +34,7 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> selectAll() {
         List<Long> ids = roleMapper.selectAll();
         if (ids.isEmpty()) {
-            return new ArrayList<>();
+            return List.of();
         }
         return roleMapper.selectAllByIdList(ids);
     }
