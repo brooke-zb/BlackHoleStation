@@ -39,7 +39,7 @@ public class ArticleController {
             "/tag/{tag}",
     })
     public R<?> getArticleList(
-            @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") Integer page,
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") int page,
             @PathVariable(required = false) Long uid,
             @PathVariable(required = false) Long cid,
             @PathVariable(required = false) String tag
@@ -54,7 +54,7 @@ public class ArticleController {
     }
 
     @GetMapping("/timeline")
-    public R<?> getArticleTimeline(@RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") Integer page) {
+    public R<?> getArticleTimeline(@RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") int page) {
         PageHelper.startPage(page, AppConstants.TIMELINE_SIZE);
         return R.success(
                 PageInfo.of(articleService.selectAllTimeline())

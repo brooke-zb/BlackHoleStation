@@ -41,7 +41,7 @@ public class UserAdminController {
     @GetMapping("")
     @RequirePermission("USER:GET")
     public R<?> getUserList(
-            @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") Integer page,
+            @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") int page,
             @RequestParam(defaultValue = "10") @Pattern(regexp = RegexConstants.PAGE, message = "页数需为10/20/30") String size,
             @RequestParam(required = false) String username,
             @RequestParam(required = false) Boolean enabled
