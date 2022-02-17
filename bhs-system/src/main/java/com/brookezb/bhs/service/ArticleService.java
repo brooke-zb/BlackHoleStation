@@ -52,4 +52,8 @@ public interface ArticleService {
      * @param aid 文章id
      */
     void delete(Long aid);
+
+    Integer getAndIncreaseViews(Long aid);
+
+    boolean updateViews(Long aid, Integer viewCount);
 }

@@ -26,6 +26,8 @@ public interface ArticleMapper {
 
     Integer selectCountByCategoryId(Long cid);
 
+    Integer selectViewsById(Long aid);
+
     Integer verifyArticle(Long aid);
 
     User selectUserById(Long aid);
@@ -35,6 +37,8 @@ public interface ArticleMapper {
     int insertTags(@Param("aid") Long aid, @Param("tags") List<Tag> tags);
 
     int update(Article article);
+
+    int updateViews(@Param("aid") Long aid, @Param("views") Integer views);
 
     int delete(Long aid);
 

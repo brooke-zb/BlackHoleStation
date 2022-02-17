@@ -54,6 +54,12 @@
         where aid = #{aid}
     </update>
 
+    <update id="updateViews">
+        update bhs_article
+        set views = #{views}
+        where aid = #{aid}
+    </update>
+
     <delete id="delete">
         delete
         from bhs_article
@@ -154,6 +160,12 @@
                month(created) as month
         from bhs_article
         order by year desc, month desc
+    </select>
+
+    <select id="selectViewsById" resultType="java.lang.Integer">
+        select views
+        from bhs_article
+        where aid = #{aid}
     </select>
 
     <select id="verifyArticle" resultType="java.lang.Integer">

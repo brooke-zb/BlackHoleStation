@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -49,16 +50,32 @@ public class RedisUtils {
         return stringRedisTemplate.opsForValue().get(key);
     }
 
+    public void setSetValue(String key, String... values) {
+        stringRedisTemplate.opsForSet().add(key, values);
+    }
+
+    public Integer getSetSize(String key) {
+        var size = stringRedisTemplate.opsForSet().size(key);
+        if (size == null) {
+            return null;
+        }
+        return size.intValue();
+    }
+
     public <T> T getObjectValue(String key, Class<T> clazz) {
         Object object = redisTemplate.opsForValue().get(key);
         if (object == null) {
             return null;
         }
-        return (T) redisTemplate.opsForValue().get(key);
+        return (T) object;
     }
 
     public Boolean exist(String key) {
         return stringRedisTemplate.hasKey(key);
+    }
+
+    public Set<String> getKeys(String pattern) {
+        return stringRedisTemplate.keys(pattern);
     }
 
     public Boolean delete(String key) {

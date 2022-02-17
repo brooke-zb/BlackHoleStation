@@ -29,7 +29,13 @@ public class ArticleController {
         if (article.getStatus() != Article.Status.PUBLISHED) {
             throw new NotFoundException("文章不存在或已被删除");
         }
-        return R.success();
+
+        // 更新阅读次数
+        Integer views = articleService.getAndIncreaseViews(id);
+        if (views != null) {
+            article.setViews(article.getViews() + views);
+        }
+        return R.success(article);
     }
 
     @GetMapping({

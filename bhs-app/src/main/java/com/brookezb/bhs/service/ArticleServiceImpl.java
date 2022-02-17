@@ -1,5 +1,7 @@
 package com.brookezb.bhs.service;
 
+import cn.hutool.extra.servlet.ServletUtil;
+import com.brookezb.bhs.constant.AppConstants;
 import com.brookezb.bhs.entity.ArticleTimeline;
 import com.brookezb.bhs.exception.InvalidException;
 import com.brookezb.bhs.exception.NotFoundException;
@@ -9,6 +11,8 @@ import com.brookezb.bhs.mapper.TagMapper;
 import com.brookezb.bhs.model.Article;
 import com.brookezb.bhs.model.Tag;
 import com.brookezb.bhs.utils.IdUtils;
+import com.brookezb.bhs.utils.RedisUtils;
+import com.brookezb.bhs.utils.ServletUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -16,7 +20,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +32,7 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleMapper articleMapper;
     private CategoryMapper categoryMapper;
     private TagMapper tagMapper;
+    private RedisUtils redisUtils;
 
     @Cacheable(key = "#aid")
     @Override
@@ -106,4 +110,23 @@ public class ArticleServiceImpl implements ArticleService {
         }
         articleMapper.delete(aid);
     }
+
+    @Override
+    public Integer getAndIncreaseViews(Long aid) {
+        String ip = ServletUtil.getClientIP(ServletUtils.getRequest());
+        redisUtils.setSetValue(AppConstants.REDIS_ARTICLE_VIEW_COUNT + aid, ip);
+        return redisUtils.getSetSize(AppConstants.REDIS_ARTICLE_VIEW_COUNT + aid);
+    }
+
+    @Override
+    public boolean updateViews(Long aid, Integer viewCount) {
+        Integer views = articleMapper.selectViewsById(aid);
+        if (views == null) {
+            return false;
+        }
+        articleMapper.updateViews(aid, views + viewCount);
+        return true;
+    }
+
+
 }

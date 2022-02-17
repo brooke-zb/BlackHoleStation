@@ -70,3 +70,7 @@ csrf:
 cors:
   origins:
     - https://www.example.com
+
+task:
+  cron:
+    count-article-views: @daily
