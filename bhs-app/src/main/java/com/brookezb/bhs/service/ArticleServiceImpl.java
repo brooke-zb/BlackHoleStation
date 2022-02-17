@@ -41,6 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (article == null) {
             throw new NotFoundException("文章不存在或已被删除");
         }
+        article.setTags(tagMapper.selectAllByAid(aid));
         return article;
     }
 
