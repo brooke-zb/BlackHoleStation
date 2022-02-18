@@ -3,7 +3,7 @@ package com.brookezb.bhs.task;
 import com.brookezb.bhs.constant.AppConstants;
 import com.brookezb.bhs.service.ArticleService;
 import com.brookezb.bhs.utils.RedisUtils;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CountArticleViewsTask {
-    private RedisUtils redisUtils;
-    private ArticleService articleService;
+    private final RedisUtils redisUtils;
+    private final ArticleService articleService;
     private int count = 0;
 
     @Scheduled(cron = "${task.cron.count-article-views:@daily}")
