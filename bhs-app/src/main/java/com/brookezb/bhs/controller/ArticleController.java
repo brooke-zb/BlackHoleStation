@@ -1,5 +1,6 @@
 package com.brookezb.bhs.controller;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.brookezb.bhs.constant.AppConstants;
 import com.brookezb.bhs.exception.NotFoundException;
 import com.brookezb.bhs.model.Article;
@@ -30,12 +31,14 @@ public class ArticleController {
             throw new NotFoundException("文章不存在或已被删除");
         }
 
+        Article res = BeanUtil.copyProperties(article, Article.class);
+
         // 更新阅读次数
         Integer views = articleService.getAndIncreaseViews(id);
         if (views != null) {
-            article.setViews(article.getViews() + views);
+            res.setViews(res.getViews() + views);
         }
-        return R.success(article);
+        return R.success(res);
     }
 
     @GetMapping({
