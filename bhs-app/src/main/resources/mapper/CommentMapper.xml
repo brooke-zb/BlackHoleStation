@@ -158,7 +158,7 @@
         from bhs_comment bc1
                  left join bhs_comment bc2 on bc1.coid = bc2.parent
         where bc1.coid in
-        <foreach collection="coids" item="coid" open="(" close=")" separator=",">
+        <foreach collection="list" item="coid" open="(" close=")" separator=",">
             #{coid}
         </foreach>
     </select>
