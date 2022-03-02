@@ -160,7 +160,7 @@
         <foreach collection="list" item="coid" open="(" close=")" separator=",">
             #{coid}
         </foreach>
-        and bc2.status = 'PUBLISHED'
+        and (bc2.coid is null or bc2.status = 'PUBLISHED')
     </select>
 
     <select id="selectTrustEmail" resultType="java.lang.String">
