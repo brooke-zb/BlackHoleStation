@@ -120,6 +120,7 @@
         select coid
         from bhs_comment
         where aid = #{aid}
+          and parent is null
           and status = 'PUBLISHED'
     </select>
 
