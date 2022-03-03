@@ -3,7 +3,9 @@ package com.brookezb.bhs.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.Default;
@@ -26,9 +28,15 @@ public class Comment {
     private Long aid;
 
     /**
+     * 评论者id
+     */
+    private Long uid;
+
+    /**
      * 昵称
      */
     @NotNull(message = "昵称不能为空", groups = Add.class)
+    @Length(message = "昵称长度不符合要求(1 - 32)", min = 1, max = 32, groups = {Add.class, Update.class})
     private String nickname;
 
     /**
@@ -55,6 +63,7 @@ public class Comment {
      * 内容
      */
     @NotNull(message = "内容不能为空", groups = Add.class)
+    @Length(message = "内容长度不符合要求(1 - 1000)", min = 1, max = 1000, groups = {Add.class, Update.class})
     private String content;
 
     /**
@@ -75,12 +84,18 @@ public class Comment {
     /**
      * 子级评论
      */
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<Comment> children;
 
     /**
      * 回复评论id
      */
     private Long reply;
+
+    /**
+     * 回复评论昵称
+     */
+    private String replyname;
 
     public enum Status {
         /**

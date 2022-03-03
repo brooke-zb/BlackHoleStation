@@ -69,7 +69,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     @CacheEvict(key = "'aid_' + #comment.getAid()", condition = "#result == true")
-    public boolean insert(Comment comment, boolean withPend) {
+    public boolean insert(Comment comment) {
         // 查询文章是否存在
         if (articleMapper.verifyArticle(comment.getAid()) == null) {
             throw new InvalidException("评论文章不存在");
@@ -83,6 +83,7 @@ public class CommentServiceImpl implements CommentService {
             if (reply == null || reply.getStatus() != Comment.Status.PUBLISHED) {
                 throw new InvalidException("回复的评论不存在");
             }
+            comment.setReplyname(reply.getNickname());
 
             // 评论层级判断
             if (reply.getParent() == null) {
@@ -94,7 +95,7 @@ public class CommentServiceImpl implements CommentService {
         }
 
         // 检查评论者邮箱是否受信任
-        if (withPend) {
+        if (comment.getUid() != null) {
             if (commentMapper.selectTrustEmail(comment.getEmail()) == null) {
                 comment.setStatus(Comment.Status.PENDING);
             } else {

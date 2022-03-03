@@ -24,13 +24,14 @@
             <result property="avatar" column="avatar"/>
             <result property="nickname" column="nickname"/>
             <result property="reply" column="reply"/>
+            <result property="replyname" column="replyname"/>
             <result property="aid" column="aid"/>
         </collection>
     </resultMap>
 
     <insert id="insert">
-        insert into bhs_comment(coid, aid, nickname, email, site, ip, content, parent, reply)
-        values (#{coid}, #{aid}, #{nickname}, #{email}, #{site}, #{ip}, #{content}, #{parent}, #{reply})
+        insert into bhs_comment(coid, aid, nickname, email, site, ip, content, parent, reply, replyname)
+        values (#{coid}, #{aid}, #{nickname}, #{email}, #{site}, #{ip}, #{content}, #{parent}, #{reply}, #{replyname})
     </insert>
 
     <update id="update">
@@ -86,7 +87,8 @@
                created,
                status,
                parent,
-               reply
+               reply,
+               replyname,
         <if test="isAdmin == true">
             ,email
             ,ip
@@ -154,7 +156,8 @@
                bc2.content    as c_content,
                bc2.created    as c_created,
                bc2.parent     as c_parent,
-               bc2.reply      as c_reply
+               bc2.reply      as c_reply,
+               bc2.replyname  as c_replyname
         from bhs_comment bc1
                  left join bhs_comment bc2 on bc1.coid = bc2.parent
         where bc1.coid in
