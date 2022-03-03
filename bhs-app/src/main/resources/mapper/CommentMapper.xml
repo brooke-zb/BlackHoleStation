@@ -14,6 +14,7 @@
         <result property="nickname" column="nickname"/>
         <result property="reply" column="reply"/>
         <result property="aid" column="aid"/>
+        <result property="uid" column="uid"/>
         <collection property="children" columnPrefix="c_" ofType="com.brookezb.bhs.model.Comment">
             <result property="coid" column="coid"/>
             <result property="parent" column="parent"/>
@@ -26,6 +27,7 @@
             <result property="reply" column="reply"/>
             <result property="replyname" column="replyname"/>
             <result property="aid" column="aid"/>
+            <result property="uid" column="uid"/>
         </collection>
     </resultMap>
 
@@ -80,6 +82,7 @@
     <select id="selectById" resultType="com.brookezb.bhs.model.Comment">
         select coid,
                aid,
+               uid,
                nickname,
                md5(email) as avatar,
                site,
@@ -141,6 +144,7 @@
     <select id="selectAllByIdList" resultMap="CommentMap">
         select bc1.coid,
                bc1.aid,
+               bc1.uid,
                bc1.nickname,
                md5(bc1.email) as avatar,
                bc1.site,
@@ -150,6 +154,7 @@
                bc1.reply,
                bc2.coid       as c_coid,
                bc2.aid        as c_aid,
+               bc2.uid        as c_uid,
                bc2.nickname   as c_nickname,
                md5(bc2.email) as c_avatar,
                bc2.site       as c_site,
