@@ -37,7 +37,7 @@ public class Comment {
      * 昵称
      */
     @NotNull(message = "昵称不能为空", groups = Add.class)
-    @Length(message = "昵称长度不符合要求(1 - 32)", min = 1, max = 32, groups = {Add.class, Update.class})
+    @Length(message = "昵称长度不符合要求(2 - 32)", min = 2, max = 32, groups = {Add.class, Update.class})
     private String nickname;
 
     /**

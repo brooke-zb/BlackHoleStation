@@ -4,6 +4,6 @@ package com.brookezb.bhs.constant;
  * @author brooke_zb
  */
 public class RegexConstants {
-    public static final String MAIL = "^[a-z0-9A-Z]+[a-z0-9A-Z._-]+[a-z0-9A-Z]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-z]{2,8}$";
+    public static final String MAIL = "^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
     public static final String PAGE = "^[1-3]0$";
 }

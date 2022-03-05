@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -45,6 +46,7 @@ public class Article {
      * 标题
      */
     @NotNull(message = "标题不能为空", groups = Add.class)
+    @Length(message = "标题长度不符合要求(1 - 64)", min = 1, max = 64, groups = {Add.class, Update.class})
     private String title;
 
     /**
@@ -61,6 +63,7 @@ public class Article {
      * 内容
      */
     @NotNull(message = "内容不能为空", groups = Add.class)
+    @Length(message = "内容长度不能少于1个字", min = 1, groups = {Add.class, Update.class})
     private String content;
 
     /**
