@@ -32,8 +32,8 @@
     </resultMap>
 
     <insert id="insert">
-        insert into bhs_comment(coid, aid, nickname, email, site, ip, content, parent, reply, replyname)
-        values (#{coid}, #{aid}, #{nickname}, #{email}, #{site}, #{ip}, #{content}, #{parent}, #{reply}, #{replyname})
+        insert into bhs_comment(coid, aid, nickname, email, site, ip, content, parent, reply, replyname, status)
+        values (#{coid}, #{aid}, #{nickname}, #{email}, #{site}, #{ip}, #{content}, #{parent}, #{reply}, #{replyname}, #{status})
     </insert>
 
     <update id="update">
@@ -93,8 +93,8 @@
                reply,
                replyname,
         <if test="isAdmin == true">
-            ,email
-            ,ip
+            email,
+            ip
         </if>
         from bhs_comment
         <where>

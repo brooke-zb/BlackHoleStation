@@ -46,10 +46,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Cacheable(key = "'aid_' + #aid")
     public List<Comment> selectAllByArticleId(Long aid) {
+        var ids = commentMapper.selectAllByArticleId(aid);
         if (articleMapper.verifyArticle(aid) == null) {
             throw new NotFoundException("文章不存在");
         }
-        var ids = commentMapper.selectAllByArticleId(aid);
         if (ids.isEmpty()) {
             return List.of();
         }
@@ -96,8 +96,8 @@ public class CommentServiceImpl implements CommentService {
         }
 
         // 检查评论者邮箱是否受信任
-        if (comment.getUid() != null) {
-            if (commentMapper.selectTrustEmail(comment.getEmail()) == null) {
+        if (comment.getUid() == null) {
+            if (comment.getEmail() == null || commentMapper.selectTrustEmail(comment.getEmail()) == null) {
                 comment.setStatus(Comment.Status.PENDING);
             } else {
                 comment.setStatus(Comment.Status.PUBLISHED);
