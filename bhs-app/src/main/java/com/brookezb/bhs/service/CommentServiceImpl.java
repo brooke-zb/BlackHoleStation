@@ -80,7 +80,7 @@ public class CommentServiceImpl implements CommentService {
             Comment reply = commentMapper.selectById(comment.getReply(), true);
 
             // 回复评论不存在或非审核通过
-            if (reply == null || reply.getStatus() != Comment.Status.PUBLISHED) {
+            if (reply == null || reply.getStatus() != Comment.Status.PUBLISHED || !reply.getAid().equals(comment.getAid())) {
                 throw new InvalidException("回复的评论不存在");
             }
             comment.setReplyname(reply.getNickname());
