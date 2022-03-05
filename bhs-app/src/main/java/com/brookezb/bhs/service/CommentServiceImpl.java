@@ -91,6 +91,7 @@ public class CommentServiceImpl implements CommentService {
                 comment.setReply(null);
             } else {
                 comment.setParent(reply.getParent());
+                comment.setReply(reply.getCoid());
             }
         }
 
