@@ -64,7 +64,7 @@ public class Comment {
      * 内容
      */
     @NotNull(message = "内容不能为空", groups = Add.class)
-    @Length(message = "内容长度不符合要求(1 - 1000)", min = 1, max = 1000, groups = {Add.class, Update.class})
+    @Length(message = "内容长度不符合要求(1 - 300)", min = 1, max = 300, groups = {Add.class, Update.class})
     private String content;
 
     /**
