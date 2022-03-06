@@ -8,6 +8,7 @@ import com.brookezb.bhs.mapper.CommentMapper;
 import com.brookezb.bhs.model.Comment;
 import com.brookezb.bhs.model.User;
 import com.brookezb.bhs.utils.IdUtils;
+import com.brookezb.bhs.utils.PageUtils;
 import com.brookezb.bhs.utils.ServletUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
@@ -53,7 +54,7 @@ public class CommentServiceImpl implements CommentService {
         if (ids.isEmpty()) {
             return List.of();
         }
-        return commentMapper.selectAllByIdList(ids);
+        return PageUtils.selectPage(ids, commentMapper::selectAllByIdList, Comment.class);
     }
 
     @Override

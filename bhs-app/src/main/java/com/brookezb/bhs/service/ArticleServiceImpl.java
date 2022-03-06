@@ -11,6 +11,7 @@ import com.brookezb.bhs.mapper.TagMapper;
 import com.brookezb.bhs.model.Article;
 import com.brookezb.bhs.model.Tag;
 import com.brookezb.bhs.utils.IdUtils;
+import com.brookezb.bhs.utils.PageUtils;
 import com.brookezb.bhs.utils.RedisUtils;
 import com.brookezb.bhs.utils.ServletUtils;
 import lombok.AllArgsConstructor;
@@ -51,7 +52,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (ids.isEmpty()) {
             return List.of();
         }
-        return articleMapper.selectAllByIdList(ids);
+        return PageUtils.selectPage(ids, articleMapper::selectAllByIdList, Article.class);
     }
 
     @Override
@@ -60,7 +61,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (ids.isEmpty()) {
             return List.of();
         }
-        return articleMapper.selectAllByIdList(ids);
+        return PageUtils.selectPage(ids, articleMapper::selectAllByIdList, Article.class);
     }
 
     @Override

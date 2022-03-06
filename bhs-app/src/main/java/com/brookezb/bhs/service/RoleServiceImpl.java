@@ -4,7 +4,9 @@ import com.brookezb.bhs.exception.InvalidException;
 import com.brookezb.bhs.exception.NotFoundException;
 import com.brookezb.bhs.mapper.RoleMapper;
 import com.brookezb.bhs.mapper.UserMapper;
+import com.brookezb.bhs.model.Article;
 import com.brookezb.bhs.model.Role;
+import com.brookezb.bhs.utils.PageUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +38,7 @@ public class RoleServiceImpl implements RoleService {
         if (ids.isEmpty()) {
             return List.of();
         }
-        return roleMapper.selectAllByIdList(ids);
+        return PageUtils.selectPage(ids, roleMapper::selectAllByIdList, Role.class);
     }
 
     @Override

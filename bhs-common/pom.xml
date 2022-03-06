@@ -34,6 +34,13 @@
             <scope>compile</scope>
         </dependency>
 
+        <!--PageHelper-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
         <!-- SpringBoot Config -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

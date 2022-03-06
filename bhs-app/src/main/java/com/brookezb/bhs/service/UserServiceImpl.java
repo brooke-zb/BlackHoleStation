@@ -6,8 +6,10 @@ import com.brookezb.bhs.exception.InvalidException;
 import com.brookezb.bhs.exception.NotFoundException;
 import com.brookezb.bhs.mapper.RoleMapper;
 import com.brookezb.bhs.mapper.UserMapper;
+import com.brookezb.bhs.model.Role;
 import com.brookezb.bhs.model.User;
 import com.brookezb.bhs.utils.CryptUtils;
+import com.brookezb.bhs.utils.PageUtils;
 import com.brookezb.bhs.utils.RedisUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheConfig;
@@ -71,7 +73,7 @@ public class UserServiceImpl implements UserService {
         if (ids.isEmpty()) {
             return List.of();
         }
-        return userMapper.selectAllByIdList(ids);
+        return PageUtils.selectPage(ids, userMapper::selectAllByIdList, User.class);
     }
 
     @Override
