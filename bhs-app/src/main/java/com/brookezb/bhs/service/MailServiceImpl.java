@@ -35,9 +35,10 @@ public class MailServiceImpl implements MailService {
     @Async("mailExecutor")
     @Override
     public void sendReplyMail(String to, String nickname, String link) {
+        String cleanNickname = nickname.replace("<", "&lt;").replace(">", "&gt;");
         Map<String, String> map = Map.of(
                 templateKeyword[0], MailConstants.Reply.TITLE,
-                templateKeyword[1], String.format(MailConstants.Reply.CONTENT, URLUtil.encode(nickname)),
+                templateKeyword[1], String.format(MailConstants.Reply.CONTENT, cleanNickname),
                 templateKeyword[2], link,
                 templateKeyword[3], adminMail
         );
