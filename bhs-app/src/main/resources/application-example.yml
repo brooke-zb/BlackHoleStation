@@ -20,7 +20,6 @@ spring:
       spec: maximumSize=10000, expireAfterWrite=300s
     cache-names:
       - article
-      - comment
       - user
 
   mail:

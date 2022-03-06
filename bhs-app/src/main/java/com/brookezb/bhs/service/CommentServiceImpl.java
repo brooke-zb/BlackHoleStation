@@ -11,9 +11,6 @@ import com.brookezb.bhs.utils.IdUtils;
 import com.brookezb.bhs.utils.PageUtils;
 import com.brookezb.bhs.utils.ServletUtils;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +21,6 @@ import java.util.List;
  */
 @Service
 @AllArgsConstructor
-@CacheConfig(cacheNames = "comment")
 public class CommentServiceImpl implements CommentService {
     private CommentMapper commentMapper;
     private ArticleMapper articleMapper;
@@ -45,7 +41,6 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Cacheable(key = "'aid_' + #aid")
     public List<Comment> selectAllByArticleId(Long aid) {
         var ids = commentMapper.selectAllByArticleId(aid);
         if (articleMapper.verifyArticle(aid) == null) {
@@ -69,7 +64,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    @CacheEvict(key = "'aid_' + #comment.getAid()", condition = "#result == true")
     public boolean insert(Comment comment) {
         // 查询文章是否存在
         if (articleMapper.verifyArticle(comment.getAid()) == null) {
@@ -129,7 +123,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    @CacheEvict(allEntries = true)
     public void update(Comment comment) {
         if (commentMapper.verifyComment(comment.getCoid()) == null) {
             throw new NotFoundException("评论不存在");
@@ -139,7 +132,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    @CacheEvict(allEntries = true)
     public void updateStatus(Long coid, Comment.Status status) {
         if (commentMapper.verifyComment(coid) == null) {
             throw new NotFoundException("评论不存在");
@@ -157,7 +149,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    @CacheEvict(allEntries = true)
     public void delete(Long coid) {
         if (commentMapper.verifyComment(coid) == null) {
             throw new NotFoundException("评论不存在");
