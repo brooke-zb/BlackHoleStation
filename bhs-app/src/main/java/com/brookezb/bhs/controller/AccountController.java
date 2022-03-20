@@ -98,7 +98,7 @@ public class AccountController {
     @GetMapping("")
     public R<?> getUserInfo(@SessionAttribute(value = AppConstants.SESSION_USER_KEY, required = false) Long uid) {
         if (uid == null) {
-            throw new AuthenticationException("请先登录后再操作");
+            return R.fail("请先登录后再操作");
         }
         try {
             User user = userService.selectById(uid);
