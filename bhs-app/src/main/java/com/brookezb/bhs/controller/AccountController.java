@@ -94,7 +94,6 @@ public class AccountController {
      * @param uid 用户id
      * @return 用户信息
      */
-    @RequireAuth
     @GetMapping("")
     public R<?> getUserInfo(@SessionAttribute(value = AppConstants.SESSION_USER_KEY, required = false) Long uid) {
         if (uid == null) {
