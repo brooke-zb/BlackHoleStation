@@ -6,8 +6,6 @@
     <resultMap id="articleMap" type="com.brookezb.bhs.model.Article">
         <id property="aid" column="aid"/>
         <result property="title" column="title"/>
-        <result property="description" column="description"/>
-        <result property="picture" column="picture"/>
         <result property="content" column="content"/>
         <result property="commentabled" column="commentabled"/>
         <result property="appreciatabled" column="appreciatabled"/>
@@ -27,9 +25,9 @@
     </resultMap>
 
     <insert id="insert">
-        insert into bhs_article(aid, uid, cid, title, description, picture, content, commentabled, appreciatabled,
+        insert into bhs_article(aid, uid, cid, title, content, commentabled, appreciatabled,
                                 created, status)
-        values (#{aid}, #{uid}, #{category.cid}, #{title}, #{description}, #{picture}, #{content},
+        values (#{aid}, #{uid}, #{category.cid}, #{title}, #{content},
                 #{commentabled}, #{appreciatabled}, #{created}, #{status})
     </insert>
 
@@ -45,8 +43,6 @@
         update bhs_article
         set cid            = #{category.cid},
             title          = #{title},
-            description    = #{description},
-            picture        = #{picture},
             content        = #{content},
             commentabled   = #{commentabled},
             appreciatabled = #{appreciatabled},
@@ -134,7 +130,6 @@
                ba.uid,
                ba.cid,
                ba.title,
-               ba.description,
                ba.commentabled,
                ba.appreciatabled,
                ba.created,

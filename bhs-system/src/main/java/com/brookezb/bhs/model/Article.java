@@ -50,16 +50,6 @@ public class Article {
     private String title;
 
     /**
-     * 简介
-     */
-    private String description;
-
-    /**
-     * 头图
-     */
-    private String picture;
-
-    /**
      * 内容
      */
     @NotNull(message = "内容不能为空", groups = Add.class)
