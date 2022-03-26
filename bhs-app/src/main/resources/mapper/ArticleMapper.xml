@@ -154,6 +154,7 @@
                year(created)  as year,
                month(created) as month
         from bhs_article
+        where status = 'PUBLISHED'
         order by year desc, month desc
     </select>
 
