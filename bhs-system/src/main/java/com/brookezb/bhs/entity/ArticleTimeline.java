@@ -13,5 +13,5 @@ public class ArticleTimeline {
 
     private Integer year;
 
-    private Integer month;
+    private String date;
 }

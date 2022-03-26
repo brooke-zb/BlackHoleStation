@@ -152,10 +152,10 @@
         select aid,
                title,
                year(created)  as year,
-               month(created) as month
+               date_format(created, '%m-%d') as date
         from bhs_article
         where status = 'PUBLISHED'
-        order by year desc, month desc
+        order by created desc
     </select>
 
     <select id="selectViewsById" resultType="java.lang.Integer">
