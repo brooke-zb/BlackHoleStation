@@ -151,8 +151,7 @@
     <select id="selectAllTimeline" resultType="com.brookezb.bhs.entity.ArticleTimeline">
         select aid,
                title,
-               year(created)  as year,
-               date_format(created, '%m-%d') as date
+               created
         from bhs_article
         where status = 'PUBLISHED'
         order by created desc
