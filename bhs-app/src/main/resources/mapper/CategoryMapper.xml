@@ -7,7 +7,7 @@
         <id property="cid" column="cid"/>
         <result property="name" column="name"/>
         <result property="parent" column="parent"/>
-        <collection property="children" columnPrefix="c_">
+        <collection property="children" columnPrefix="c_" ofType="com.brookezb.bhs.model.Category">
             <id property="cid" column="cid"/>
             <result property="name" column="name"/>
             <result property="parent" column="parent"/>
