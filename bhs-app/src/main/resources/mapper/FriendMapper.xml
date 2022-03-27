@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.brookezb.bhs.mapper.FriendMapper">
+    <insert id="insert">
+        insert into bhs_friend(name, link, avatar)
+        values (#{name}, #{link}, #{avatar})
+    </insert>
+
+    <update id="update">
+        update bhs_friend
+        <set>
+            <if test="friend.name != null">
+                name = #{name}
+            </if>
+            <if test="friend.link != null">
+                link = #{link}
+            </if>
+            <if test="friend.avatar != null">
+                avatar = #{avatar}
+            </if>
+        </set>
+        where fid = #{fid}
+    </update>
+
+    <delete id="delete">
+        delete
+        from bhs_friend
+        where fid = #{fid}
+    </delete>
+
+    <select id="selectById" resultType="com.brookezb.bhs.model.Friend">
+        select *
+        from bhs_friend
+        where fid = #{fid}
+    </select>
+
+    <select id="selectAll" resultType="com.brookezb.bhs.model.Friend">
+        select *
+        from bhs_friend
+    </select>
+
+    <select id="verifyFriend" resultType="java.lang.Integer">
+        select 1
+        from bhs_friend
+        where fid = #{fid}
+    </select>
+</mapper>
