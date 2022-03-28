@@ -34,6 +34,11 @@ public class Friend {
     @NotNull(message = "站点图标不能为空", groups = Add.class)
     private String avatar;
 
+    /**
+     * 网站介绍
+     */
+    private String description;
+
     public interface Add extends Default {}
     public interface Update extends Default {}
 }
