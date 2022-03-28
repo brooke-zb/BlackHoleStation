@@ -1,7 +1,6 @@
 package com.brookezb.bhs.service;
 
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.URLUtil;
 import com.brookezb.bhs.constant.MailConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.brookezb.bhs.utils.MailUtils;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

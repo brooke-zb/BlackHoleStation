@@ -4,6 +4,7 @@ import com.brookezb.bhs.constant.AppConstants;
 import com.brookezb.bhs.exception.NotFoundException;
 import com.brookezb.bhs.model.User;
 import com.brookezb.bhs.service.UserService;
+import com.brookezb.bhs.utils.CookieUtils;
 import com.brookezb.bhs.utils.CsrfUtils;
 import com.brookezb.bhs.utils.RedisUtils;
 import lombok.AllArgsConstructor;
@@ -65,9 +66,8 @@ public class DynamicAuthInterceptor implements HandlerInterceptor {
 
             // 生成新的token
             String newToken = userService.generateAuthToken(userId, expire);
-            ResponseCookie cookie = ResponseCookie.from(AppConstants.AUTH_TOKEN_HEADER, newToken)
+            ResponseCookie cookie = CookieUtils.from(AppConstants.AUTH_TOKEN_HEADER, newToken)
                     .maxAge(expire)
-                    .path("/")
                     .httpOnly(true)
                     .build();
             response.addHeader("Set-Cookie", cookie.toString());
@@ -75,8 +75,7 @@ public class DynamicAuthInterceptor implements HandlerInterceptor {
     }
 
     private void removeToken(HttpServletResponse response) {
-        ResponseCookie removeToken = ResponseCookie.from(AppConstants.AUTH_TOKEN_HEADER, "")
-                .path("/")
+        ResponseCookie removeToken = CookieUtils.from(AppConstants.AUTH_TOKEN_HEADER, "")
                 .maxAge(0L)
                 .build();
         response.addHeader("Set-Cookie", removeToken.toString());

@@ -1,5 +1,10 @@
 server:
   port: 8190
+  servlet:
+    session:
+      cookie:
+        domain: .example.com
+        secure: true
 
 spring:
   datasource:

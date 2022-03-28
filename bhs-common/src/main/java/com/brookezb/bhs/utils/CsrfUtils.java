@@ -27,9 +27,7 @@ public class CsrfUtils {
         request.getSession().setAttribute(AppConstants.CSRF_HEADER, token);
 
         // 将token放入cookie中
-        ResponseCookie csrfToken = ResponseCookie.from(AppConstants.CSRF_HEADER, token)
-                .path("/")
-                .build();
+        ResponseCookie csrfToken = CookieUtils.from(AppConstants.CSRF_HEADER, token).build();
         response.addHeader("Set-Cookie", csrfToken.toString());
     }
 }
