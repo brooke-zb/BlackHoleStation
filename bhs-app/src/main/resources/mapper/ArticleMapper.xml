@@ -17,6 +17,7 @@
             <id property="uid" column="uid"/>
             <result property="name" column="username"/>
             <result property="avatar" column="avatar"/>
+            <result property="link" column="link"/>
         </association>
         <association property="category">
             <id property="cid" column="cid"/>
@@ -85,7 +86,7 @@
     </select>
 
     <select id="selectAll" resultType="java.lang.Long">
-        select distinct ba.aid
+        select ba.aid
         from bhs_article ba
                  left join bhs_tag_relation btr on btr.aid = ba.aid
         <where>
@@ -102,6 +103,7 @@
                 and status = #{status}
             </if>
         </where>
+        group by ba.aid
     </select>
 
     <select id="selectAllByTagName" resultType="java.lang.Long">
@@ -138,7 +140,8 @@
                ba.views,
                bc.name,
                bu.name      as username,
-               md5(bu.mail) as avatar
+               md5(bu.mail) as avatar,
+               bu.link
         from bhs_article ba
                  inner join bhs_category bc on ba.cid = bc.cid
                  inner join bhs_user bu on ba.uid = bu.uid
