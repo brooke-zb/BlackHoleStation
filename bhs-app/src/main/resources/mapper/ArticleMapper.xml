@@ -94,7 +94,7 @@
                 and uid = #{uid}
             </if>
             <if test="cid != null">
-                and cid = #{uid}
+                and cid = #{cid}
             </if>
             <if test="tid != null">
                 and tid = #{tid}
