@@ -41,9 +41,9 @@ build/
 pnpm-lock.yaml
 
 ### Spring Configuration ###
-application-dev.yml
-application-prod.yml
+application-*.yml
+!application-example.yml
 
 ### Log4j2 Configuration ###
-log4j2-dev.yml
-log4j2-prod.yml
+log4j2-*.yml
+!log4j2-example.yml
