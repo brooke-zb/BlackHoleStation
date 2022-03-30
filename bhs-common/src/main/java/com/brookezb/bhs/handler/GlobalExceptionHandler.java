@@ -6,11 +6,14 @@ import com.brookezb.bhs.exception.ForbiddenException;
 import com.brookezb.bhs.exception.InvalidException;
 import com.brookezb.bhs.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -119,5 +122,13 @@ public class GlobalExceptionHandler {
     public R<String> RuntimeException(Exception ex) {
         log.error("操作出现异常，执行失败", ex);
         return R.fail("操作出现异常，执行失败");
+    }
+
+    /**
+     * 暂时解决Spring RCE漏洞
+     */
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.setDisallowedFields("class.", "Class.", "*.class.*", "*.Class.*");
     }
 }
