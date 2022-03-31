@@ -28,28 +28,28 @@ public class TagAdminController {
     }
 
     @PostMapping("")
-    @RequirePermission("TAG:ADD")
+    @RequirePermission("TAG:FULLACCESS")
     public R<?> addTag(@RequestBody @Validated(Tag.Add.class) Tag tag) {
         tagService.insert(tag);
         return R.success(null, "添加标签成功");
     }
 
     @PutMapping("")
-    @RequirePermission("TAG:UPDATE")
+    @RequirePermission("TAG:FULLACCESS")
     public R<?> updateTag(@RequestBody @Validated(Tag.Update.class) Tag tag) {
         tagService.update(tag);
         return R.success(null, "更新标签成功");
     }
 
     @DeleteMapping("/{id:\\d+}")
-    @RequirePermission("TAG:DELETE")
+    @RequirePermission("TAG:FULLACCESS")
     public R<?> deleteTag(@PathVariable("id") Long id) {
         tagService.delete(id);
         return R.success(null, "删除标签成功");
     }
 
     @DeleteMapping("/{ids:\\d+(?:,\\d+)+}")
-    @RequirePermission("TAG:DELETE")
+    @RequirePermission("TAG:FULLACCESS")
     public R<?> deleteTagList(@PathVariable String ids) {
         List<Long> list = Arrays.stream(ids.split(","))
                 .map(Long::parseLong)

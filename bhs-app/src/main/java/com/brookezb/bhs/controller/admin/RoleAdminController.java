@@ -25,13 +25,13 @@ public class RoleAdminController {
     private RoleService roleService;
 
     @GetMapping("/{id:\\d+}")
-    @RequirePermission("ROLE:GET")
+    @RequirePermission({"ROLE:READONLY", "ROLE:FULLACCESS"})
     public R<?> getRole(@PathVariable Long id) {
         return R.success(roleService.selectById(id));
     }
 
     @GetMapping("")
-    @RequirePermission("ROLE:GET")
+    @RequirePermission({"ROLE:READONLY", "ROLE:FULLACCESS"})
     public R<?> getRoleList(
             @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") int page,
             @RequestParam(defaultValue = "10") @Pattern(regexp = RegexConstants.PAGE, message = "页数需为10/20/30") String size
@@ -43,21 +43,21 @@ public class RoleAdminController {
     }
 
     @PostMapping("")
-    @RequirePermission("ROLE:ADD")
+    @RequirePermission("ROLE:FULLACCESS")
     public R<?> addRole(@RequestBody @Validated(Role.Add.class) Role role) {
         roleService.insert(role);
         return R.success(null, "添加角色成功");
     }
 
     @PutMapping("")
-    @RequirePermission("ROLE:UPDATE")
+    @RequirePermission("ROLE:FULLACCESS")
     public R<?> updateRole(@RequestBody @Validated(Role.Update.class) Role role) {
         roleService.update(role);
         return R.success(null, "更新角色成功");
     }
 
     @DeleteMapping("/{id:\\d+}")
-    @RequirePermission("ROLE:DELETE")
+    @RequirePermission("ROLE:FULLACCESS")
     public R<?> deleteRole(@PathVariable Long id) {
         roleService.delete(id);
         return R.success(null, "删除角色成功");

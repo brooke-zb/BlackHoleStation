@@ -25,7 +25,7 @@ public class UserAdminController {
     private UserService userService;
 
     @GetMapping("/{id:\\d+}")
-    @RequirePermission("USER:GET")
+    @RequirePermission({"USER:READONLY", "USER:FULLACCESS"})
     public R<?> getUser(@PathVariable Long id) {
         return R.success(userService.selectById(id));
     }
@@ -39,7 +39,7 @@ public class UserAdminController {
      * @return 查询结果
      */
     @GetMapping("")
-    @RequirePermission("USER:GET")
+    @RequirePermission({"USER:READONLY", "USER:FULLACCESS"})
     public R<?> getUserList(
             @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") int page,
             @RequestParam(defaultValue = "10") @Pattern(regexp = RegexConstants.PAGE, message = "页数需为10/20/30") String size,
@@ -59,7 +59,7 @@ public class UserAdminController {
      * @return 新增结果
      */
     @PostMapping("")
-    @RequirePermission("USER:ADD")
+    @RequirePermission("USER:FULLACCESS")
     public R<?> addUser(@RequestBody @Validated(User.Add.class) User user) {
         userService.insert(user);
         return R.success(null, "添加用户成功");
@@ -72,7 +72,7 @@ public class UserAdminController {
      * @return 更新结果
      */
     @PutMapping("")
-    @RequirePermission("USER:UPDATE")
+    @RequirePermission("USER:FULLACCESS")
     public R<?> updateUser(@RequestBody @Validated(User.Update.class) User user) {
         userService.update(user);
         return R.success(null, "更新用户成功");
@@ -85,7 +85,7 @@ public class UserAdminController {
      * @param status 状态
      * @return 更新结果
      */
-    @RequirePermission("USER:UPDATE")
+    @RequirePermission("USER:FULLACCESS")
     @PatchMapping("/{id:\\d+}/status/{status:true|false}")
     public R<?> updateStatus(@PathVariable Long id, @PathVariable Boolean status) {
         userService.updateStatus(id, status);
@@ -98,11 +98,10 @@ public class UserAdminController {
      * @param id 用户id
      * @return 删除结果
      */
-    @RequirePermission("USER:DELETE")
+    @RequirePermission("USER:FULLACCESS")
     @DeleteMapping("/{id:\\d+}")
     public R<?> deleteUser(@PathVariable Long id) {
         userService.delete(id);
         return R.success(null, "删除用户成功");
     }
-
 }

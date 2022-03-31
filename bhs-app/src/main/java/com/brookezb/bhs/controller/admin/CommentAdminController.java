@@ -27,13 +27,13 @@ public class CommentAdminController {
     private CommentService commentService;
 
     @GetMapping("/{id:\\d+}")
-    @RequirePermission("COMMENT:GET")
+    @RequirePermission({"COMMENT:READONLY", "COMMENT:FULLACCESS"})
     public R<?> getComment(@PathVariable Long id) {
         return R.success(commentService.selectById(id, true));
     }
 
     @GetMapping("")
-    @RequirePermission("COMMENT:GET")
+    @RequirePermission({"COMMENT:READONLY", "COMMENT:FULLACCESS"})
     public R<?> getCommentList(
             @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") int page,
             @RequestParam(defaultValue = "10") @Pattern(regexp = RegexConstants.PAGE, message = "页数需为10/20/30") String size,
@@ -48,21 +48,21 @@ public class CommentAdminController {
     }
 
     @PutMapping("")
-    @RequirePermission("COMMENT:UPDATE")
+    @RequirePermission("COMMENT:FULLACCESS")
     public R<?> updateComment(@RequestBody @Validated(Comment.Update.class) Comment comment) {
         commentService.update(comment);
         return R.success(null, "更新评论成功");
     }
 
     @PatchMapping("/{id:\\d+}/status/{status:PUBLISHED|PENDING|INVISIBLE}")
-    @RequirePermission("COMMENT:UPDATE")
+    @RequirePermission("COMMENT:FULLACCESS")
     public R<?> updateCommentStatus(@PathVariable Long id, @PathVariable Comment.Status status) {
         commentService.updateStatus(id, status);
         return R.success(null, "更新评论状态成功");
     }
 
     @PatchMapping("/{ids:\\d+(?:,\\d+)+}/status/{status:PUBLISHED|PENDING|INVISIBLE}")
-    @RequirePermission("COMMENT:UPDATE")
+    @RequirePermission("COMMENT:FULLACCESS")
     public R<?> updateCommentStatusList(@PathVariable String ids, @PathVariable Comment.Status status) {
         List<Long> list = Arrays.stream(ids.split(","))
                 .map(Long::parseLong)
@@ -72,14 +72,14 @@ public class CommentAdminController {
     }
 
     @DeleteMapping("/{id:\\d+}")
-    @RequirePermission("COMMENT:DELETE")
+    @RequirePermission("COMMENT:FULLACCESS")
     public R<?> deleteComment(@PathVariable Long id) {
         commentService.delete(id);
         return R.success(null, "删除评论成功");
     }
 
     @DeleteMapping("/{ids:\\d+(?:,\\d+)+}")
-    @RequirePermission("COMMENT:DELETE")
+    @RequirePermission("COMMENT:FULLACCESS")
     public R<?> deleteCommentList(@PathVariable String ids) {
         List<Long> list = Arrays.stream(ids.split(","))
                 .map(Long::parseLong)

@@ -27,13 +27,13 @@ public class ArticleAdminController {
     private ArticleService articleService;
 
     @GetMapping("/{id:\\d+}")
-    @RequirePermission("ARTICLE:GET")
+    @RequirePermission({"ARTICLE:READONLY", "ARTICLE:FULLACCESS"})
     public R<?> getArticle(@PathVariable Long id) {
         return R.success(articleService.selectById(id));
     }
 
     @GetMapping("")
-    @RequirePermission("ARTICLE:GET")
+    @RequirePermission({"ARTICLE:READONLY", "ARTICLE:FULLACCESS"})
     public R<?> getArticleList(
             @RequestParam(defaultValue = "1") @Min(value = 1, message = "页数不能小于1") int page,
             @RequestParam(defaultValue = "10") @Pattern(regexp = RegexConstants.PAGE, message = "页数需为10/20/30") String size,
@@ -49,7 +49,7 @@ public class ArticleAdminController {
     }
 
     @PostMapping("")
-    @RequirePermission("ARTICLE:ADD")
+    @RequirePermission("ARTICLE:FULLACCESS")
     public R<?> addArticle(@RequestBody @Validated(Article.Add.class) Article article, @SessionAttribute(AppConstants.SESSION_USER_KEY) Long uid) {
         User user = new User();
         user.setUid(uid);
@@ -59,7 +59,7 @@ public class ArticleAdminController {
     }
 
     @PutMapping("")
-    @RequirePermission("ARTICLE:UPDATE")
+    @RequirePermission("ARTICLE:FULLACCESS")
     public R<?> updateArticle(@RequestBody @Validated(Article.Update.class) Article article, @SessionAttribute(AppConstants.SESSION_USER_KEY) Long uid) {
         User user = new User();
         user.setUid(uid);
@@ -69,7 +69,7 @@ public class ArticleAdminController {
     }
 
     @DeleteMapping("/{id:\\d+}")
-    @RequirePermission("ARTICLE:DELETE")
+    @RequirePermission("ARTICLE:FULLACCESS")
     public R<?> deleteArticle(@PathVariable Long id) {
         articleService.delete(id);
         return R.success(null, "文章删除成功");

@@ -18,21 +18,21 @@ public class FriendAdminController {
     private FriendService friendService;
 
     @PostMapping("")
-    @RequirePermission("FRIEND:ADD")
+    @RequirePermission("FRIEND:FULLACCESS")
     public R<?> addFriend(@RequestBody @Validated(Friend.Add.class) Friend friend) {
         friendService.insert(friend);
         return R.success(null, "添加友链成功");
     }
 
     @PutMapping("")
-    @RequirePermission("FRIEND:UPDATE")
+    @RequirePermission("FRIEND:FULLACCESS")
     public R<?> updateFriend(@RequestBody @Validated(Friend.Update.class) Friend friend) {
         friendService.update(friend);
         return R.success(null, "更新友链成功");
     }
 
     @DeleteMapping("/{id:\\d+}")
-    @RequirePermission("FRIEND:DELETE")
+    @RequirePermission("FRIEND:FULLACCESS")
     public R<?> deleteFriend(@PathVariable("id") Long id) {
         friendService.delete(id);
         return R.success(null, "删除友链成功");
