@@ -40,9 +40,12 @@ public class CsrfInterceptor implements HandlerInterceptor {
 
         // 校验失败则返回403
         if (sessionToken == null || !sessionToken.equals(token)) {
-            CsrfUtils.putToken(request, response);
+            CsrfUtils.generateToken(request, response);
             throw new ForbiddenException("未通过CSRF检测");
         }
+
+        // 校验成功则更新token
+        CsrfUtils.generateToken(request, response);
 
         return true;
     }

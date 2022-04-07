@@ -19,7 +19,7 @@ public class CsrfUtils {
      * @param request  请求
      * @param response 响应
      */
-    public static void putToken(HttpServletRequest request, HttpServletResponse response) {
+    public static void generateToken(HttpServletRequest request, HttpServletResponse response) {
         // 生成token
         String token = UUID.randomUUID().toString();
 

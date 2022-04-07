@@ -62,7 +62,7 @@ public class DynamicAuthInterceptor implements HandlerInterceptor {
 
             // 用户存在且未被封禁，则设置session
             request.getSession().setAttribute(AppConstants.SESSION_USER_KEY, userId);
-            CsrfUtils.putToken(request, response);
+            CsrfUtils.generateToken(request, response);
 
             // 生成新的token
             String newToken = userService.generateAuthToken(userId, expire);
