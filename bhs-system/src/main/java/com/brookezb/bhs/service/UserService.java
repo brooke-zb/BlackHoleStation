@@ -32,6 +32,7 @@ public interface UserService {
      * 获取用户列表
      * @param username 用户名
      * @param enabled 用户状态
+     * @param isTemp 是否仅会话有效
      * @return 用户列表
      */
     List<User> selectAll(String username, Boolean enabled);
@@ -42,7 +43,7 @@ public interface UserService {
      * @param expire 过期时间，单位秒
      * @return token
      */
-    String generateAuthToken(Long uid, Long expire);
+    String generateAuthToken(Long uid, Long expire, boolean isTemp);
 
     /**
      * 移除用户免登录token

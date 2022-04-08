@@ -65,11 +65,19 @@ public class DynamicAuthInterceptor implements HandlerInterceptor {
             CsrfUtils.generateToken(request, response);
 
             // 生成新的token
-            String newToken = userService.generateAuthToken(userId, expire);
-            ResponseCookie cookie = CookieUtils.from(AppConstants.AUTH_TOKEN_HEADER, newToken)
-                    .maxAge(expire)
-                    .httpOnly(true)
-                    .build();
+            boolean isTemp = token.startsWith(AppConstants.TEMP_AUTH_TOKEN_PREFIX);
+            String newToken = userService.generateAuthToken(userId, expire, isTemp);
+            ResponseCookie cookie;
+            if (isTemp) {
+                cookie = CookieUtils.from(AppConstants.AUTH_TOKEN_HEADER, newToken)
+                        .httpOnly(true)
+                        .build();
+            } else {
+                cookie = CookieUtils.from(AppConstants.AUTH_TOKEN_HEADER, newToken)
+                        .maxAge(expire)
+                        .httpOnly(true)
+                        .build();
+            }
             response.addHeader("Set-Cookie", cookie.toString());
         }
     }

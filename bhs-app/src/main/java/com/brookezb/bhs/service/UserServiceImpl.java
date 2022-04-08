@@ -77,8 +77,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String generateAuthToken(Long uid, Long expire) {
-        String token = UUID.randomUUID().toString();
+    public String generateAuthToken(Long uid, Long expire, boolean isTemp) {
+        String token = (isTemp ? AppConstants.TEMP_AUTH_TOKEN_PREFIX : "") + UUID.randomUUID();
         redisUtils.setStringValue(AppConstants.REDIS_USER_TOKEN + token, uid.toString(), expire, TimeUnit.SECONDS);
 
         return token;

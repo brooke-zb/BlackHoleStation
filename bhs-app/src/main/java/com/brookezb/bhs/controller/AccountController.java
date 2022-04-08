@@ -43,14 +43,20 @@ public class AccountController {
         session.setAttribute(AppConstants.SESSION_USER_KEY, user.getUid());
 
         // 设置免登录token
+        ResponseCookie auth_token;
         if (loginBody.isRememberMe()) {
-            String token = userService.generateAuthToken(user.getUid(), 60 * 60 * 24 * 7L);
-            ResponseCookie auth_token = CookieUtils.from(AppConstants.AUTH_TOKEN_HEADER, token)
+            String token = userService.generateAuthToken(user.getUid(), 60 * 60 * 24 * 7L, false);
+            auth_token = CookieUtils.from(AppConstants.AUTH_TOKEN_HEADER, token)
                     .httpOnly(true)
                     .maxAge(60 * 60 * 24 * 7L)
                     .build();
-            response.addHeader("Set-Cookie", auth_token.toString());
+        } else {
+            String token = userService.generateAuthToken(user.getUid(), 60 * 60 * 24L, true);
+            auth_token = CookieUtils.from(AppConstants.AUTH_TOKEN_HEADER, token)
+                    .httpOnly(true)
+                    .build();
         }
+        response.addHeader("Set-Cookie", auth_token.toString());
 
         // 设置CSRF token
         String token = UUID.randomUUID().toString();
