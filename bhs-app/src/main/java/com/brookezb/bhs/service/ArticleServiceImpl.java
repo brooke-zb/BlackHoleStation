@@ -21,6 +21,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -81,9 +82,16 @@ public class ArticleServiceImpl implements ArticleService {
         article.setAid(IdUtils.nextId());
 
         // 插入标签
-        tagMapper.insertList(article.getTags());
-        List<Tag> tags = tagMapper.selectAllByList(article.getTags());
-        tagMapper.insertRelationByAid(article.getAid(), tags);
+        if (article.getTags() != null && !article.getTags().isEmpty()) {
+            tagMapper.insertList(article.getTags());
+            List<Tag> tags = tagMapper.selectAllByList(article.getTags());
+            tagMapper.insertRelationByAid(article.getAid(), tags);
+        }
+
+        // 插入时间
+        if (article.getCreated() == null) {
+            article.setCreated(LocalDateTime.now());
+        }
 
         articleMapper.insert(article);
     }

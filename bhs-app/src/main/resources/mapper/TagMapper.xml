@@ -19,7 +19,7 @@
     <insert id="insertRelationByAid">
         insert ignore into bhs_tag_relation(aid, tid)
         values
-        <foreach collection="list" item="tag" separator=",">
+        <foreach collection="tags" item="tag" separator=",">
             (#{aid}, #{tag.tid})
         </foreach>
     </insert>

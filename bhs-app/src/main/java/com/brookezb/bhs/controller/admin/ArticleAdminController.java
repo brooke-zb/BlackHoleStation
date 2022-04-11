@@ -51,11 +51,14 @@ public class ArticleAdminController {
     @PostMapping("")
     @RequirePermission("ARTICLE:FULLACCESS")
     public R<?> addArticle(@RequestBody @Validated(Article.Add.class) Article article, @SessionAttribute(AppConstants.SESSION_USER_KEY) Long uid) {
-        User user = new User();
-        user.setUid(uid);
-        article.setUser(user);
-        articleService.insert(article);
-        return R.success(null, "文章发布成功");
+        if (uid != null) {
+            User user = new User();
+            user.setUid(uid);
+            article.setUser(user);
+            articleService.insert(article);
+            return R.success(null, "文章发布成功");
+        }
+        return R.fail("请登录后进行操作");
     }
 
     @PutMapping("")

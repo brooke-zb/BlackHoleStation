@@ -28,7 +28,7 @@
     <insert id="insert">
         insert into bhs_article(aid, uid, cid, title, content, commentabled, appreciatabled,
                                 created, status)
-        values (#{aid}, #{uid}, #{category.cid}, #{title}, #{content},
+        values (#{aid}, #{user.uid}, #{category.cid}, #{title}, #{content},
                 #{commentabled}, #{appreciatabled}, #{created}, #{status})
     </insert>
 

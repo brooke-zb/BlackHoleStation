@@ -26,8 +26,6 @@ public class Article {
     /**
      * 作者id
      */
-    @Valid
-    @NotNull(message = "角色不能为空", groups = Add.class)
     private User user;
 
     /**
