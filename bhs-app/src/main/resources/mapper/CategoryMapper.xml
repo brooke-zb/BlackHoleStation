@@ -22,10 +22,10 @@
     <update id="update">
         update ignore bhs_category
         <set>
-            <if test="category.name != null">
+            <if test="name != null">
                 name = #{name}
             </if>
-            <if test="category.parent != null">
+            <if test="parent != null">
                 parent = #{parent}
             </if>
         </set>

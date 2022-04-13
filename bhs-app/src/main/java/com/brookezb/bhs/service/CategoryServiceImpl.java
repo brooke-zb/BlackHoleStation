@@ -40,12 +40,14 @@ public class CategoryServiceImpl implements CategoryService {
         if (categoryMapper.verifyName(category.getName()) != null) {
             throw new InvalidException("该分类已存在");
         }
-        Category parent = categoryMapper.selectById(category.getParent());
-        if (parent == null) {
-            throw new InvalidException("父分类不存在");
-        }
-        if (parent.getParent() != null) {
-            throw new InvalidException("父分类不是顶级分类");
+        if (category.getParent() != null) {
+            Category parent = categoryMapper.selectById(category.getParent());
+            if (parent == null) {
+                throw new InvalidException("父分类不存在");
+            }
+            if (parent.getParent() != null) {
+                throw new InvalidException("父分类不是顶级分类");
+            }
         }
         if (categoryMapper.insert(category) > 0) {
             return;
