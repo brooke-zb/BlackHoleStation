@@ -11,16 +11,16 @@
     <update id="update">
         update bhs_friend
         <set>
-            <if test="friend.name != null">
+            <if test="name != null">
                 name = #{name}
             </if>
-            <if test="friend.link != null">
+            <if test="link != null">
                 link = #{link}
             </if>
-            <if test="friend.avatar != null">
+            <if test="avatar != null">
                 avatar = #{avatar}
             </if>
-            <if test="friend.description != null">
+            <if test="description != null">
                 description = #{description}
             </if>
         </set>

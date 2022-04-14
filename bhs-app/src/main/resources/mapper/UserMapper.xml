@@ -27,16 +27,16 @@
     <update id="update">
         update bhs_user
         <set>
-            <if test="user.name != null">
-                name = #{name},
+            <if test="name != null">
+                name = #{name}
             </if>
-            <if test="user.mail != null">
-                mail = #{mail},
+            <if test="mail != null">
+                mail = #{mail}
             </if>
-            <if test="user.link != null">
-                link = #{link},
+            <if test="link != null">
+                link = #{link}
             </if>
-            <if test="user.role != null">
+            <if test="role != null">
                 rid = #{role.rid}
             </if>
         </set>

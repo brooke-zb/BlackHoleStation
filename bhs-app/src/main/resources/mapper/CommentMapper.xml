@@ -38,10 +38,20 @@
 
     <update id="update">
         update bhs_comment
-        set nickname = #{nickname},
-            email    = #{email},
-            site     = #{site},
-            content  = #{content}
+        <set>
+            <if test="nickname != null">
+                nickname = #{nickname}
+            </if>
+            <if test="email != null">
+                email = #{email}
+            </if>
+            <if test="site != null">
+                site = #{site}
+            </if>
+            <if test="content != null">
+                content = #{content}
+            </if>
+        </set>
         where coid = #{coid}
     </update>
 
