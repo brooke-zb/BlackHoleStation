@@ -42,12 +42,32 @@
 
     <update id="update">
         update bhs_article
-        set cid            = #{category.cid},
-            title          = #{title},
-            content        = #{content},
-            commentabled   = #{commentabled},
-            appreciatabled = #{appreciatabled},
-            status         = #{status}
+        <set>
+            <if test="category.cid != null">
+                cid = #{category.cid}
+            </if>
+            <if test="title != null">
+                title = #{title}
+            </if>
+            <if test="content != null">
+                content = #{content}
+            </if>
+            <if test="commentabled != null">
+                commentabled = #{commentabled}
+            </if>
+            <if test="appreciatabled != null">
+                appreciatabled = #{appreciatabled}
+            </if>
+            <if test="status != null">
+                status = #{status}
+            </if>
+            <if test="created != null">
+                created = #{created}
+            </if>
+            <if test="modified != null">
+                modified = #{modified}
+            </if>
+        </set>
         where aid = #{aid}
     </update>
 
