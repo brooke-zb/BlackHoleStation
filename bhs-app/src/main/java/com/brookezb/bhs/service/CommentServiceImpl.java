@@ -112,9 +112,9 @@ public class CommentServiceImpl implements CommentService {
         // 发送通知邮件
         User user = articleMapper.selectUserById(comment.getAid());
         if (comment.getStatus() == Comment.Status.PUBLISHED) {
-            mailService.sendReplyMail(user.getMail(), comment.getNickname(), "https://blog.brooke-zb.top/article/" + comment.getAid() + "/" + comment.getCoid());
+            mailService.sendReplyMail(user.getMail(), comment.getNickname(), "https://blog.brookezb.com/articles/" + comment.getAid()/* + "/" + comment.getCoid()*/); // TODO 移除硬编码链接
         } else {
-            mailService.sendAuditMail("https://blog.brooke-zb.top/admin/comment");
+            mailService.sendAuditMail("https://blog.brookezb.com/admin/comments");
         }
 
         // 返回审核状态
