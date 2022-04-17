@@ -23,10 +23,10 @@
         update ignore bhs_category
         <set>
             <if test="name != null">
-                name = #{name}
+                name = #{name},
             </if>
             <if test="parent != null">
-                parent = #{parent}
+                parent = #{parent},
             </if>
         </set>
         where cid = #{cid}

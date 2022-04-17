@@ -12,16 +12,16 @@
         update bhs_friend
         <set>
             <if test="name != null">
-                name = #{name}
+                name = #{name},
             </if>
             <if test="link != null">
-                link = #{link}
+                link = #{link},
             </if>
             <if test="avatar != null">
-                avatar = #{avatar}
+                avatar = #{avatar},
             </if>
             <if test="description != null">
-                description = #{description}
+                description = #{description},
             </if>
         </set>
         where fid = #{fid}

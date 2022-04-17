@@ -40,16 +40,16 @@
         update bhs_comment
         <set>
             <if test="nickname != null">
-                nickname = #{nickname}
+                nickname = #{nickname},
             </if>
             <if test="email != null">
-                email = #{email}
+                email = #{email},
             </if>
             <if test="site != null">
-                site = #{site}
+                site = #{site},
             </if>
             <if test="content != null">
-                content = #{content}
+                content = #{content},
             </if>
         </set>
         where coid = #{coid}
