@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author brooke_zb
@@ -115,7 +116,9 @@ public class CommentServiceImpl implements CommentService {
         // 发送通知邮件
         User user = articleMapper.selectUserById(comment.getAid());
         if (comment.getStatus() == Comment.Status.PUBLISHED) {
-            mailService.sendReplyMail(user.getMail(), comment.getNickname(), "https://blog.brookezb.com/articles/" + comment.getAid()/* + "/" + comment.getCoid()*/); // TODO 移除硬编码链接
+            if (!Objects.equals(comment.getUid(), user.getUid())) {
+                mailService.sendReplyMail(user.getMail(), comment.getNickname(), "https://blog.brookezb.com/articles/" + comment.getAid()/* + "/" + comment.getCoid()*/); // TODO 移除硬编码链接
+            }
         } else {
             mailService.sendAuditMail("https://blog.brookezb.com/admin/comments");
         }
