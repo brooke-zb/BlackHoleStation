@@ -7,6 +7,7 @@ import com.brookezb.bhs.mapper.ArticleMapper;
 import com.brookezb.bhs.mapper.CommentMapper;
 import com.brookezb.bhs.model.Comment;
 import com.brookezb.bhs.model.User;
+import com.brookezb.bhs.utils.CensorWordUtils;
 import com.brookezb.bhs.utils.IdUtils;
 import com.brookezb.bhs.utils.PageUtils;
 import com.brookezb.bhs.utils.ServletUtils;
@@ -25,6 +26,7 @@ public class CommentServiceImpl implements CommentService {
     private CommentMapper commentMapper;
     private ArticleMapper articleMapper;
     private MailService mailService;
+    private CensorWordUtils censorWordUtils;
 
     @Override
     public Comment selectById(Long coid, boolean isAdmin) {
@@ -90,9 +92,10 @@ public class CommentServiceImpl implements CommentService {
             }
         }
 
-        // 检查评论者邮箱是否受信任
+        // 检查评论者是否受信任
         if (comment.getUid() == null) {
-            if (comment.getEmail() == null || commentMapper.selectTrustEmail(comment.getEmail()) == null) {
+            // 检查评论内容和昵称是否触发敏感词
+            if (censorWordUtils.isMatch(comment.getContent()) || censorWordUtils.isMatch(comment.getNickname())) {
                 comment.setStatus(Comment.Status.PENDING);
             } else {
                 comment.setStatus(Comment.Status.PUBLISHED);
