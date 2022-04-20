@@ -71,6 +71,9 @@ csrf:
     excludes:
       - /account/token
 
+censor:
+  path: /path/to/censorWords.txt
+
 cors:
   origins:
     - https://www.example.com
