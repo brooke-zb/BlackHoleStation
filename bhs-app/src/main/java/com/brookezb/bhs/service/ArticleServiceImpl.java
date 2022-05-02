@@ -106,9 +106,11 @@ public class ArticleServiceImpl implements ArticleService {
         articleMapper.update(article);
 
         // 更新标签
-        tagMapper.insertList(article.getTags());
-        articleMapper.deleteTagsNotInList(article.getAid(), article.getTags());
-        articleMapper.insertTags(article.getAid(), tagMapper.selectAllByList(article.getTags()));
+        if (article.getTags() != null && !article.getTags().isEmpty()) {
+            tagMapper.insertList(article.getTags());
+            articleMapper.deleteTagsNotInList(article.getAid(), article.getTags());
+            articleMapper.insertTags(article.getAid(), tagMapper.selectAllByList(article.getTags()));
+        }
     }
 
     @Override
