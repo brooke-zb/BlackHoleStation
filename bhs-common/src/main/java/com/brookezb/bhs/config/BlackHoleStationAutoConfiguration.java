@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import com.brookezb.bhs.aspect.AuthenticationAspect;
 import com.brookezb.bhs.handler.GlobalExceptionHandler;
 import com.brookezb.bhs.proerties.CsrfProperties;
 import com.brookezb.bhs.proerties.OssProperties;
@@ -21,7 +20,6 @@ import com.brookezb.bhs.utils.RedisUtils;
         OssUtils.class,
         RedisUtils.class,
         MailUtils.class,
-        AuthenticationAspect.class,
         WebMvcConfig.class,
         TaskPoolConfig.class,
         BeanValidatorConfig.class,

@@ -1,5 +1,6 @@
 package com.brookezb.bhs.config;
 
+import com.brookezb.bhs.interceptor.AuthenticationInterceptor;
 import com.brookezb.bhs.interceptor.CsrfInterceptor;
 import com.brookezb.bhs.interceptor.DynamicAuthInterceptor;
 import com.brookezb.bhs.proerties.CorsProperties;
@@ -34,6 +35,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // 添加鉴权拦截器
+        registry.addInterceptor(new AuthenticationInterceptor(userService));
+
         // 添加动态登录拦截器
         registry.addInterceptor(new DynamicAuthInterceptor(redisUtils, userService)).addPathPatterns("/**");
 
