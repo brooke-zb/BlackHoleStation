@@ -47,10 +47,10 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 返回400
+     * 返回422
      * 处理参数校验异常
      */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ExceptionHandler({BindException.class, ConstraintViolationException.class})
     public R<String> ConstraintViolationException(Exception ex) {
         if (ex instanceof BindException bex) {
